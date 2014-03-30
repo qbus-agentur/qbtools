@@ -1,0 +1,7 @@
+plugin.tx_qbtools {
+	view.widget {
+		Qbus\Qbtools\ViewHelpers\Widget\MailformViewHelper {
+			templateRootPath = {$config.tx_qbtools.view.widget.Qbus\Qbtools\ViewHelpers\Widget\MailformViewHelper.templateRootPath}
+		}
+	}
+}

@@ -1,0 +1,9 @@
+plugin.tx_qbtools {
+	view.widget {
+		Qbus\Qbtools\ViewHelpers\Widget\MailformViewHelper {
+			# cat=plugin.tx_qbtools/file; type=string; label=Template root path for the template of the mailform widget
+			templateRootPath = EXT:qbtools/Resources/Private/Templates
+		}
+	}
+
+}

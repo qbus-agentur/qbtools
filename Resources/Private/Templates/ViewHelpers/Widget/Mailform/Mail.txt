@@ -1,0 +1,11 @@
+Mail von {f:if(condition: '{msg.salutation} == "m"', then: 'Herr', else: 'Frau')} {msg.firstname} {msg.lastname}
+
+E-Mail Addresse: {msg.email}
+
+<f:if condition="{msg.phone}">Telefon: {msg.phone}</f:if>
+Adresse:
+{msg.street}
+{msg.postalcode} {msg.city}
+
+Anfrage:
+{msg.message}

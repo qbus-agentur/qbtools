@@ -1,0 +1,42 @@
+<script type="text/javascript">
+jQuery(function() {
+       $("#{qmailformid}").submit(function(event) {
+		event.preventDefault();
+		$form = $(this);
+		jQuery.post($form.attr("action"), $form.serialize(), function(data) {
+			if (data.status == "ok") {
+				$(".qbtools-mailform-notification", $form).hide().html("Anfrage erfolgreich versendet").fadeIn("slow");
+			} else if (data.status == "fields-missing") {
+				$(".qbtools-mailform-notification", $form).hide()
+					.html("Die Anfrage wurde nicht versendet.<br/>" +
+					      "Die Felder " + data.missing.join(",") + " müssen ausgefüllt werden.").fadeIn("slow");
+			}
+		}, "json");
+	});
+});
+</script>
+
+<f:form actionUri="{f:widget.uri(action:'mail', ajax: 1)}" id="{qbmailformid}" method="post" class="qbtools-mailform" noCacheHash="true">
+	<div class="qbtools-mailform-notification"></div>
+	<f:form.select name="msg[salutation]" options="{m: 'Herr', f: 'Frau'}"/>
+	<br/>
+	<f:form.textfield name="msg[firstname]" placeholder="Vorname *" />
+	<br/>
+	<f:form.textfield name="msg[lastname]" placeholder="Nachname *"/>
+	<br/>
+	<f:form.textfield name="msg[street]" placeholder="Straße" />
+	<br/>
+	<f:form.textfield name="msg[postalcode]" placeholder="PLZ" />
+	<br/>
+	<f:form.textfield name="msg[city]" placeholder="Ort" />
+	<br/>
+	<f:form.textfield name="msg[phone]" placeholder="Rufnummer"/>
+	<br/>
+	<f:form.textfield name="msg[email]" placeholder="E-Mail Adresse *"/>
+	<br/>
+	<label for="mail-message">Ihr Anliegen *</label>
+	<br/>
+	<f:form.textfield name="msg[message]" id="mail-message"/>
+	<br/>
+	<f:form.submit value="Anfrage absenden"/>
+</f:form>
