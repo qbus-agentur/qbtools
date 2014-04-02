@@ -108,7 +108,7 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
 			$path = "EXT:qbtools/Resources/Private";
 		}
 
-		return $path;
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($path);
 	}
 }
 
