@@ -4,7 +4,7 @@ namespace Qbus\Qbtools\ViewHelpers;
 /* * *************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Axel Wüstemann <awu@qbus.de>, Qbus Werbeagentur GmbH
+ *  (c) 2014 Benjamin Franzke <bfr@qbus.de>, Qbus Werbeagentur GmbH
  *  
  *  All rights reserved
  *
@@ -41,7 +41,7 @@ class CallViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
      * @param \array $params
      * @return mixed
      */
-    public function render($func, $params)
+    public function render($func, $params = array())
     {
         return call_user_func_array($func, $params);
     }
