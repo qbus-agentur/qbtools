@@ -1,6 +1,6 @@
 <script type="text/javascript">
 jQuery(function() {
-       $("#{qmailformid}").submit(function(event) {
+       $("#{qbmailformid}").submit(function(event) {
 		event.preventDefault();
 		$form = $(this);
 		jQuery.post($form.attr("action"), $form.serialize(), function(data) {
