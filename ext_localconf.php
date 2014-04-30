@@ -6,3 +6,7 @@ if (!defined ('TYPO3_MODE')) die ('Access denied.');
 	'mailformwrapper',
 	array("Mailform" => 'show')
 );
+
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']['Tx_Dce_Controller_DceController'] = array(
+    'className' => 'Qbus\\Qbtools\\Xclass\\DceController',
+);
