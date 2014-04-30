@@ -1,0 +1,15 @@
+Example configuration:
+<config>
+	<type>inline</type>
+
+	<foreign_table>tt_content</foreign_table>
+
+	<minitems>0</minitems>
+	<maxitems>99</maxitems>
+</config>
+
+Note: On the page where the DCE element is used (or on the Root page!)
+set the pageTsConfig:
+  TCAdefaults.tt_content.pid = 96
+This defines that inline entries are stored on the page with id 96.
+(So that they do not show up on the page where the DCE is included).
