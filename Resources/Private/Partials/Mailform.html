@@ -1,44 +1,46 @@
+{namespace qbtools=Qbus\Qbtools\ViewHelpers}
+<f:debug>{all}</f:debug>
 <div class="qbtools-mailform-notification"></div>
 <div>Felder mit * müssen ausgefüllt werden</div>
 <div class="form-group">
 	<label for="{qbmailformid}-salutation">Anrede</label>
-	<f:form.select name="msg[salutation]" id="{qbmailformid}-salutation" class="form-control" options="{m: 'Herr', f: 'Frau'}"/>
+	<f:form.select name="salutation" id="{qbmailformid}-salutation" class="form-control" options="{m: 'Herr', f: 'Frau'}"/>
 </div>
 <div class="form-group">
 	<label for="{qbmailformid}-firstname">Vorname</label>
-	<f:form.textfield name="msg[firstname]" id="{qbmailformid}-firstname" class="form-control" placeholder="Vorname *" />
+	<f:form.textfield name="firstname" id="{qbmailformid}-firstname" class="form-control" placeholder="Vorname *" />
 </div>
 <div class="form-group">
 	<label for="{qbmailformid}-lastname">Nachname</label>
-	<f:form.textfield name="msg[lastname]" id="{qbmailformid}-lastname" class="form-control" placeholder="Nachname *"/>
+	<f:form.textfield name="lastname" id="{qbmailformid}-lastname" class="form-control" placeholder="Nachname *"/>
 </div>
 <div class="form-group">
 	<label for="{qbmailformid}-street">Straße</label>
-	<f:form.textfield name="msg[street]" id="{qbmailformid}-street" class="form-control" placeholder="Straße" />
+	<f:form.textfield name="street" id="{qbmailformid}-street" class="form-control" placeholder="Straße" />
 </div>
 <div class="form-group">
 	<label for="{qbmailformid}-postalcode">PLZ</label>
-	<f:form.textfield name="msg[postalcode]" id="{qbmailformid}-postalcode" class="form-control" placeholder="PLZ" />
+	<f:form.textfield name="postalcode" id="{qbmailformid}-postalcode" class="form-control" placeholder="PLZ" />
 </div>
 <div class="form-group">
 	<label for="{qbmailformid}-city">Ort</label>
-	<f:form.textfield name="msg[city]" id="{qbmailformid}-city" class="form-control" placeholder="Ort" />
+	<f:form.textfield name="city" id="{qbmailformid}-city" class="form-control" placeholder="Ort" />
 </div>
 <div class="form-group">
 	<label for="{qbmailformid}-phone">Telefonnummer</label>
-	<f:form.textfield name="msg[phone]" id="{qbmailformid}-phone" class="form-control" placeholder="Telefonnummer"/>
+	<f:form.textfield name="phone" id="{qbmailformid}-phone" class="form-control" placeholder="Telefonnummer"/>
 </div>
 <div class="form-group">
 	<label for="{qbmailformid}-email">E-Mail Adresse</label>
-	<f:form.textfield name="msg[email]" id="{qbmailformid}-email" class="form-control" placeholder="E-Mail Adresse *"/>
+	<f:form.textfield name="email" id="{qbmailformid}-email" class="form-control" placeholder="E-Mail Adresse *"/>
 </div>
 <div class="form-group">
 	<label for="{qbmailformid}-email">Website</label>
-	<f:form.textfield name="msg[website]" id="{qbmailformid}-website" class="form-control" placeholder="http://"/>
+	<f:form.textfield name="website" id="{qbmailformid}-website" class="form-control" placeholder="http://"/>
 </div>
 
 <div class="form-group">
 	<label for="{qbmailformid}-message">Ihr Anliegen *</label>
-	<f:form.textarea name="msg[message]" id="{qbmailformid}-message" class="form-control" rows="5"/>
+	<f:form.textarea name="message" id="{qbmailformid}-message" class="form-control" rows="5"/>
 </div>
 <f:form.submit class="btn btn-default" value="Anfrage absenden"/>
