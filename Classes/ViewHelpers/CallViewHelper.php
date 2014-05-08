@@ -5,7 +5,7 @@ namespace Qbus\Qbtools\ViewHelpers;
  *  Copyright notice
  *
  *  (c) 2014 Benjamin Franzke <bfr@qbus.de>, Qbus Werbeagentur GmbH
- *  
+ *
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
