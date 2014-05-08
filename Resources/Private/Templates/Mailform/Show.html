@@ -1,2 +1,4 @@
 {namespace qbtools=Qbus\Qbtools\ViewHelpers}
-<qbtools:widget.mailform recipient="{recipient}" sender="{sender}" />
+<qbtools:widget.mailform recipient="{recipient}" sender="{sender}" mailTemplate="{mailTemplate}">
+	<f:render partial="{formPartial}" arguments="{_all}"/>
+</qbtools:widget.mailform>

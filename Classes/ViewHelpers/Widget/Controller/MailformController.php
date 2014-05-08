@@ -22,9 +22,6 @@ namespace  Qbus\Qbtools\ViewHelpers\Widget\Controller;
  *                                                                        */
 class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController {
 
-	const MAIL_TEMPLATE = "ViewHelpers/Widget/Mailform/Mail.txt";
-	const JS_TEMPLATE = "ViewHelpers/Widget/Mailform/JavaScript.js";
-
 	/**
 	 * @var \Qbus\Qbtools\Utility\StandaloneTemplateRenderer
 	 * @inject
@@ -32,12 +29,20 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
 	protected $standaloneTemplateRenderer;
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+	 * @inject
+	 */
+	protected $objectManager;
+
+	/**
 	 * @return void
 	 */
 	public function indexAction() {
-		$GLOBALS['TSFE']->additionalHeaderData[md5('qbtools_jquery')]  = '<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>';
+		//$GLOBALS['TSFE']->additionalHeaderData[md5('qbtools_jquery')]  = '<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>';
 		$this->view->assign("required", $this->widgetConfiguration["required"]);
 		$this->view->assign("qbmailformid", "qbmailform-".$this->controllerContext->getRequest()->getWidgetContext()->getAjaxWidgetIdentifier());
+
+		$this->view->setTemplateRootPath(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName("EXT:qbtools/Resources/Private/Templates/"));
 	}
 
 	/**
@@ -74,7 +79,11 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
 			'msg' => $msg
 		);
 
-		$text = $this->standaloneTemplateRenderer->renderTemplate(self::MAIL_TEMPLATE, $params, $this->getMailTemplateRootPath());
+		$view = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
+		$view->setTemplatePathAndFilename(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->widgetConfiguration["mailTemplate"]));
+		$view->assignMultiple($params);
+		$text = $view->render();
+
 		list($subject, $body) = explode("\n", $text, 2);
 
 		$mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
@@ -88,27 +97,6 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
 		$mail->send();
 
 		return json_encode(array("status" => "ok"));
-	}
-
-	protected function getMailtemplateRootPath() {
-		$path = null;
-
-		$extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-		$widgetViewHelperClassName = $this->request->getWidgetContext()->getWidgetViewHelperClassName();
-
-		if (isset($extbaseFrameworkConfiguration['view']['widget'][$widgetViewHelperClassName]['templateRootPath']) &&
-		    strlen($extbaseFrameworkConfiguration['view']['widget'][$widgetViewHelperClassName]['templateRootPath']) > 0) {
-			/* We use dirname, since we do not want the trailing Templates/, as our standaloneTemplateRender appends that on its own.
-			 * @todo: Fix the standaloneTemplateRenderer? */
-			$path = dirname($extbaseFrameworkConfiguration['view']['widget'][$widgetViewHelperClassName]['templateRootPath']);
-		}
-
-		/* Fallback to default path */
-		if ($path === null) {
-			$path = "EXT:qbtools/Resources/Private";
-		}
-
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($path);
 	}
 }
 

@@ -44,9 +44,11 @@ class MailformViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetView
 	 * @param array $recipient = array('mail': "mail@address", 'name' => "Full Name");
 	 * @param array $sender = array('mail': "mail@address", 'name' => "Full Name");
 	 * @param array $required = array("firstname", "lastname", "email");
+	 * @param string $mailTemplate
 	 * @return string
 	 */
-	public function render($recipient, $sender = null, $required = array("firstname", "lastname", "email")) {
+	public function render($recipient, $sender = null, $required = array("firstname", "lastname", "email"),
+		$mailTemplate = "EXT:qbtools/Resources/Private/Templates/Mailform/Mail.txt") {
 		return $this->initiateSubRequest();
 	}
 }

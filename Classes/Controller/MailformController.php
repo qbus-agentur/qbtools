@@ -51,7 +51,7 @@ class MailformController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	public function initializeShowAction() {
 		$cobj = $this->configurationManager->getContentObject();
 		foreach ($this->arguments as $argument) {
-			if (isset($cobj->data[$argument->getName()])) {
+			if (isset($cobj->data[$argument->getName()]) && $cobj->data[$argument->getName()]) {
 				$argument->setDefaultValue($cobj->data[$argument->getName()]);
 				$argument->setRequired(false);
 			}
@@ -63,9 +63,16 @@ class MailformController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	 * @param \string $recipientEmail
 	 * @param \string $senderName
 	 * @param \string $senderEmail
+	 * @param \string $formPartial
+	 * @param \string $mailTemplate
 	 */
-	public function showAction($recipientName, $recipientEmail, $senderName = null, $senderEmail = null) {
+	public function showAction($recipientName, $recipientEmail, $senderName = null, $senderEmail = null,
+			$formPartial = "Mailform",
+			$mailTemplate = "EXT:qbtools/Resources/Private/Templates/Mailform/Mail.txt") {
 		$this->view->assign("recipient", array("email" => $recipientEmail, "name" => $recipientName));
+		$this->view->assign("formPartial", $formPartial);
+		$this->view->assign("mailTemplate", $mailTemplate);
+
 		if (strlen($senderName) > 0 && strlen($senderEmail) > 0) {
 			$this->view->assign("sender", array("email" => $senderEmail, "name" => $senderName));
 		} else {
