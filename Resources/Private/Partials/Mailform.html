@@ -8,11 +8,11 @@
 </div>
 <div class="form-group">
 	<label for="{qbmailformid}-firstname">Vorname</label>
-	<f:form.textfield name="firstname" id="{qbmailformid}-firstname" class="form-control" placeholder="Vorname *" />
+	<f:form.textfield name="firstname" required="true" id="{qbmailformid}-firstname" class="form-control" placeholder="Vorname *" />
 </div>
 <div class="form-group">
 	<label for="{qbmailformid}-lastname">Nachname</label>
-	<f:form.textfield name="lastname" id="{qbmailformid}-lastname" class="form-control" placeholder="Nachname *"/>
+	<f:form.textfield name="lastname" required="true" id="{qbmailformid}-lastname" class="form-control" placeholder="Nachname *"/>
 </div>
 <div class="form-group">
 	<label for="{qbmailformid}-street">Straße</label>
@@ -32,15 +32,15 @@
 </div>
 <div class="form-group">
 	<label for="{qbmailformid}-email">E-Mail Adresse</label>
-	<f:form.textfield name="email" id="{qbmailformid}-email" class="form-control" placeholder="E-Mail Adresse *"/>
+	<f:form.textfield name="email" type="email" required="true" id="{qbmailformid}-email" class="form-control" placeholder="E-Mail Adresse *"/>
 </div>
 <div class="form-group">
 	<label for="{qbmailformid}-email">Website</label>
-	<f:form.textfield name="website" id="{qbmailformid}-website" class="form-control" placeholder="http://"/>
+	<f:form.textfield name="website" type="url" id="{qbmailformid}-website" class="form-control" placeholder="http://"/>
 </div>
 
 <div class="form-group">
 	<label for="{qbmailformid}-message">Ihr Anliegen *</label>
-	<f:form.textarea name="message" id="{qbmailformid}-message" class="form-control" rows="5"/>
+	<f:form.textarea name="message" id="{qbmailformid}-message" class="form-control" rows="5" additionalAttributes="{required:'required'}"/>
 </div>
 <f:form.submit class="btn btn-default" value="Anfrage absenden"/>
