@@ -9,6 +9,11 @@ class MailformViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetView
 	protected $ajaxWidget = TRUE;
 
 	/**
+	 * @bar bool
+	 */
+	protected $storeConfigurationInSession = FALSE;
+
+	/**
 	 * @var \Qbus\Qbtools\ViewHelpers\Widget\Controller\MailformController
 	 */
 	protected $controller;

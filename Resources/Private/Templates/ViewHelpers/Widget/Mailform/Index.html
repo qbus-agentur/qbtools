@@ -20,7 +20,7 @@ jQuery(function() {
 });
 </script>
 
-<f:form actionUri="{f:widget.uri(action: 'mail', ajax: 1)}" method="post" fieldNamePrefix="msg"
+<f:form actionUri="{f:widget.uri(action: 'mail', ajax: 1, includeWidgetContext: 1)}" method="post" fieldNamePrefix="msg"
 		additionalParams="{role: 'form'}" id="{qbmailformid}" class="qbtools-mailform">
 	<f:renderChildren arguments="{qbmailformid: qbmailformid}" />
 </f:form>
