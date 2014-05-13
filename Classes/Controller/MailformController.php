@@ -76,6 +76,8 @@ class MailformController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 		$this->view->assign("formPartial", $formPartial);
 		$this->view->assign("mailTemplate", $mailTemplate);
 
+		$this->view->setPartialRootPath("fileadmin/Resources/Private/Partials");
+
 		if (strlen($senderName) > 0 && strlen($senderEmail) > 0) {
 			$this->view->assign("sender", array("email" => $senderEmail, "name" => $senderName));
 		} else {
