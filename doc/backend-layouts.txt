@@ -23,3 +23,9 @@ tx_qbtools.backend_layout.one {
 
 The backend layout key will now be "qbtools__one" instead of the usual numeric
 numbers you know from the backend layouts stored in the database.
+
+
+Upgrading from Bootstrap backend layouts:
+
+UPDATE `pages`  SET backend_layout = REPLACE(backend_layout, 'qbbootstrap', 'qbtools'), `backend_layout_next_level` = REPLACE(`backend_layout_next_level`, 'qbbootstrap', 'qbtools')
+WHERE backend_layout LIKE 'qbbootstrap%' OR backend_layout_next_level LIKE 'qbboostrap%'
