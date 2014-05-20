@@ -68,13 +68,18 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
 						 "missing" => $missing));
 		}
 
-		if (!is_array($recipient) || !array_key_exists("email", $recipient) || !array_key_exists("name", $recipient)) {
+		if (!is_array($recipient) || !array_key_exists("email", $recipient)) {
 			/* TODO: Throw exception instead. */
 			return json_encode(array("status" => "internal-error",
 						 "error" => "\$recipient is not valid"));
 		}
 
-		$recipient = array($recipient['email'] => $recipient['name']);
+		if (isset($recipient['name']) && strlen($recipient['name']) > 0) {
+			$recipient = array($recipient['email'] => $recipient['name']);
+		} else {
+			$recipient = array($recipient['email']);
+		}
+
 		$sender = ($sender !== null) ? array($sender['email'] => $sender['name']) : \TYPO3\CMS\Core\Utility\MailUtility::getSystemFrom();
 		$params = array(
 			'to' => $recipient,
