@@ -66,15 +66,18 @@ class MailformController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	 * @param \array  $required
 	 * @param \string $formPartial
 	 * @param \string $mailTemplate
+	 * @param \string $property
 	 */
 	public function showAction($recipientName, $recipientEmail, $senderName = null, $senderEmail = null,
 			$required = 'firstname,lastname,email,message',
 			$formPartial = "Mailform",
-			$mailTemplate = "EXT:qbtools/Resources/Private/Templates/Mailform/Mail.txt") {
+			$mailTemplate = "EXT:qbtools/Resources/Private/Templates/Mailform/Mail.txt",
+			$property = null) {
 		$this->view->assign("recipient", array("email" => $recipientEmail, "name" => $recipientName));
 		$this->view->assign("required", explode(',', $required));
 		$this->view->assign("formPartial", $formPartial);
 		$this->view->assign("mailTemplate", $mailTemplate);
+		$this->view->assign("property", $property);
 
 		$this->view->setPartialRootPath("fileadmin/Resources/Private/Partials");
 
