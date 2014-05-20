@@ -40,7 +40,10 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
 	public function indexAction() {
 		//$GLOBALS['TSFE']->additionalHeaderData[md5('qbtools_jquery')]  = '<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>';
 		$this->view->assign("required", $this->widgetConfiguration["required"]);
-		$this->view->assign("qbmailformid", "qbmailform-".$this->controllerContext->getRequest()->getWidgetContext()->getAjaxWidgetIdentifier());
+
+		//$this->view->assign("qbmailformid", "qbmailform-".$this->controllerContext->getRequest()->getWidgetContext()->getAjaxWidgetIdentifier());
+		$id = 'qbmailform-'.md5(uniqid(mt_rand(), TRUE));
+		$this->view->assign("qbmailformid", $id);
 
 		$this->view->setTemplateRootPath(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName("EXT:qbtools/Resources/Private/Templates/"));
 	}
