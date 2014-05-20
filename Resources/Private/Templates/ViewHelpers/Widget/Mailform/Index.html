@@ -1,13 +1,13 @@
 {namespace qbtools=Qbus\Qbtools\ViewHelpers}
 <script type="text/javascript">
-jQuery(function() {
+jQuery(function($) {
 	$("#{qbmailformid}").submit(function(event) {
 		event.preventDefault();
 		$form = $(this);
 		$('html, body').animate({
 			scrollTop: $("#{qbmailformid}").offset().top
 		}, 1000);
-		jQuery.post($form.attr("action"), $form.serialize(), function(data) {
+		$.post($form.attr("action"), $form.serialize(), function(data) {
 			if (data.status == "ok") {
 				$(".qbtools-mailform-notification", $form).hide().html("Anfrage erfolgreich versendet").fadeIn("slow");
 			} else if (data.status == "fields-missing") {
