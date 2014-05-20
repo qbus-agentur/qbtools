@@ -8,19 +8,28 @@ jQuery(function($) {
 			scrollTop: $("#{qbmailformid}").offset().top
 		}, 1000);
 		$.post($form.attr("action"), $form.serialize(), function(data) {
+			var $notify = $(".qbtools-mailform-notification", $form);
 			if (data.status == "ok") {
-				$(".qbtools-mailform-notification", $form).hide().html("Anfrage erfolgreich versendet").fadeIn("slow");
+				$notify.children().hide();
+				$notify.siblings().fadeOut("slow");
+				$notify.children("*[data-status='success']").fadeIn("slow");
+
 			} else if (data.status == "fields-missing") {
-				$(".qbtools-mailform-notification", $form).hide()
-					.html("Die Anfrage wurde nicht versendet.<br/>" +
-					      "Die Felder " + data.missing.join(",") + " müssen ausgefüllt werden.").fadeIn("slow");
+				$.each(data.missing, function(index, field) {
+					$form.find("*[name='msg[" + field + "]']").parents(".form-group").addClass("has-error");
+				});
+
+				$notify.children().hide();
+				var $missing = $notify.children("*[data-status='fields-missing']");
+				$missing.fadeIn("slow");
 			}
 		}, "json");
 	});
 });
 </script>
 
-<f:form actionUri="{f:widget.uri(action: 'mail', ajax: 1, includeWidgetContext: 1)}" method="post" fieldNamePrefix="msg"
+<f:form actionUri="{f:widget.uri(action: 'mail', ajax: 1, includeWidgetContext: 1)}"
+		method="post" fieldNamePrefix="msg"
 		additionalParams="{role: 'form'}" id="{qbmailformid}" class="qbtools-mailform">
 	<f:renderChildren arguments="{qbmailformid: qbmailformid}" />
 </f:form>

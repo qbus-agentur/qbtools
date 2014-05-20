@@ -1,7 +1,16 @@
 {namespace qbtools=Qbus\Qbtools\ViewHelpers}
-<f:debug>{all}</f:debug>
-<div class="qbtools-mailform-notification"></div>
-<div>Felder mit * müssen ausgefüllt werden</div>
+<div class="qbtools-mailform-notification">
+	<div class="alert alert-success" data-status="success" style="display: none">
+		Ihre Nachricht wurde erfolgreich versendet.
+	</div>
+	<div class="alert alert-danger" data-status="fields-missing" style="display: none">
+		Die mit * gekennzeichneten Felder müssen korrekt ausgefüllt werden.
+	</div>
+	<div class="alert alert-danger" data-status="error" style="display: none">
+		Ihre E-Mail konnte nicht versendet werden. Es ist ein interner Fehler aufgetreten.
+	</div>
+</div>
+
 <div class="form-group">
 	<label for="{qbmailformid}-salutation">Anrede</label>
 	<f:form.select name="salutation" id="{qbmailformid}-salutation" class="form-control" options="{m: 'Herr', f: 'Frau'}"/>
@@ -44,3 +53,4 @@
 	<f:form.textarea name="message" id="{qbmailformid}-message" class="form-control" rows="5" additionalAttributes="{required:'required'}"/>
 </div>
 <f:form.submit class="btn btn-default" value="Anfrage absenden"/>
+<div>Felder mit * müssen ausgefüllt werden</div>
