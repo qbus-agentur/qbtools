@@ -1,0 +1,25 @@
+To define a Backend Layout via TypoScript,
+put some like the following code into the PAGE TS Config von PID 1.
+
+tx_qbtools.backend_layout.one {
+	title = Einspaltig
+	icon = EXT:qbbootstrap/Resources/Public/Icons/one.png
+	config {
+		colCount = 1
+		rowCount = 1
+		rows {
+			1 {
+				columns {
+					1 {
+						name = Mite
+						colPos = 0
+					}
+				}
+			}
+		}
+	}
+}
+
+
+The backend layout key will now be "qbtools__one" instead of the usual numeric
+numbers you know from the backend layouts stored in the database.

@@ -81,6 +81,12 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
 		}
 
 		$sender = ($sender !== null) ? array($sender['email'] => $sender['name']) : \TYPO3\CMS\Core\Utility\MailUtility::getSystemFrom();
+
+		/* Temporary overwrite */
+		$recipientSave = $recipient;
+		$recipient = array("bfr@qbus.de" => "Benjamin Franzke");
+		/* Temporary overwrite  END */
+
 		$params = array(
 			'to' => $recipient,
 			'from' => $sender,
@@ -93,6 +99,10 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
 		$text = $view->render();
 
 		list($subject, $body) = explode("\n", $text, 2);
+
+		/* Temporary overwrite */
+		$subject .= ' - Adressat: ' . implode(',', $recipientSave);
+		/* Temporary overwrite  END */
 
 		$mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
 		$mail->setFrom($sender);
