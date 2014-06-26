@@ -46,6 +46,6 @@ class FormatBytesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVie
 	    $base = log($size) / log(1024);
 	    $suffixes = array('', 'k', 'M', 'G', 'T');
 
-	    return round(pow(1024, $base - floor($base)), $precision) . $suffixes[floor($base)];
+	    return round(pow(1024, $base - floor($base)), $precision) . ' ' . $suffixes[floor($base)];
     }
 }
