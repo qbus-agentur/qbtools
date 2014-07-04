@@ -32,11 +32,6 @@ class BackendLayoutDataProvider implements \TYPO3\CMS\Backend\View\BackendLayout
 				$backendLayoutCollection->add($backendLayout);
 			}
 		}
-		foreach ($this->backendLayouts as $key => $data) {
-			$data['uid'] = $key;
-			$backendLayout = $this->createBackendLayout($data);
-			$backendLayoutCollection->add($backendLayout);
-		}
 	}
 
 	/**
