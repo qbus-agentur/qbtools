@@ -23,16 +23,16 @@ namespace  Qbus\Qbtools\ViewHelpers\Widget\Controller;
 class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController {
 
 	/**
-	 * @var \Qbus\Qbtools\Utility\StandaloneTemplateRenderer
-	 * @inject
-	 */
-	protected $standaloneTemplateRenderer;
-
-	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 * @inject
 	 */
 	protected $objectManager;
+
+	/**
+	 * @var \TYPO3\CMS\Extbase\Security\Cryptography\HashService
+	 * @inject
+	 */
+	protected $hashService;
 
 	/**
 	 * @return void
@@ -45,7 +45,9 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
 		$id = 'qbmailform-'.md5(uniqid(mt_rand(), TRUE));
 		$this->view->assign("qbmailformid", $id);
 
+		$this->view->assign('qbmailformConfig', $this->hashService->appendHmac(base64_encode(serialize($this->widgetConfiguration))));
 		$this->view->setTemplateRootPath(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName("EXT:qbtools/Resources/Private/Templates/"));
+
 	}
 
 	/**

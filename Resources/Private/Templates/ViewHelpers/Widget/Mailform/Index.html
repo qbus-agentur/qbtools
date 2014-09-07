@@ -28,8 +28,9 @@ jQuery(function($) {
 });
 </script>
 
-<f:form actionUri="{f:widget.uri(action: 'mail', ajax: 1, includeWidgetContext: 1)}"
+<f:form actionUri="index.php?eID=tx_qbtools_mailform"
 		method="post" fieldNamePrefix="msg"
 		additionalParams="{role: 'form'}" id="{qbmailformid}" class="qbtools-mailform">
+	<f:form.hidden name="__tx_qbtools_mailform_data" value="{qbmailformConfig}"/>
 	<f:renderChildren arguments="{qbmailformid: qbmailformid}" />
 </f:form>
