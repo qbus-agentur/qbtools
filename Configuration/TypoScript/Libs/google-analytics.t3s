@@ -1,0 +1,38 @@
+# Helper to include Google Analytics.
+# Usage:
+#   page.headerData.50 < lib.qbtools.google_analytics
+#   # Replace UA-0000000-1 with your Tracking-ID
+#   page.headerData.50.value = UA-000000000-1
+
+lib.qbtools.google_analytics = TEXT
+lib.qbtools.google_analytics {
+	value =
+
+	stdWrap {
+		# Only render the script when a value is set
+		required = 1
+
+		wrap (
+ga('create', '|', 'auto');
+ga('set', 'anonymizeIp', true);
+ga('send', 'pageview');
+)
+		prepend = TEXT
+		prepend.value (
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+)
+		append = TEXT
+		append.value (
+
+</script>
+)
+	}
+}
+
+
