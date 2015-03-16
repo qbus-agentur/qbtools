@@ -131,7 +131,7 @@ class FetchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
 		$limit   = '';
 		$where   = '1 ';
 		foreach ($match as $key => $value) {
-			$value = $GLOBALS['TYPO3_DB']->fullQuoteStr($value);
+			$value = $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $table);
 
 			$where .= sprintf("AND `%s`.`%s` = %s ", $table, /*$this->propertyToColumn($key)*/$key, $value);
 		}
