@@ -14,19 +14,38 @@ class RenderContentViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractV
 	 */
 	protected $cObj;
 
-	/**
-	 * Parse a content element
-	 *
-	 * @param	int		UID of any content element
-	 * @return 	string		Parsed Content Element
-	 */
-	public function render($uid) {
-		$conf = array(
-			'tables' => 'tt_content',
-			'source' => $uid,
-			'dontCheckPid' => 1
-		);
-		return $this->cObj->RECORDS($conf);
+        /**
+         * Parse a content element
+         *
+         * @param       int             UID of any content element
+         * @param       int             PID of content elements to be rendered
+         * @param       int             colpos of content elements
+         * @return      string          Parsed Content Element
+         */
+        public function render($uid = 0, $pid = 0, $colpos = 0) {
+		if ($uid > 0) {
+			$conf = array(
+				'tables' => 'tt_content',
+				'source' => $uid,
+				'dontCheckPid' => 1
+			);
+
+			return $this->cObj->RECORDS($conf);
+                } else if ($pid > 0) {
+                        $conf = array(
+                                'table' => 'tt_content',
+                                'select.' => array(
+                                        'orderBy' => 'sorting',
+                                        'pidInList' => (string) $pid,
+                                        'where' => 'colPos=' . $colpos,
+                                        'languageField' => 'sys_language_uid',
+                                ),
+                        );
+
+                        return $this->cObj->CONTENT($conf);
+                }
+
+                return '';
 	}
 
 	/**
