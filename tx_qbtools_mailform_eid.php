@@ -32,9 +32,13 @@ class DummyMailformController {
 		}
 
 		if (isset($recipient['name']) && strlen($recipient['name']) > 0) {
-			$recipient = array($recipient['email'] => $recipient['name']);
+                        $tmp = $recipient;
+                        $recipient = array();
+                        foreach (GeneralUtility::trimExplode(',', $tmp['email']) as $email) {
+                                $recipient[$email] = $tmp['name'];
+                        }
 		} else {
-			$recipient = array($recipient['email']);
+                        $recipient = GeneralUtility::trimExplode(',', $recipient['email']);
 		}
 
 		$sender = ($sender !== null) ? array($sender['email'] => $sender['name']) : \TYPO3\CMS\Core\Utility\MailUtility::getSystemFrom();

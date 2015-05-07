@@ -1,6 +1,8 @@
 <?php
 namespace  Qbus\Qbtools\ViewHelpers\Widget\Controller;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /*                                                                        *
  * This script is backported from the TYPO3 Flow package "TYPO3.Fluid".   *
  *                                                                        *
@@ -77,9 +79,13 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
 		}
 
 		if (isset($recipient['name']) && strlen($recipient['name']) > 0) {
-			$recipient = array($recipient['email'] => $recipient['name']);
+                        $tmp = $recipient;
+                        $recipient = array();
+                        foreach (GeneralUtility::trimExplode(',', $tmp['email']) as $email) {
+                                $recipient[$email] = $tmp['name'];
+                        }
 		} else {
-			$recipient = array($recipient['email']);
+                        $recipient = GeneralUtility::trimExplode(',', $recipient['email']);
 		}
 
 		$sender = ($sender !== null) ? array($sender['email'] => $sender['name']) : \TYPO3\CMS\Core\Utility\MailUtility::getSystemFrom();
