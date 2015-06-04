@@ -2,7 +2,7 @@
 	"name": "qbus/qbtools",
 	"type": "typo3-cms-extension",
 	"description": "Basic tools for other Qbus extensions",
-	"homepage": "http://typo3.org",
+	"homepage": "https://www.qbus.de",
 	"license": ["GPL-2.0+"],
 	"version": "1.4.0",
 	"require": {
@@ -14,11 +14,11 @@
 		}
 	},
 	"replace": {
-		"news": "*"
+		"qbtools": "*"
 	},
 	"extra": {
 		"branch-alias": {
-			"dev-master": "3.2.x-dev"
+			"dev-master": "1.5.0-dev"
 		}
 	}
 }
