@@ -1,0 +1,25 @@
+{
+	"name": "qbus/qbtools",
+	"type": "typo3-cms-extension",
+	"description": "Basic tools for other Qbus extensions",
+	"homepage": "http://typo3.org",
+	"license": ["GPL-2.0+"],
+	"version": "1.4.0",
+	"require": {
+		"typo3/cms-core": ">=6.2.1,<8.0"
+	},
+	"autoload": {
+		"psr-4": {
+			"Qbus\\Qbtools\\": "Classes"
+		}
+	},
+	"replace": {
+		"news": "*"
+	},
+	"extra": {
+		"branch-alias": {
+			"dev-master": "3.2.x-dev"
+		}
+	}
+}
+
