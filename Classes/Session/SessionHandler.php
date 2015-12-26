@@ -50,7 +50,7 @@ class SessionHandler
      * The key the data is stored in the session.
      * @var string
      */
-    protected $storageKey = 'tx_tzmv_premium';
+    protected $storageKey = 'tx_qbtools';
 
     /**
      * Class constructor.
