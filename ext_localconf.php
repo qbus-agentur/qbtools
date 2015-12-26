@@ -7,7 +7,7 @@ if (!defined('TYPO3_MODE')) {
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
     'Qbus.' . $_EXTKEY,
     'mailformwrapper',
-    array("Mailform" => 'show')
+    array('Mailform' => 'show')
 );
 
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']['Tx_Dce_Controller_DceController'] = array(

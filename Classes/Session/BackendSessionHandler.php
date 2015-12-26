@@ -33,5 +33,5 @@ class BackendSessionHandler extends \Qbus\Qbtools\Session\SessionHandler
     /**
      * @var string
      */
-    protected $mode = "BE";
+    protected $mode = 'BE';
 }

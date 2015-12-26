@@ -34,13 +34,13 @@ class MailformViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetView
      * @param  string $mailTemplate
      * @return string
      */
-    public function render($recipient, $sender = null, $required = array("firstname", "lastname", "email", "message"),
-            $mailTemplate = "EXT:qbtools/Resources/Private/Templates/Mailform/Mail.txt")
+    public function render($recipient, $sender = null, $required = array('firstname', 'lastname', 'email', 'message'),
+            $mailTemplate = 'EXT:qbtools/Resources/Private/Templates/Mailform/Mail.txt')
     {
 
         /* <f:renderChildren> does not include the variable context from the  subrequest-controller,
          * therefore we set the desired variables here. */
-        $this->viewHelperVariableContainer->add('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'fieldNamePrefix', "msg");
+        $this->viewHelperVariableContainer->add('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'fieldNamePrefix', 'msg');
         $result = $this->initiateSubRequest();
         $this->viewHelperVariableContainer->remove('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'fieldNamePrefix');
 

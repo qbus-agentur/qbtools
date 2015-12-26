@@ -10,14 +10,14 @@ class CalculateBoundsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstrac
      */
     public function render($images)
     {
-        $result = array("minWidth" => 0, "minHeight" => 0,
-                "maxWidth" => 0, "maxHeight" => 0,
-                "minRatio" => 0, "maxRatio"  => 0,
-                "minRatioWidth" => 0, "minRatioHeight"  => 0,
-                "maxRatioWidth" => 0, "maxRatioHeight"  => 0);
+        $result = array('minWidth' => 0, 'minHeight' => 0,
+                'maxWidth' => 0, 'maxHeight' => 0,
+                'minRatio' => 0, 'maxRatio'  => 0,
+                'minRatioWidth' => 0, 'minRatioHeight'  => 0,
+                'maxRatioWidth' => 0, 'maxRatioHeight'  => 0);
 
         foreach ($images as $image) {
-            foreach (array("height", "width") as $type) {
+            foreach (array('height', 'width') as $type) {
                 $val = $image->getProperty($type);
                 if ($val === null) {
                     continue;
@@ -34,22 +34,22 @@ class CalculateBoundsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstrac
                     $result[$max] = $val;
                 }
             }
-            $width = $image->getProperty("width");
-            $height = $image->getProperty("height");
+            $width = $image->getProperty('width');
+            $height = $image->getProperty('height');
             if ($width === null || $height === null || $width == 0) {
                 continue;
             }
 
             $ratio = $height / $width * 100;
-            if ($result["minRatio"] == 0 || $ratio < $result["minRatio"]) {
-                $result["minRatio"] = $ratio;
-                $result["minRatioWidth"] = $width;
-                $result["minRatioHeight"] = $height;
+            if ($result['minRatio'] == 0 || $ratio < $result['minRatio']) {
+                $result['minRatio'] = $ratio;
+                $result['minRatioWidth'] = $width;
+                $result['minRatioHeight'] = $height;
             }
-            if ($ratio > $result["maxRatio"]) {
-                $result["maxRatio"] = $ratio;
-                $result["maxRatioWidth"] = $width;
-                $result["maxRatioHeight"] = $height;
+            if ($ratio > $result['maxRatio']) {
+                $result['maxRatio'] = $ratio;
+                $result['maxRatioWidth'] = $width;
+                $result['maxRatioHeight'] = $height;
             }
         }
 

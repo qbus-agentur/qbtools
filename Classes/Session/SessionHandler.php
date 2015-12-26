@@ -62,10 +62,10 @@ class SessionHandler
             $this->mode = $mode;
         }
 
-        if ($this->mode === null || ($this->mode != "BE" && $this->mode != "FE")) {
-            throw new \Exception("Typo3-Mode is not defined!", 1388660107);
+        if ($this->mode === null || ($this->mode != 'BE' && $this->mode != 'FE')) {
+            throw new \Exception('Typo3-Mode is not defined!', 1388660107);
         }
-        $this->sessionObject = ($this->mode == "BE") ? $GLOBALS['BE_USER'] : $GLOBALS['TSFE']->fe_user;
+        $this->sessionObject = ($this->mode == 'BE') ? $GLOBALS['BE_USER'] : $GLOBALS['TSFE']->fe_user;
     }
 
     /**

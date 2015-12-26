@@ -33,5 +33,5 @@ class FrontendSessionHandler extends \Qbus\Qbtools\Session\SessionHandler
     /**
      * @var string
      */
-    protected $mode = "FE";
+    protected $mode = 'FE';
 }

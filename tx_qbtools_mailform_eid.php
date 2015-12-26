@@ -22,14 +22,14 @@ class DummyMailformController
             }
         }
         if (count($missing)) {
-            return json_encode(array("status" => "fields-missing",
-                         "missing" => $missing));
+            return json_encode(array('status' => 'fields-missing',
+                         'missing' => $missing));
         }
 
-        if (!is_array($recipient) || !array_key_exists("email", $recipient)) {
+        if (!is_array($recipient) || !array_key_exists('email', $recipient)) {
             /* TODO: Throw exception instead. */
-            return json_encode(array("status" => "internal-error",
-                         "error" => "\$recipient is not valid"));
+            return json_encode(array('status' => 'internal-error',
+                         'error' => '$recipient is not valid'));
         }
 
         if (isset($recipient['name']) && strlen($recipient['name']) > 0) {
@@ -46,7 +46,7 @@ class DummyMailformController
 
         /* Temporary overwrite */
         $recipientSave = $recipient;
-        $recipient = array("bfr@qbus.de" => "Benjamin Franzke");
+        $recipient = array('bfr@qbus.de' => 'Benjamin Franzke');
         /* Temporary overwrite  END */
 
         $params = array(
@@ -56,7 +56,7 @@ class DummyMailformController
         );
 
         $view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
-        $view->setTemplatePathAndFilename(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->widgetConfiguration["mailTemplate"]));
+        $view->setTemplatePathAndFilename(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->widgetConfiguration['mailTemplate']));
         $view->assignMultiple($params);
         $text = $view->render();
 
@@ -71,12 +71,12 @@ class DummyMailformController
         $mail->setTo($recipient);
         $mail->setSubject($subject);
         $mail->setBody(trim($body));
-        if (isset($msg["email"]) && strlen($msg["email"]) > 0) {
-            $mail->setReplyTo($msg["email"]);
+        if (isset($msg['email']) && strlen($msg['email']) > 0) {
+            $mail->setReplyTo($msg['email']);
         }
         $mail->send();
 
-        return json_encode(array("status" => "ok"));
+        return json_encode(array('status' => 'ok'));
     }
 }
 
@@ -85,7 +85,7 @@ $hashService = GeneralUtility::makeInstance('\TYPO3\CMS\Extbase\Security\Cryptog
 if (isset($_POST['msg']['__tx_qbtools_mailform_data'])) {
     $config = unserialize(base64_decode($hashService->validateAndStripHmac($_POST['msg']['__tx_qbtools_mailform_data'])));
     if (!is_array($config)) {
-        print json_encode(array("status" => "error"));
+        print json_encode(array('status' => 'error'));
         exit;
     }
 
@@ -94,5 +94,5 @@ if (isset($_POST['msg']['__tx_qbtools_mailform_data'])) {
     unset($_POST['msg']['__tx_qbtools_mailform_data']);
     print $controller->mailAction($_POST['msg']);
 } else {
-    print json_encode(array("status" => "error"));
+    print json_encode(array('status' => 'error'));
 }

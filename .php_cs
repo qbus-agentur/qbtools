@@ -14,6 +14,7 @@ return Symfony\CS\Config\Config::create()
             'phpdoc_params',
             'phpdoc_trim',
             'self_accessor',
+            'single_quote',
             'spaces_after_semicolon',
             'spaces_before_semicolon',
             'unused_use',

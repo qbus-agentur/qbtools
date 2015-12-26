@@ -78,7 +78,7 @@ class BackendLayoutDataProvider implements \TYPO3\CMS\Backend\View\BackendLayout
         $layout['uid'] = $id;
 
         if (isset($layout['config.'])) {
-            $layout['config'] = array("backend_layout." => $layout['config.']);
+            $layout['config'] = array('backend_layout.' => $layout['config.']);
             unset($layout['config.']);
 
             $layout['config'] = $this->typoscriptToString($layout['config']);

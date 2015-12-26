@@ -42,14 +42,14 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
     public function indexAction()
     {
         //$GLOBALS['TSFE']->additionalHeaderData[md5('qbtools_jquery')]  = '<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>';
-        $this->view->assign("required", $this->widgetConfiguration["required"]);
+        $this->view->assign('required', $this->widgetConfiguration['required']);
 
         //$this->view->assign("qbmailformid", "qbmailform-".$this->controllerContext->getRequest()->getWidgetContext()->getAjaxWidgetIdentifier());
         $id = 'qbmailform-' . md5(uniqid(mt_rand(), true));
-        $this->view->assign("qbmailformid", $id);
+        $this->view->assign('qbmailformid', $id);
 
         $this->view->assign('qbmailformConfig', $this->hashService->appendHmac(base64_encode(serialize($this->widgetConfiguration))));
-        $this->view->setTemplateRootPath(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName("EXT:qbtools/Resources/Private/Templates/"));
+        $this->view->setTemplateRootPath(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('EXT:qbtools/Resources/Private/Templates/'));
     }
 
     /**
@@ -69,14 +69,14 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
             }
         }
         if (count($missing)) {
-            return json_encode(array("status" => "fields-missing",
-                         "missing" => $missing));
+            return json_encode(array('status' => 'fields-missing',
+                         'missing' => $missing));
         }
 
-        if (!is_array($recipient) || !array_key_exists("email", $recipient)) {
+        if (!is_array($recipient) || !array_key_exists('email', $recipient)) {
             /* TODO: Throw exception instead. */
-            return json_encode(array("status" => "internal-error",
-                         "error" => "\$recipient is not valid"));
+            return json_encode(array('status' => 'internal-error',
+                         'error' => '$recipient is not valid'));
         }
 
         if (isset($recipient['name']) && strlen($recipient['name']) > 0) {
@@ -93,7 +93,7 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
 
         /* Temporary overwrite */
         $recipientSave = $recipient;
-        $recipient = array("bfr@qbus.de" => "Benjamin Franzke");
+        $recipient = array('bfr@qbus.de' => 'Benjamin Franzke');
         /* Temporary overwrite  END */
 
         $params = array(
@@ -103,7 +103,7 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
         );
 
         $view = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
-        $view->setTemplatePathAndFilename(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->widgetConfiguration["mailTemplate"]));
+        $view->setTemplatePathAndFilename(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->widgetConfiguration['mailTemplate']));
         $view->assignMultiple($params);
         $text = $view->render();
 
@@ -118,11 +118,11 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
         $mail->setTo($recipient);
         $mail->setSubject($subject);
         $mail->setBody(trim($body));
-        if (isset($msg["email"]) && strlen($msg["email"]) > 0) {
-            $mail->setReplyTo($msg["email"]);
+        if (isset($msg['email']) && strlen($msg['email']) > 0) {
+            $mail->setReplyTo($msg['email']);
         }
         $mail->send();
 
-        return json_encode(array("status" => "ok"));
+        return json_encode(array('status' => 'ok'));
     }
 }

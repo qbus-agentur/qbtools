@@ -11,7 +11,7 @@ class FalViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
      *
      * @return string
      */
-    public function render($object, $property = "image", $table = "tt_content", $as = "files")
+    public function render($object, $property = 'image', $table = 'tt_content', $as = 'files')
     {
         $uid = -1;
         $files = array();

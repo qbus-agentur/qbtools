@@ -96,7 +96,7 @@ class FetchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
         }
 
         $query->setOrderings(array($sortby =>
-            ($sortdirection == "DESC" ? QueryInterface::ORDER_DESCENDING : QueryInterface::ORDER_ASCENDING)));
+            ($sortdirection == 'DESC' ? QueryInterface::ORDER_DESCENDING : QueryInterface::ORDER_ASCENDING)));
 
         return $query->execute();
     }
@@ -109,7 +109,7 @@ class FetchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
      */
     protected function propertyToColumn($property)
     {
-        return preg_replace_callback("/[A-Z]/", function ($matches) {
+        return preg_replace_callback('/[A-Z]/', function ($matches) {
             return '_' . lcfirst($matches[0]);
         }, lcfirst($property));
     }
@@ -128,13 +128,13 @@ class FetchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
         $cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 
         $groupBy = '';
-        $orderBy = sprintf("`%s`.`%s` %s", $table, $this->propertyToColumn($sortby), ($sortdirection == "DESC" ? "DESC" : "ASC"));
+        $orderBy = sprintf('`%s`.`%s` %s', $table, $this->propertyToColumn($sortby), ($sortdirection == 'DESC' ? 'DESC' : 'ASC'));
         $limit   = '';
         $where   = '1 ';
         foreach ($match as $key => $value) {
             $value = $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $table);
 
-            $where .= sprintf("AND `%s`.`%s` = %s ", $table, /*$this->propertyToColumn($key)*/$key, $value);
+            $where .= sprintf('AND `%s`.`%s` = %s ', $table, /*$this->propertyToColumn($key)*/$key, $value);
         }
         $where .= $cObj->enableFields($table);
 
@@ -160,9 +160,9 @@ class FetchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
      *
      * @return string
      */
-    public function render($table = "tt_content", $model = null, $match = array(),
+    public function render($table = 'tt_content', $model = null, $match = array(),
                    $sortby = 'sorting', $sortdirection = 'ASC', $limit = '',
-                   $as = "entities")
+                   $as = 'entities')
     {
         $entities = null;
 

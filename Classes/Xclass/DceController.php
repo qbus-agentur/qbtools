@@ -45,11 +45,11 @@ class DceController extends \Tx_Dce_Controller_DceController
         $uid = intval($this->settings['dceUid']);
         if ($uid == 0) {
             $contentObject = $this->getContentObject($this->settings['contentElementUid']);
-            if (substr($contentObject["CType"], 0, 10) !== "dce_dceuid") {
-                if ($this->settings["previewType"] === 'header') {
-                    return $contentObject["header"];
+            if (substr($contentObject['CType'], 0, 10) !== 'dce_dceuid') {
+                if ($this->settings['previewType'] === 'header') {
+                    return $contentObject['header'];
                 } else {
-                    return $contentObject["bodytext"];
+                    return $contentObject['bodytext'];
                 }
             }
         }
