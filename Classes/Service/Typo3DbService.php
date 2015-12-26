@@ -40,16 +40,14 @@ class Typo3DbService
      * @param	boolean	$toProperty whether the result array should have property names as key => default: TRUE
      * @return 	array	the queryResult
      */
-    public static function executeSelect($sql, $toProperty = TRUE)
+    public static function executeSelect($sql, $toProperty = true)
     {
         $queryResult = array();
         $res = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($sql);
-        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))
-        {
+        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
             // transform row keys from column name to property name 
             $clonedRow = array();
-            foreach ($row as $key => $column)
-            {
+            foreach ($row as $key => $column) {
                 $key = ($toProperty) ? self::columnToProperty($key) : $key;
                 $clonedRow[$key] = $column;
             }
@@ -93,6 +91,4 @@ class Typo3DbService
     {
         return \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToLowerCamelCase($columnName);
     }
-
 }
-?>

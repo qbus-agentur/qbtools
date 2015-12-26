@@ -43,7 +43,6 @@ class GetArrayElementViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstrac
      */
     public function render($array, $element)
     {
-	    return $array[$element];
+        return $array[$element];
     }
-
 }

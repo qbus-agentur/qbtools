@@ -22,108 +22,108 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController {
+class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController
+{
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-	 * @inject
-	 */
-	protected $objectManager;
+    /**
+     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+     * @inject
+     */
+    protected $objectManager;
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Security\Cryptography\HashService
-	 * @inject
-	 */
-	protected $hashService;
+    /**
+     * @var \TYPO3\CMS\Extbase\Security\Cryptography\HashService
+     * @inject
+     */
+    protected $hashService;
 
-	/**
-	 * @return void
-	 */
-	public function indexAction() {
-		//$GLOBALS['TSFE']->additionalHeaderData[md5('qbtools_jquery')]  = '<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>';
-		$this->view->assign("required", $this->widgetConfiguration["required"]);
+    /**
+     * @return void
+     */
+    public function indexAction()
+    {
+        //$GLOBALS['TSFE']->additionalHeaderData[md5('qbtools_jquery')]  = '<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>';
+        $this->view->assign("required", $this->widgetConfiguration["required"]);
 
-		//$this->view->assign("qbmailformid", "qbmailform-".$this->controllerContext->getRequest()->getWidgetContext()->getAjaxWidgetIdentifier());
-		$id = 'qbmailform-'.md5(uniqid(mt_rand(), TRUE));
-		$this->view->assign("qbmailformid", $id);
+        //$this->view->assign("qbmailformid", "qbmailform-".$this->controllerContext->getRequest()->getWidgetContext()->getAjaxWidgetIdentifier());
+        $id = 'qbmailform-'.md5(uniqid(mt_rand(), true));
+        $this->view->assign("qbmailformid", $id);
 
-		$this->view->assign('qbmailformConfig', $this->hashService->appendHmac(base64_encode(serialize($this->widgetConfiguration))));
-		$this->view->setTemplateRootPath(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName("EXT:qbtools/Resources/Private/Templates/"));
+        $this->view->assign('qbmailformConfig', $this->hashService->appendHmac(base64_encode(serialize($this->widgetConfiguration))));
+        $this->view->setTemplateRootPath(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName("EXT:qbtools/Resources/Private/Templates/"));
+    }
 
-	}
+    /**
+     * @param array $msg
+     * @return string
+     */
+    public function mailAction(array $msg = array())
+    {
+        $recipient = $this->widgetConfiguration['recipient'];
+        $sender = $this->widgetConfiguration['sender'];
+        $required = $this->widgetConfiguration['required'];
 
-	/**
-	 * @param array $msg
-	 * @return string
-	 */
-	public function mailAction(array $msg = array()) {
-		$recipient = $this->widgetConfiguration['recipient'];
-		$sender = $this->widgetConfiguration['sender'];
-		$required = $this->widgetConfiguration['required'];
+        $missing = array();
+        foreach ($required as $r) {
+            if (!array_key_exists($r, $msg) || strlen($msg[$r]) == 0) {
+                $missing[] = $r;
+            }
+        }
+        if (count($missing)) {
+            return json_encode(array("status" => "fields-missing",
+                         "missing" => $missing));
+        }
 
-		$missing = array();
-		foreach ($required as $r) {
-			if (!array_key_exists($r, $msg) || strlen($msg[$r]) == 0) {
-				$missing[] = $r;
-			}
-		}
-		if (count($missing)) {
-			return json_encode(array("status" => "fields-missing",
-						 "missing" => $missing));
-		}
+        if (!is_array($recipient) || !array_key_exists("email", $recipient)) {
+            /* TODO: Throw exception instead. */
+            return json_encode(array("status" => "internal-error",
+                         "error" => "\$recipient is not valid"));
+        }
 
-		if (!is_array($recipient) || !array_key_exists("email", $recipient)) {
-			/* TODO: Throw exception instead. */
-			return json_encode(array("status" => "internal-error",
-						 "error" => "\$recipient is not valid"));
-		}
+        if (isset($recipient['name']) && strlen($recipient['name']) > 0) {
+            $tmp = $recipient;
+            $recipient = array();
+            foreach (GeneralUtility::trimExplode(',', $tmp['email']) as $email) {
+                $recipient[$email] = $tmp['name'];
+            }
+        } else {
+            $recipient = GeneralUtility::trimExplode(',', $recipient['email']);
+        }
 
-		if (isset($recipient['name']) && strlen($recipient['name']) > 0) {
-                        $tmp = $recipient;
-                        $recipient = array();
-                        foreach (GeneralUtility::trimExplode(',', $tmp['email']) as $email) {
-                                $recipient[$email] = $tmp['name'];
-                        }
-		} else {
-                        $recipient = GeneralUtility::trimExplode(',', $recipient['email']);
-		}
+        $sender = ($sender !== null) ? array($sender['email'] => $sender['name']) : \TYPO3\CMS\Core\Utility\MailUtility::getSystemFrom();
 
-		$sender = ($sender !== null) ? array($sender['email'] => $sender['name']) : \TYPO3\CMS\Core\Utility\MailUtility::getSystemFrom();
+        /* Temporary overwrite */
+        $recipientSave = $recipient;
+        $recipient = array("bfr@qbus.de" => "Benjamin Franzke");
+        /* Temporary overwrite  END */
 
-		/* Temporary overwrite */
-		$recipientSave = $recipient;
-		$recipient = array("bfr@qbus.de" => "Benjamin Franzke");
-		/* Temporary overwrite  END */
+        $params = array(
+            'to' => $recipient,
+            'from' => $sender,
+            'msg' => $msg
+        );
 
-		$params = array(
-			'to' => $recipient,
-			'from' => $sender,
-			'msg' => $msg
-		);
+        $view = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
+        $view->setTemplatePathAndFilename(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->widgetConfiguration["mailTemplate"]));
+        $view->assignMultiple($params);
+        $text = $view->render();
 
-		$view = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
-		$view->setTemplatePathAndFilename(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->widgetConfiguration["mailTemplate"]));
-		$view->assignMultiple($params);
-		$text = $view->render();
+        list($subject, $body) = explode("\n", $text, 2);
 
-		list($subject, $body) = explode("\n", $text, 2);
+        /* Temporary overwrite */
+        $subject .= ' - Adressat: ' . implode(',', $recipientSave);
+        /* Temporary overwrite  END */
 
-		/* Temporary overwrite */
-		$subject .= ' - Adressat: ' . implode(',', $recipientSave);
-		/* Temporary overwrite  END */
+        $mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
+        $mail->setFrom($sender);
+        $mail->setTo($recipient);
+        $mail->setSubject($subject);
+        $mail->setBody(trim($body));
+        if (isset($msg["email"]) && strlen($msg["email"]) > 0) {
+            $mail->setReplyTo($msg["email"]);
+        }
+        $mail->send();
 
-		$mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
-		$mail->setFrom($sender);
-		$mail->setTo($recipient);
-		$mail->setSubject($subject);
-		$mail->setBody(trim($body));
-		if (isset($msg["email"]) && strlen($msg["email"]) > 0) {
-			$mail->setReplyTo($msg["email"]);
-		}
-		$mail->send();
-
-		return json_encode(array("status" => "ok"));
-	}
+        return json_encode(array("status" => "ok"));
+    }
 }
-
-?>

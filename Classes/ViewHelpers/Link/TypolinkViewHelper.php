@@ -1,7 +1,6 @@
 <?php
 namespace Qbus\Qbtools\ViewHelpers\Link;
 
-
 /**
  * TypolinkViewhelper
  *
@@ -15,16 +14,19 @@ namespace Qbus\Qbtools\ViewHelpers\Link;
  * <qbtools:link.typolink configuration="{parameter: page.uid}" />
  *
  */
-class TypolinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class TypolinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+{
 
-	public function initializeArguments() {
-		$this->registerArgument('configuration', 'array', 'The typoLink configuration', TRUE);
-	}
+    public function initializeArguments()
+    {
+        $this->registerArgument('configuration', 'array', 'The typoLink configuration', true);
+    }
 
-	/**
-	 * @return mixed
-	 */
-	public function render() {
-		return $GLOBALS['TSFE']->cObj->typoLink($this->renderChildren(), $this->arguments['configuration']);
-	}
+    /**
+     * @return mixed
+     */
+    public function render()
+    {
+        return $GLOBALS['TSFE']->cObj->typoLink($this->renderChildren(), $this->arguments['configuration']);
+    }
 }

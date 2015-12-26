@@ -40,22 +40,23 @@ namespace Qbus\Qbtools\Xclass;
  * By overwriting and handling those manually we are able to use inline tt_content elments.
  */
 
-class DceController extends \Tx_Dce_Controller_DceController {
+class DceController extends \Tx_Dce_Controller_DceController
+{
 
-	public function renderPreviewAction() {
-		$uid = intval($this->settings['dceUid']);
-		if ($uid == 0) {
-			$contentObject = $this->getContentObject($this->settings['contentElementUid']);
-			if (substr($contentObject["CType"], 0, 10) !== "dce_dceuid") {
-				if ($this->settings["previewType"] === 'header') {
-					return $contentObject["header"];
-				} else {
-					return $contentObject["bodytext"];
-				}
-			}
-		}
+    public function renderPreviewAction()
+    {
+        $uid = intval($this->settings['dceUid']);
+        if ($uid == 0) {
+            $contentObject = $this->getContentObject($this->settings['contentElementUid']);
+            if (substr($contentObject["CType"], 0, 10) !== "dce_dceuid") {
+                if ($this->settings["previewType"] === 'header') {
+                    return $contentObject["header"];
+                } else {
+                    return $contentObject["bodytext"];
+                }
+            }
+        }
 
-		return parent::renderPreviewAction();
-	}
+        return parent::renderPreviewAction();
+    }
 }
-?>

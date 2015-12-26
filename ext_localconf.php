@@ -1,18 +1,20 @@
 <?php 
-if (!defined ('TYPO3_MODE')) die ('Access denied.');
+if (!defined('TYPO3_MODE')) {
+    die('Access denied.');
+}
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-	'Qbus.' . $_EXTKEY,
-	'mailformwrapper',
-	array("Mailform" => 'show')
+    'Qbus.' . $_EXTKEY,
+    'mailformwrapper',
+    array("Mailform" => 'show')
 );
 
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']['Tx_Dce_Controller_DceController'] = array(
-	'className' => 'Qbus\\Qbtools\\Xclass\\DceController',
+    'className' => 'Qbus\\Qbtools\\Xclass\\DceController',
 );
 
 $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['tx_qbtools_mailform'] = 'EXT:qbtools/tx_qbtools_mailform_eid.php';
 
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getData']['qbtools'] =
-	'EXT:qbtools/Classes/Hooks/ContentObjectGetDataHook.php:Qbus\\Qbtools\\Hooks\\ContentObjectGetDataHook';
+    'EXT:qbtools/Classes/Hooks/ContentObjectGetDataHook.php:Qbus\\Qbtools\\Hooks\\ContentObjectGetDataHook';

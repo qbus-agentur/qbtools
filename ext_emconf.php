@@ -11,34 +11,32 @@
  ***************************************************************/
 
 $EM_CONF[$_EXTKEY] = array(
-	'title' => 'qbTools: Basic tools for other qbExtensions',
-	'description' => 'Basic tools for other extensions, mainly ViewHelpers and Utilities',
-	'category' => 'misc',
-	'author' => 'Axel Wüstemann',
-	'author_email' => 'awu@qbus.de',
-	'author_company' => 'Qbus Werbeagentur GmbH',
-	'shy' => '',
-	'priority' => '',
-	'module' => '',
-	'state' => 'stable',
-	'internal' => '',
-	'uploadfolder' => '0',
-	'createDirs' => '',
-	'modify_tables' => '',
-	'clearCacheOnLoad' => 0,
-	'lockType' => '',
-	'version' => '1.5.0',
-	'constraints' => array(
-		'depends' => array(
-			'extbase' => '6.2',
-			'fluid' => '6.2',
-			'typo3' => '6.2',
-		),
-		'conflicts' => array(
-		),
-		'suggests' => array(
-		),
-	),
+    'title' => 'qbTools: Basic tools for other qbExtensions',
+    'description' => 'Basic tools for other extensions, mainly ViewHelpers and Utilities',
+    'category' => 'misc',
+    'author' => 'Axel Wüstemann',
+    'author_email' => 'awu@qbus.de',
+    'author_company' => 'Qbus Werbeagentur GmbH',
+    'shy' => '',
+    'priority' => '',
+    'module' => '',
+    'state' => 'stable',
+    'internal' => '',
+    'uploadfolder' => '0',
+    'createDirs' => '',
+    'modify_tables' => '',
+    'clearCacheOnLoad' => 0,
+    'lockType' => '',
+    'version' => '1.5.0',
+    'constraints' => array(
+        'depends' => array(
+            'extbase' => '6.2',
+            'fluid' => '6.2',
+            'typo3' => '6.2',
+        ),
+        'conflicts' => array(
+        ),
+        'suggests' => array(
+        ),
+    ),
 );
-
-?>

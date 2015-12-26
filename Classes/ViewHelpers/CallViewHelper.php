@@ -45,5 +45,4 @@ class CallViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
     {
         return call_user_func_array($func, $params);
     }
-
 }

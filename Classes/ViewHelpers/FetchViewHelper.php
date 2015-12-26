@@ -53,127 +53,131 @@ use \TYPO3\CMS\Extbase\Persistence\QueryInterface;
  * </qbtools>
  *
  */
-class FetchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class FetchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+{
 
-	/*
-	 * Create a QueryInterface for a given $className
-	 *
-	 * @param string $className
-	 * @return TYPO3\CMS\Extbase\Persistence\QueryInterface
-	 */
-	protected function createQuery($className) {
-		$query = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\QueryInterface', $className);
-		$querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QuerySettingsInterface');
+    /*
+     * Create a QueryInterface for a given $className
+     *
+     * @param string $className
+     * @return TYPO3\CMS\Extbase\Persistence\QueryInterface
+     */
+    protected function createQuery($className)
+    {
+        $query = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\QueryInterface', $className);
+        $querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QuerySettingsInterface');
 
-		$querySettings->setRespectStoragePage(FALSE);
-		/* FIXME: Add storagePid parameter? */
-		/*
-		$querySettings->setStoragePageIds(\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $storagePid));
-		 */
-		$query->setQuerySettings($querySettings);
+        $querySettings->setRespectStoragePage(false);
+        /* FIXME: Add storagePid parameter? */
+        /*
+        $querySettings->setStoragePageIds(\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $storagePid));
+         */
+        $query->setQuerySettings($querySettings);
 
-		return $query;
-	}
+        return $query;
+    }
 
-	/*
-	 * Retrieve an extbase domain model in a Repository alike fashion.
-	 * Can be filtered by key-value pairs from $match.
-	 *
-	 * @param string $model
-	 * @param array $match
-	 * @param string $sortby
-	 * @param string $sortdirection
-	 */
-	protected function fetchModels($model, $match, $sortby, $sortdirection) {
-		$query = $this->createQuery($model);
-		if (count($match) > 0) {
-			$constraints = array();
-			foreach ($match as $property => $value) {
-				$constraints[] = $query->equals($property, $value);
-			}
+    /*
+     * Retrieve an extbase domain model in a Repository alike fashion.
+     * Can be filtered by key-value pairs from $match.
+     *
+     * @param string $model
+     * @param array $match
+     * @param string $sortby
+     * @param string $sortdirection
+     */
+    protected function fetchModels($model, $match, $sortby, $sortdirection)
+    {
+        $query = $this->createQuery($model);
+        if (count($match) > 0) {
+            $constraints = array();
+            foreach ($match as $property => $value) {
+                $constraints[] = $query->equals($property, $value);
+            }
 
-			$query->matching($query->logicalAnd($constraints));
-		}
+            $query->matching($query->logicalAnd($constraints));
+        }
 
-		$query->setOrderings(array($sortby =>
-			($sortdirection == "DESC" ? QueryInterface::ORDER_DESCENDING : QueryInterface::ORDER_ASCENDING)));
+        $query->setOrderings(array($sortby =>
+            ($sortdirection == "DESC" ? QueryInterface::ORDER_DESCENDING : QueryInterface::ORDER_ASCENDING)));
 
-		return $query->execute();
-	}
+        return $query->execute();
+    }
 
-	/*
-	 * Maps a lowerCamelCase $property to a column name
-	 *
-	 * @param string $property
-	 * @return string
-	 */
-	protected function propertyToColumn($property)
-	{
-		return preg_replace_callback("/[A-Z]/", function($matches) {
-			return '_' . lcfirst($matches[0]);
-		}, lcfirst($property));
-	}
+    /*
+     * Maps a lowerCamelCase $property to a column name
+     *
+     * @param string $property
+     * @return string
+     */
+    protected function propertyToColumn($property)
+    {
+        return preg_replace_callback("/[A-Z]/", function ($matches) {
+            return '_' . lcfirst($matches[0]);
+        }, lcfirst($property));
+    }
 
-	/*
-	 * Retrieve an extbase domain model in a Repository alike fashion.
-	 * Can be filtered by key-value pairs from $match.
-	 *
-	 * @param string $model
-	 * @param array  $match
-	 * @param string $sortby
-	 * @param string $sortdirection
-	 */
-	protected function fetchRows($table, $match, $limit, $sortby, $sortdirection) {
-		$cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+    /*
+     * Retrieve an extbase domain model in a Repository alike fashion.
+     * Can be filtered by key-value pairs from $match.
+     *
+     * @param string $model
+     * @param array  $match
+     * @param string $sortby
+     * @param string $sortdirection
+     */
+    protected function fetchRows($table, $match, $limit, $sortby, $sortdirection)
+    {
+        $cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 
-		$groupBy = '';
-		$orderBy = sprintf("`%s`.`%s` %s", $table, $this->propertyToColumn($sortby), ($sortdirection == "DESC" ? "DESC" : "ASC"));
-		$limit   = '';
-		$where   = '1 ';
-		foreach ($match as $key => $value) {
-			$value = $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $table);
+        $groupBy = '';
+        $orderBy = sprintf("`%s`.`%s` %s", $table, $this->propertyToColumn($sortby), ($sortdirection == "DESC" ? "DESC" : "ASC"));
+        $limit   = '';
+        $where   = '1 ';
+        foreach ($match as $key => $value) {
+            $value = $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $table);
 
-			$where .= sprintf("AND `%s`.`%s` = %s ", $table, /*$this->propertyToColumn($key)*/$key, $value);
-		}
-		$where .= $cObj->enableFields($table);
+            $where .= sprintf("AND `%s`.`%s` = %s ", $table, /*$this->propertyToColumn($key)*/$key, $value);
+        }
+        $where .= $cObj->enableFields($table);
 
-		$GLOBALS['TYPO3_DB']->store_lastBuiltQuery = 1;
-		$data = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', $table, $where, $groupBy, $orderBy, $limit);
+        $GLOBALS['TYPO3_DB']->store_lastBuiltQuery = 1;
+        $data = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', $table, $where, $groupBy, $orderBy, $limit);
 
-		$entities = array();
-		foreach ($data as $record) {
-			$entities[] = $GLOBALS['TSFE']->sys_page->getRecordOverlay($table, $record, $GLOBALS['TSFE']->sys_language_uid);
-		}
+        $entities = array();
+        foreach ($data as $record) {
+            $entities[] = $GLOBALS['TSFE']->sys_page->getRecordOverlay($table, $record, $GLOBALS['TSFE']->sys_language_uid);
+        }
 
-		return $entities;
-	}
+        return $entities;
+    }
 
-	/**
-	 * @param string $table = "tt_content"
-	 * @param string $model
-	 * @param array  $match = array()
-	 * @param string $sortby = "sorting"
-	 * @param string $sortdirection = "ASC"
-	 * @param string $limit = ''
-	 * @param string $as = "entities"
-	 *
-	 * @return string
-	 */
-	public function render($table = "tt_content", $model = NULL, $match = array(),
-			       $sortby = 'sorting', $sortdirection = 'ASC', $limit = '',
-			       $as = "entities")
-	{
-		$entities = NULL;
+    /**
+     * @param string $table = "tt_content"
+     * @param string $model
+     * @param array  $match = array()
+     * @param string $sortby = "sorting"
+     * @param string $sortdirection = "ASC"
+     * @param string $limit = ''
+     * @param string $as = "entities"
+     *
+     * @return string
+     */
+    public function render($table = "tt_content", $model = null, $match = array(),
+                   $sortby = 'sorting', $sortdirection = 'ASC', $limit = '',
+                   $as = "entities")
+    {
+        $entities = null;
 
-		if (strlen($model) > 0) {
-			$entities = $this->fetchModels($model, $match, $sortby, $sortdirection);
-		} else {
-			$entities = $this->fetchRows($table, $match, $limit, $sortby, $sortdirection);
-		}
+        if (strlen($model) > 0) {
+            $entities = $this->fetchModels($model, $match, $sortby, $sortdirection);
+        } else {
+            $entities = $this->fetchRows($table, $match, $limit, $sortby, $sortdirection);
+        }
 
-		$this->templateVariableContainer->add($as, $entities);
-		$content = $this->renderChildren();
-		$this->templateVariableContainer->remove($as);
-		return $content;
-	}
+        $this->templateVariableContainer->add($as, $entities);
+        $content = $this->renderChildren();
+        $this->templateVariableContainer->remove($as);
+        return $content;
+    }
 }

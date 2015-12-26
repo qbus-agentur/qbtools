@@ -42,10 +42,10 @@ class FormatBytesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVie
      */
     public function render($size)
     {
-	    # http://stackoverflow.com/a/2510540
-	    $base = log($size) / log(1024);
-	    $suffixes = array('', 'k', 'M', 'G', 'T');
+        # http://stackoverflow.com/a/2510540
+        $base = log($size) / log(1024);
+        $suffixes = array('', 'k', 'M', 'G', 'T');
 
-	    return round(pow(1024, $base - floor($base)), $precision) . ' ' . $suffixes[floor($base)];
+        return round(pow(1024, $base - floor($base)), $precision) . ' ' . $suffixes[floor($base)];
     }
 }

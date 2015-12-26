@@ -46,46 +46,47 @@ namespace Qbus\Qbtools\Controller;
  */
 class MailformController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
-	/* Initialize arguments from typoscript cObject context data.
-	 * That is the data that is passes by the fluid f:cObject view helper. */
-	public function initializeShowAction() {
-		$cobj = $this->configurationManager->getContentObject();
-		foreach ($this->arguments as $argument) {
-			if (isset($cobj->data[$argument->getName()]) && $cobj->data[$argument->getName()]) {
-				$argument->setDefaultValue($cobj->data[$argument->getName()]);
-				$argument->setRequired(false);
-			}
-		}
-	}
+    /* Initialize arguments from typoscript cObject context data.
+     * That is the data that is passes by the fluid f:cObject view helper. */
+    public function initializeShowAction()
+    {
+        $cobj = $this->configurationManager->getContentObject();
+        foreach ($this->arguments as $argument) {
+            if (isset($cobj->data[$argument->getName()]) && $cobj->data[$argument->getName()]) {
+                $argument->setDefaultValue($cobj->data[$argument->getName()]);
+                $argument->setRequired(false);
+            }
+        }
+    }
 
-	/**
-	 * @param \string $recipientName
-	 * @param \string $recipientEmail
-	 * @param \string $senderName
-	 * @param \string $senderEmail
-	 * @param \array  $required
-	 * @param \string $formPartial
-	 * @param \string $mailTemplate
-	 * @param \string $property
-	 */
-	public function showAction($recipientName, $recipientEmail, $senderName = null, $senderEmail = null,
-			$required = 'firstname,lastname,email,message',
-			$formPartial = "Mailform",
-			$mailTemplate = "EXT:qbtools/Resources/Private/Templates/Mailform/Mail.txt",
-			$property = null) {
-		$this->view->assign("recipient", array("email" => $recipientEmail, "name" => $recipientName));
-		$this->view->assign("required", explode(',', $required));
-		$this->view->assign("formPartial", $formPartial);
-		$this->view->assign("mailTemplate", $mailTemplate);
-		$this->view->assign("property", $property);
+    /**
+     * @param \string $recipientName
+     * @param \string $recipientEmail
+     * @param \string $senderName
+     * @param \string $senderEmail
+     * @param \array  $required
+     * @param \string $formPartial
+     * @param \string $mailTemplate
+     * @param \string $property
+     */
+    public function showAction($recipientName, $recipientEmail, $senderName = null, $senderEmail = null,
+            $required = 'firstname,lastname,email,message',
+            $formPartial = "Mailform",
+            $mailTemplate = "EXT:qbtools/Resources/Private/Templates/Mailform/Mail.txt",
+            $property = null)
+    {
+        $this->view->assign("recipient", array("email" => $recipientEmail, "name" => $recipientName));
+        $this->view->assign("required", explode(',', $required));
+        $this->view->assign("formPartial", $formPartial);
+        $this->view->assign("mailTemplate", $mailTemplate);
+        $this->view->assign("property", $property);
 
-		$this->view->setPartialRootPath("fileadmin/Resources/Private/Partials");
+        $this->view->setPartialRootPath("fileadmin/Resources/Private/Partials");
 
-		if (strlen($senderName) > 0 && strlen($senderEmail) > 0) {
-			$this->view->assign("sender", array("email" => $senderEmail, "name" => $senderName));
-		} else {
-			$this->view->assign("sender", NULL);
-		}
-	}
+        if (strlen($senderName) > 0 && strlen($senderEmail) > 0) {
+            $this->view->assign("sender", array("email" => $senderEmail, "name" => $senderName));
+        } else {
+            $this->view->assign("sender", null);
+        }
+    }
 }
-?>

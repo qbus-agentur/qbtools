@@ -36,7 +36,7 @@ class SessionHandler
      *
      * @var string
      */
-    protected $mode = NULL;
+    protected $mode = null;
 
     /**
      * The User-Object with the session-methods.
@@ -44,7 +44,7 @@ class SessionHandler
      * 
      * @var object
      */
-    protected $sessionObject = NULL;
+    protected $sessionObject = null;
 
     /**
      * The key the data is stored in the session.
@@ -56,15 +56,13 @@ class SessionHandler
      * Class constructor.
      * @param string $mode
      */
-    public function __construct($mode = NULL)
+    public function __construct($mode = null)
     {
-        if ($mode)
-        {
+        if ($mode) {
             $this->mode = $mode;
         }
 
-        if ($this->mode === NULL || ($this->mode != "BE" && $this->mode != "FE"))
-        {
+        if ($this->mode === null || ($this->mode != "BE" && $this->mode != "FE")) {
             throw new \Exception("Typo3-Mode is not defined!", 1388660107);
         }
         $this->sessionObject = ($this->mode == "BE") ? $GLOBALS['BE_USER'] : $GLOBALS['TSFE']->fe_user;
@@ -112,8 +110,6 @@ class SessionHandler
     public function get($key)
     {
         $sessionData = $this->sessionObject->getSessionData($this->storageKey);
-        return isset($sessionData[$key]) ? $sessionData[$key] : NULL;
+        return isset($sessionData[$key]) ? $sessionData[$key] : null;
     }
-
 }
-?>
