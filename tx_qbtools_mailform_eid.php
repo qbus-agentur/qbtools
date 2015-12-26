@@ -3,11 +3,10 @@ use \TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class DummyMailformController
 {
-
     public $widgetConfiguration;
 
     /**
-     * @param array $msg
+     * @param  array  $msg
      * @return string
      */
     public function mailAction(array $msg = array())

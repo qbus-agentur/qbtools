@@ -26,19 +26,16 @@ namespace Qbus\Qbtools\ViewHelpers;
  * ************************************************************* */
 
 /**
- *
  * @package qbTools
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
 class CallViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
-
     /**
      * Calls the function $func with parameters in $params
      *
-     * @param \callable $func
-     * @param \array $params
+     * @param  \callable $func
+     * @param  \array    $params
      * @return mixed
      */
     public function render($func, $params = array())

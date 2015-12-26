@@ -26,10 +26,8 @@ namespace Qbus\Qbtools\Xclass;
  * ************************************************************* */
 
 /**
- *
  * @package qbTools
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
 
 /* XClass that overwrites the DCE renderPreview hanlding.
@@ -42,7 +40,6 @@ namespace Qbus\Qbtools\Xclass;
 
 class DceController extends \Tx_Dce_Controller_DceController
 {
-
     public function renderPreviewAction()
     {
         $uid = intval($this->settings['dceUid']);

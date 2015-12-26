@@ -12,11 +12,9 @@ namespace Qbus\Qbtools\ViewHelpers\Link;
  *
  * Examples:
  * <qbtools:link.typolink configuration="{parameter: page.uid}" />
- *
  */
 class TypolinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
-
     public function initializeArguments()
     {
         $this->registerArgument('configuration', 'array', 'The typoLink configuration', true);

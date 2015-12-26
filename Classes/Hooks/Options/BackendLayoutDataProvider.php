@@ -1,18 +1,15 @@
 <?php
 namespace Qbus\Qbtools\Hooks\Options;
 
-use \TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
-use \TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext;
-use \TYPO3\CMS\Backend\View\BackendLayout\BackendLayoutCollection;
-use \TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
+use TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext;
+use TYPO3\CMS\Backend\View\BackendLayout\BackendLayoutCollection;
 
 class BackendLayoutDataProvider implements \TYPO3\CMS\Backend\View\BackendLayout\DataProviderInterface
 {
-
-
     /**
-     * @param DataProviderContext $dataProviderContext
-     * @param BackendLayoutCollection $backendLayoutCollection
+     * @param  DataProviderContext     $dataProviderContext
+     * @param  BackendLayoutCollection $backendLayoutCollection
      * @return void
      */
     public function addBackendLayouts(DataProviderContext $dataProviderContext, BackendLayoutCollection $backendLayoutCollection)
@@ -37,8 +34,8 @@ class BackendLayoutDataProvider implements \TYPO3\CMS\Backend\View\BackendLayout
     /**
      * Gets a backend layout by (regular) identifier.
      *
-     * @param string $identifier
-     * @param integer $pageId
+     * @param  string             $identifier
+     * @param  integer            $pageId
      * @return NULL|BackendLayout
      */
     public function getBackendLayout($identifier, $pageId)
@@ -72,8 +69,8 @@ class BackendLayoutDataProvider implements \TYPO3\CMS\Backend\View\BackendLayout
     /**
      * Creates a new backend layout using the given record data.
      *
-     * @param string $id
-     * @param array $data
+     * @param  string        $id
+     * @param  array         $data
      * @return BackendLayout
      */
     protected function createBackendLayout($id, $layout)
@@ -103,7 +100,7 @@ class BackendLayoutDataProvider implements \TYPO3\CMS\Backend\View\BackendLayout
     /**
      * Gets and sanitizes the icon path.
      *
-     * @param string $icon Name of the icon file
+     * @param  string $icon Name of the icon file
      * @return string
      */
     protected function getIconPath($icon)
@@ -112,6 +109,7 @@ class BackendLayoutDataProvider implements \TYPO3\CMS\Backend\View\BackendLayout
         if (!empty($icon)) {
             $iconPath = $icon;
         }
+
         return $iconPath;
     }
 }

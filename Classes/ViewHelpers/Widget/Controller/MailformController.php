@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *                                                                        */
 class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController
 {
-
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
      * @inject
@@ -46,7 +45,7 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
         $this->view->assign("required", $this->widgetConfiguration["required"]);
 
         //$this->view->assign("qbmailformid", "qbmailform-".$this->controllerContext->getRequest()->getWidgetContext()->getAjaxWidgetIdentifier());
-        $id = 'qbmailform-'.md5(uniqid(mt_rand(), true));
+        $id = 'qbmailform-' . md5(uniqid(mt_rand(), true));
         $this->view->assign("qbmailformid", $id);
 
         $this->view->assign('qbmailformConfig', $this->hashService->appendHmac(base64_encode(serialize($this->widgetConfiguration))));
@@ -54,7 +53,7 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
     }
 
     /**
-     * @param array $msg
+     * @param  array  $msg
      * @return string
      */
     public function mailAction(array $msg = array())

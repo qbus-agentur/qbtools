@@ -26,18 +26,15 @@ namespace Qbus\Qbtools\ViewHelpers;
  * ************************************************************* */
 
 /**
- *
  * @package qbTools
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
 class FormatBytesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
-
     /**
      * Returns formatted bytes
      *
-     * @param \integer $size
+     * @param  \integer $size
      * @return \string
      */
     public function render($size)

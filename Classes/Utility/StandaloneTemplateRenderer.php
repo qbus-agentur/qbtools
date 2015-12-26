@@ -26,33 +26,30 @@ namespace Qbus\Qbtools\Utility;
  ***************************************************************/
 
 /**
- *
  * @package QbTools
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
 class StandaloneTemplateRenderer
 {
-    
     /**
      * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
      * @inject
      */
     protected $configurationManager;
-    
+
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
      * @inject
      */
     protected $objectManager;
-    
-    
+
+
     /**
      * returns a rendered standalone template
      *
-     * @param \string $templatePath		the template path relative to templateRootPath (UpperCamelCase)
-     * @param \array $variables			variables to be passed to the Fluid view
-     * @param \string $rootPath		the template path relative to templateRootPath (UpperCamelCase)
+     * @param  \string $templatePath the template path relative to templateRootPath (UpperCamelCase)
+     * @param  \array  $variables    variables to be passed to the Fluid view
+     * @param  \string $rootPath     the template path relative to templateRootPath (UpperCamelCase)
      * @return \string
      */
     public function renderTemplate($template, $variables, $rootPath)
@@ -64,13 +61,14 @@ class StandaloneTemplateRenderer
         $view->setPartialRootPath($rootPath . '/Partials');
         $view->setTemplatePathAndFilename($rootPath . '/Templates/' . $template);
         $view->assignMultiple($variables);
+
         return $view->render();
     }
-    
+
     /**
      * returns a standalone template
      *
-     * @param \string $templatePath		the template path relative to templateRootPath (UpperCamelCase)
+     * @param  \string                              $templatePath the template path relative to templateRootPath (UpperCamelCase)
      * @return \TYPO3\CMS\Fluid\View\StandaloneView
      */
     public function buildTemplate($templatePath)
@@ -82,7 +80,7 @@ class StandaloneTemplateRenderer
         $templateRootPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['view']['templateRootPath']);
         $templatePathAndFilename = $templateRootPath . $templatePath;
         $view->setTemplatePathAndFilename($templatePathAndFilename);
-        
+
         return $view;
     }
 }

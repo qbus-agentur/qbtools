@@ -1,7 +1,7 @@
 <?php
 namespace Qbus\Qbtools\ViewHelpers;
 
-use \TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
 /* **************************************************************
  *  Copyright notice
@@ -28,7 +28,6 @@ use \TYPO3\CMS\Extbase\Persistence\QueryInterface;
  * ************************************************************* */
 
 /**
- *
  * @package qbTools
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
@@ -51,11 +50,9 @@ use \TYPO3\CMS\Extbase\Persistence\QueryInterface;
  * 		<f:debug>{category}</f:debug>
  * 	</f:for>
  * </qbtools>
- *
  */
 class FetchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
-
     /*
      * Create a QueryInterface for a given $className
      *
@@ -153,13 +150,13 @@ class FetchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
     }
 
     /**
-     * @param string $table = "tt_content"
+     * @param string $table         = "tt_content"
      * @param string $model
-     * @param array  $match = array()
-     * @param string $sortby = "sorting"
+     * @param array  $match         = array()
+     * @param string $sortby        = "sorting"
      * @param string $sortdirection = "ASC"
-     * @param string $limit = ''
-     * @param string $as = "entities"
+     * @param string $limit         = ''
+     * @param string $as            = "entities"
      *
      * @return string
      */
@@ -178,6 +175,7 @@ class FetchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
         $this->templateVariableContainer->add($as, $entities);
         $content = $this->renderChildren();
         $this->templateVariableContainer->remove($as);
+
         return $content;
     }
 }

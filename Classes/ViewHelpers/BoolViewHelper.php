@@ -26,19 +26,16 @@ namespace Qbus\Qbtools\ViewHelpers;
  * ************************************************************* */
 
 /**
- *
  * @package qbTools
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
 class BoolViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
-
     /**
      * returns Ja/Nein due to he boolean input value
      *
-     * @param \boolean $value
-     * @return	void
+     * @param  \boolean $value
+     * @return void
      */
     public function render($value)
     {

@@ -26,19 +26,16 @@ namespace Qbus\Qbtools\ViewHelpers;
  * ************************************************************* */
 
 /**
- *
  * @package qbTools
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
 class GetArrayElementViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
-
     /**
      * Returns $element from $array
      *
-     * @param \array $array
-     * @param \mixed $element
+     * @param  \array $array
+     * @param  \mixed $element
      * @return mixed
      */
     public function render($array, $element)

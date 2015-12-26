@@ -48,7 +48,6 @@ namespace Qbus\Qbtools\ViewHelpers;
  */
 class RenderExternalViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\RenderViewHelper
 {
-
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
      * @inject
@@ -58,9 +57,9 @@ class RenderExternalViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\RenderViewHe
     /**
      * Renders the content.
      *
-     * @param string $extensionName Render partial of this extension
-     * @param string $partial The partial to render
-     * @param array $arguments Arguments to pass to the partial
+     * @param  string $extensionName Render partial of this extension
+     * @param  string $partial       The partial to render
+     * @param  array  $arguments     Arguments to pass to the partial
      * @return string
      */
     public function render($extensionName, $partial = null, array $arguments = array())
@@ -84,7 +83,7 @@ class RenderExternalViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\RenderViewHe
     /**
      * Set partial root path by controller context
      *
-     * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
+     * @param  \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
      * @return void
      */
     protected function setPartialRootPath(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext)
@@ -105,7 +104,7 @@ class RenderExternalViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\RenderViewHe
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
+     * @param  \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
      * @return mixed
      */
     protected function getPartialRootPath(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext)
@@ -113,6 +112,7 @@ class RenderExternalViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\RenderViewHe
         $partialRootPath = str_replace(
                 '@packageResourcesPath', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($controllerContext->getRequest()->getControllerExtensionKey()) . 'Resources/', '@packageResourcesPath/Private/Partials'
         );
+
         return $partialRootPath;
     }
 }

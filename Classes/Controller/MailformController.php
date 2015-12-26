@@ -42,7 +42,6 @@ namespace Qbus\Qbtools\Controller;
  *
  * @package qbtools
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
 class MailformController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {

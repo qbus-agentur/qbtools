@@ -26,19 +26,17 @@ namespace Qbus\Qbtools\Service;
  * ************************************************************* */
 
 /**
- *
  * @package qbTools
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
 class Typo3DbService
 {
-
     /**
      * executes a raw sql select statement
      *
-     * @param 	array	$sql parts of the select statement
-     * @param	boolean	$toProperty whether the result array should have property names as key => default: TRUE
-     * @return 	array	the queryResult
+     * @param  array   $sql        parts of the select statement
+     * @param  boolean $toProperty whether the result array should have property names as key => default: TRUE
+     * @return array   the queryResult
      */
     public static function executeSelect($sql, $toProperty = true)
     {
@@ -54,16 +52,17 @@ class Typo3DbService
             $queryResult[] = $clonedRow;
         }
         $GLOBALS['TYPO3_DB']->sql_free_result($res);
+
         return $queryResult;
     }
 
     /**
      * executes a raw sql select statement
      *
-     * @param 	string	$table table to be updated
-     * @param 	string	$where where clause
-     * @param 	string	$fields_values values
-     * @return 	void
+     * @param  string $table         table to be updated
+     * @param  string $where         where clause
+     * @param  string $fields_values values
+     * @return void
      */
     public static function executeUpdate($table, $where, $fields_values)
     {
@@ -73,7 +72,7 @@ class Typo3DbService
     /**
      * transforms a propertyName to a DB column name
      * 
-     * @param string $propertyName
+     * @param  string $propertyName
      * @return string
      */
     public static function propertyToColumn($propertyName)
@@ -84,7 +83,7 @@ class Typo3DbService
     /**
      * transforms a columnName to a property name
      * 
-     * @param string $columnName
+     * @param  string $columnName
      * @return string
      */
     public static function columnToProperty($columnName)

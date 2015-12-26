@@ -3,7 +3,6 @@ namespace Qbus\Qbtools\ViewHelpers;
 
 class CalculateBoundsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
-
     /**
      * @param array $images
      *
@@ -24,8 +23,8 @@ class CalculateBoundsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstrac
                     continue;
                 }
 
-                $min = 'min'.ucfirst($type);
-                $max = 'max'.ucfirst($type);
+                $min = 'min' . ucfirst($type);
+                $max = 'max' . ucfirst($type);
 
                 if ($result[$min] == 0 || $result[$min] > $val) {
                     $result[$min] = $val;

@@ -3,7 +3,6 @@ namespace Qbus\Qbtools\ViewHelpers;
 
 class RenderContentViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
-
     /*
      * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
      */
@@ -21,7 +20,7 @@ class RenderContentViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractV
          * @param       int             UID of any content element
          * @param       int             PID of content elements to be rendered
          * @param       int             colpos of content elements
-         * @return      string          Parsed Content Element
+         * @return string Parsed Content Element
          */
         public function render($uid = 0, $pid = 0, $colpos = 0)
         {

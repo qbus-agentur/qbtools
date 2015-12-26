@@ -3,11 +3,10 @@ namespace Qbus\Qbtools\ViewHelpers;
 
 class FalViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
-
     /**
-     * @param mixed $object
+     * @param mixed  $object
      * @param string $property
-     * @param string $table (ignored if $object is a DomainObject)
+     * @param string $table    (ignored if $object is a DomainObject)
      * @param string $as
      *
      * @return string

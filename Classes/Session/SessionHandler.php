@@ -79,8 +79,8 @@ class SessionHandler
 
     /**
      * Store value in session
-     * @param string $key
-     * @param mixed $value
+     * @param  string $key
+     * @param  mixed  $value
      * @return void
      */
     public function store($key, $value)
@@ -92,7 +92,7 @@ class SessionHandler
 
     /**
      * Delete value in session
-     * @param string $key
+     * @param  string $key
      * @return void
      */
     public function delete($key)
@@ -104,12 +104,13 @@ class SessionHandler
 
     /**
      * Read value from session
-     * @param string $key
+     * @param  string $key
      * @return mixed
      */
     public function get($key)
     {
         $sessionData = $this->sessionObject->getSessionData($this->storageKey);
+
         return isset($sessionData[$key]) ? $sessionData[$key] : null;
     }
 }
