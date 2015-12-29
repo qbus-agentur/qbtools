@@ -4,8 +4,10 @@ return Symfony\CS\Config\Config::create()
     ->level(Symfony\CS\FixerInterface::PSR2_LEVEL)
     ->fixers(
         array(
-            'no_blank_lines_after_class_opening',
+            'psr0',
             'encoding',
+            'short_tag',
+            'no_blank_lines_after_class_opening',
             'return',
             'whitespacy_line',
             'remove_leading_slash_use',
@@ -13,6 +15,7 @@ return Symfony\CS\Config\Config::create()
             'phpdoc_indent',
             'phpdoc_params',
             'phpdoc_trim',
+            'phpdoc_scalar',
             'self_accessor',
             'single_quote',
             'spaces_after_semicolon',

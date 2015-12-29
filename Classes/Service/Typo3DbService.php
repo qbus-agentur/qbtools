@@ -34,9 +34,9 @@ class Typo3DbService
     /**
      * executes a raw sql select statement
      *
-     * @param  array   $sql        parts of the select statement
-     * @param  boolean $toProperty whether the result array should have property names as key => default: TRUE
-     * @return array   the queryResult
+     * @param  array $sql        parts of the select statement
+     * @param  bool  $toProperty whether the result array should have property names as key => default: TRUE
+     * @return array the queryResult
      */
     public static function executeSelect($sql, $toProperty = true)
     {
