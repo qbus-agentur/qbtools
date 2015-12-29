@@ -1,9 +1,9 @@
 plugin.tx_qbtools {
-	view {
-		layoutRootPath = {$plugin.tx_qbtools.view.layoutRootPath}
-		templateRootPath = {$plugin.tx_qbtools.view.templateRootPath}
-		partialRootPath = {$plugin.tx_qbtools.view.partialRootPath}
-	}
+    view {
+        layoutRootPath = {$plugin.tx_qbtools.view.layoutRootPath}
+        templateRootPath = {$plugin.tx_qbtools.view.templateRootPath}
+        partialRootPath = {$plugin.tx_qbtools.view.partialRootPath}
+    }
 }
 
 <INCLUDE_TYPOSCRIPT: source="DIR:./Libs/" extensions="t3s"/>
