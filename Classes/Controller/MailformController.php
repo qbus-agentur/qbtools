@@ -40,7 +40,6 @@ namespace Qbus\Qbtools\Controller;
  *
  * @todo Extend to be able to be used as a tt_content ctype element.
  *
- * @package qbtools
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
 class MailformController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController

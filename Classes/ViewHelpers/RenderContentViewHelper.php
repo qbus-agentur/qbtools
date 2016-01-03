@@ -8,7 +8,6 @@ class RenderContentViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractV
      */
     protected $configurationManager;
 
-
     /**
      * @var Content Object
      */

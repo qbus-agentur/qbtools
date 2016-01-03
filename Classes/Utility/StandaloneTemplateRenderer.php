@@ -26,7 +26,6 @@ namespace Qbus\Qbtools\Utility;
  ***************************************************************/
 
 /**
- * @package QbTools
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
 class StandaloneTemplateRenderer
@@ -42,7 +41,6 @@ class StandaloneTemplateRenderer
      * @inject
      */
     protected $objectManager;
-
 
     /**
      * returns a rendered standalone template

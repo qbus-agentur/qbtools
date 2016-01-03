@@ -6,7 +6,7 @@ namespace Qbus\Qbtools\ViewHelpers;
  *
  *  (c) 2011 Christian Kuhn <lolli@schwarzbu.ch>
  *      2013 Axel Wüstemann <awu@qbus.de>, Qbus Werbeagentur GmbH
- *  
+ *
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,21 +27,19 @@ namespace Qbus\Qbtools\ViewHelpers;
  ***************************************************************/
 
 /**
- * @package qbTools
- * 
  * Renders a partial from another extension in own namespace.
  * based on http://pastebin.com/5NEAmqQs (c) Christian Kuhn <lolli@schwarzbu.ch> 2011
  *
  * <fx:renderExternal
- * 		partial="Device/ProductImage"
- * 		extensionName="EnetOtherExtension"
- * 		arguments="{
- * 			product: entry.device.product,
- * 			clearing: entry.device.clearing,
- * 			maxWidth: 30,
- * 			maxHeight: 30
- * 		}"
- * 	/>
+ *         partial="Device/ProductImage"
+ *         extensionName="EnetOtherExtension"
+ *         arguments="{
+ *             product: entry.device.product,
+ *             clearing: entry.device.clearing,
+ *             maxWidth: 30,
+ *             maxHeight: 30
+ *         }"
+ *     />
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @TODO: Implement sections

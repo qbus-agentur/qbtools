@@ -2,8 +2,8 @@
 namespace Qbus\Qbtools\Hooks\Options;
 
 use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
-use TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext;
 use TYPO3\CMS\Backend\View\BackendLayout\BackendLayoutCollection;
+use TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext;
 
 class BackendLayoutDataProvider implements \TYPO3\CMS\Backend\View\BackendLayout\DataProviderInterface
 {
@@ -42,7 +42,6 @@ class BackendLayoutDataProvider implements \TYPO3\CMS\Backend\View\BackendLayout
     {
         $BEfunc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Backend\Utility\BackendUtility');
         $pageTSconfig = $BEfunc->getPagesTSconfig(1);
-
 
         if (isset($pageTSconfig['tx_qbtools.']['backend_layout.'][$identifier . '.'])) {
             return $this->createBackendLayout($identifier, $pageTSconfig['tx_qbtools.']['backend_layout.'][$identifier . '.']);
