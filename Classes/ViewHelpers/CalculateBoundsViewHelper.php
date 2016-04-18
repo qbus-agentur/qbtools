@@ -1,6 +1,8 @@
 <?php
 namespace Qbus\Qbtools\ViewHelpers;
 
+use TYPO3\CMS\Core\Resource\FileInterface;
+
 class CalculateBoundsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
     /**
@@ -18,7 +20,7 @@ class CalculateBoundsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstrac
 
         foreach ($images as $image) {
             foreach (array('height', 'width') as $type) {
-                $val = $image->getProperty($type);
+                $val = $this->getCroppedProperty($image, $type);
                 if ($val === null) {
                     continue;
                 }
@@ -34,8 +36,8 @@ class CalculateBoundsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstrac
                     $result[$max] = $val;
                 }
             }
-            $width = $image->getProperty('width');
-            $height = $image->getProperty('height');
+            $width = $this->getCroppedProperty($image, 'width');
+            $height = $this->getCroppedProperty($image, 'height');
             if ($width === null || $height === null || $width == 0) {
                 continue;
             }
@@ -54,5 +56,22 @@ class CalculateBoundsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstrac
         }
 
         return $result;
+    }
+
+    /**
+     * When retrieving the height or width for a media file
+     * a possible cropping needs to be taken into account.
+     *
+     * @param FileInterface $fileObject
+     * @param string $dimensionalProperty 'width' or 'height'
+     * @return int
+     */
+    protected function getCroppedProperty(FileInterface $fileObject, $dimensionalProperty)
+    {
+        if (!$fileObject->hasProperty('crop') || empty($fileObject->getProperty('crop'))) {
+            return $fileObject->getProperty($dimensionalProperty);
+        }
+        $croppingConfiguration = json_decode($fileObject->getProperty('crop'), true);
+        return (int)$croppingConfiguration[$dimensionalProperty];
     }
 }
