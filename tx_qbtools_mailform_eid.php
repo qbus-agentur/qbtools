@@ -80,7 +80,7 @@ class DummyMailformController
     }
 }
 
-$hashService = GeneralUtility::makeInstance('\TYPO3\CMS\Extbase\Security\Cryptography\HashService', $TYPO3_CONF_VARS);
+$hashService = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Security\Cryptography\HashService', $TYPO3_CONF_VARS);
 
 if (isset($_POST['msg']['__tx_qbtools_mailform_data'])) {
     $config = unserialize(base64_decode($hashService->validateAndStripHmac($_POST['msg']['__tx_qbtools_mailform_data'])));
