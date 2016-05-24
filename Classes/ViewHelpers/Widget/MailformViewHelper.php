@@ -33,8 +33,8 @@ class MailformViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetView
     }
 
     /**
-     * @param  array  $recipient    = array('mail': "mail@address", 'name' => "Full Name");
-     * @param  array  $sender       = array('mail': "mail@address", 'name' => "Full Name");
+     * @param  array  $recipient    = array('email': "mail@address", 'name' => "Full Name");
+     * @param  array  $sender       = array('email': "mail@address", 'name' => "Full Name");
      * @param  array  $required     = array("firstname", "lastname", "email");
      * @param  string $mailTemplate
      * @return string
