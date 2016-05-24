@@ -6,7 +6,6 @@ namespace Qbus\Qbtools\ViewHelpers\Widget;
  * TODO: accept required list with conditions?
  * TODO: accept recipient as simple string containing only the mail address
  */
-
 class MailformViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper
 {
     /**

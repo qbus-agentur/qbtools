@@ -25,12 +25,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-     * @inject
-     */
-    protected $objectManager;
-
-    /**
      * @var \TYPO3\CMS\Extbase\Security\Cryptography\HashService
      * @inject
      */
@@ -102,8 +96,8 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
             'msg' => $msg
         );
 
-        $view = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
-        $view->setTemplatePathAndFilename(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->widgetConfiguration['mailTemplate']));
+        $view = GeneralUtility::makeInstance('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($this->widgetConfiguration['mailTemplate']));
         $view->assignMultiple($params);
         $text = $view->render();
 
@@ -113,7 +107,7 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
         $subject .= ' - Adressat: ' . implode(',', $recipientSave);
         /* Temporary overwrite  END */
 
-        $mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
+        $mail = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
         $mail->setFrom($sender);
         $mail->setTo($recipient);
         $mail->setSubject($subject);
