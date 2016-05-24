@@ -1,6 +1,6 @@
 {namespace qbtools=Qbus\Qbtools\ViewHelpers}
 <script type="text/javascript">
-jQuery(function($) {
+document.addEventListener("DOMContentLoaded", function() {
 	$("#{qbmailformid}").submit(function(event) {
 		event.preventDefault();
 		$form = $(this);
