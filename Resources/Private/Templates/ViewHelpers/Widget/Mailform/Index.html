@@ -28,7 +28,8 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 </script>
 
-<f:form actionUri="index.php?eID=tx_qbtools_mailform"
+<f:comment>TODO: take config.absRefPrefix into account</f:comment>
+<f:form actionUri="/index.php?eID=tx_qbtools_mailform"
 		method="post" fieldNamePrefix="msg"
 		additionalParams="{role: 'form'}" id="{qbmailformid}" class="qbtools-mailform">
 	<f:form.hidden name="__tx_qbtools_mailform_data" value="{qbmailformConfig}"/>
