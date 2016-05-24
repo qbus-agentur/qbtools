@@ -16,8 +16,6 @@ if (isset($_POST['msg']['__tx_qbtools_mailform_data'])) {
 
     /* @var $mailformController MailformController */
     $mailformController = GeneralUtility::makeInstance(MailformController::class);
-
-    //$mailformController = new DummyMailformController;
     ObjectAccess::setProperty($mailformController, 'widgetConfiguration', $config, true);
     unset($_POST['msg']['__tx_qbtools_mailform_data']);
     print $mailformController->mailAction($_POST['msg']);
