@@ -43,6 +43,8 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
         $id = 'qbmailform-' . md5(uniqid(mt_rand(), true));
         $this->view->assign('qbmailformid', $id);
 
+        $this->widgetConfiguration['receiver_overwrite_email'] = $this->getReceiverOverwriteEmail();
+
         $this->view->assign('qbmailformConfig', $this->hashService->appendHmac(base64_encode(serialize($this->widgetConfiguration))));
         $this->view->setTemplateRootPath(GeneralUtility::getFileAbsFileName('EXT:qbtools/Resources/Private/Templates/'));
     }
@@ -86,10 +88,11 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
 
         $sender = ($sender !== null) ? array($sender['email'] => $sender['name']) : MailUtility::getSystemFrom();
 
-        /* Temporary overwrite */
         $recipientSave = $recipient;
-        $recipient = array('bfr@qbus.de' => 'Benjamin Franzke');
-        /* Temporary overwrite  END */
+        $recipientOverwrite = $this->widgetConfiguration['receiver_overwrite_email'];
+        if ($recipientOverwrite !== null) {
+            $recipient = $recipientOverwrite;
+        }
 
         $params = array(
             'to' => $recipient,
@@ -104,9 +107,9 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
 
         list($subject, $body) = explode("\n", $text, 2);
 
-        /* Temporary overwrite */
-        $subject .= ' - Adressat: ' . implode(',', $recipientSave);
-        /* Temporary overwrite  END */
+        if ($recipientOverwrite !== null) {
+            $subject .= ' – Recipient: ' . implode(',', $recipientSave);
+        }
 
         $mail = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
         $mail->setFrom($sender);
@@ -120,4 +123,22 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
 
         return json_encode(array('status' => 'ok'));
     }
+
+    /**
+     * @return string
+     */
+    protected function getReceiverOverwriteEmail()
+    {
+        if (!isset($GLOBALS['TSFE']->config['config']['tx_qbtools.']['mailform.']['receiver.']['overwrite.']['email'])) {
+            return null;
+        }
+
+        $overwrite = trim($GLOBALS['TSFE']->config['config']['tx_qbtools.']['mailform.']['receiver.']['overwrite.']['email']);
+        if ($overwrite == '')  {
+            return null;
+        }
+
+        return $overwrite;
+    }
+
 }

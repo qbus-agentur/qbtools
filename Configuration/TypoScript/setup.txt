@@ -6,4 +6,10 @@ plugin.tx_qbtools {
     }
 }
 
+config.tx_qbtools {
+    mailform {
+        #receiver.overwrite.email =
+    }
+}
+
 <INCLUDE_TYPOSCRIPT: source="DIR:./Libs/" extensions="t3s"/>
