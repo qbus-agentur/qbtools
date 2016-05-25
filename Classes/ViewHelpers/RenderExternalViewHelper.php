@@ -4,7 +4,6 @@ namespace Qbus\Qbtools\ViewHelpers;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 
-
 /***************************************************************
  *  Copyright notice
  *
@@ -84,14 +83,15 @@ class RenderExternalViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\RenderViewHe
     /**
      * If $arguments['settings'] is not set, it is loaded from the TemplateVariableContainer (if it is available there).
      *
-     * @param array $arguments
+     * @param  array $arguments
      * @return array
      */
-    protected function loadSettingsIntoArgumentsNonStatic($arguments) {
+    protected function loadSettingsIntoArgumentsNonStatic($arguments)
+    {
         if (!isset($arguments['settings']) && $this->templateVariableContainer->exists('settings')) {
             $arguments['settings'] = $this->templateVariableContainer->get('settings');
         }
+
         return $arguments;
     }
-
 }

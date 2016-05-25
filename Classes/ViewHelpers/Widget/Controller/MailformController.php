@@ -135,11 +135,10 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
         }
 
         $overwrite = trim($GLOBALS['TSFE']->config['config']['tx_qbtools.']['mailform.']['receiver.']['overwrite.']['email']);
-        if ($overwrite == '')  {
+        if ($overwrite == '') {
             return null;
         }
 
         return $overwrite;
     }
-
 }

@@ -62,8 +62,8 @@ class CalculateBoundsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstrac
      * When retrieving the height or width for a media file
      * a possible cropping needs to be taken into account.
      *
-     * @param FileInterface $fileObject
-     * @param string $dimensionalProperty 'width' or 'height'
+     * @param  FileInterface $fileObject
+     * @param  string        $dimensionalProperty 'width' or 'height'
      * @return int
      */
     protected function getCroppedProperty(FileInterface $fileObject, $dimensionalProperty)
@@ -72,6 +72,7 @@ class CalculateBoundsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstrac
             return $fileObject->getProperty($dimensionalProperty);
         }
         $croppingConfiguration = json_decode($fileObject->getProperty('crop'), true);
+
         return (int)$croppingConfiguration[$dimensionalProperty];
     }
 }
