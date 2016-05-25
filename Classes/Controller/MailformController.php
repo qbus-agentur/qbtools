@@ -40,6 +40,7 @@ namespace Qbus\Qbtools\Controller;
  *
  * @todo Extend to be able to be used as a tt_content ctype element.
  *
+ * @deprecated <qbtools:widget.mailform> can be used in a static fluid template nowadays, so this mailform is not useful
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
 class MailformController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
@@ -79,7 +80,7 @@ class MailformController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
         $this->view->assign('mailTemplate', $mailTemplate);
         $this->view->assign('property', $property);
 
-        $this->view->setPartialRootPath('fileadmin/Resources/Private/Partials');
+        $this->view->setPartialRootPaths(array('fileadmin/Resources/Private/Partials'));
 
         if (strlen($senderName) > 0 && strlen($senderEmail) > 0) {
             $this->view->assign('sender', array('email' => $senderEmail, 'name' => $senderName));
