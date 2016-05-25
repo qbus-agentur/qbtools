@@ -10,10 +10,6 @@ if (!defined('TYPO3_MODE')) {
     array('Mailform' => 'show')
 );
 
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']['Tx_Dce_Controller_DceController'] = array(
-    'className' => 'Qbus\\Qbtools\\Xclass\\DceController',
-);
-
 $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['tx_qbtools_mailform'] = 'EXT:qbtools/tx_qbtools_mailform_eid.php';
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getData']['qbtools'] =
