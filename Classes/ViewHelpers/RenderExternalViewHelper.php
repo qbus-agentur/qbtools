@@ -1,11 +1,16 @@
 <?php
 namespace Qbus\Qbtools\ViewHelpers;
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+
+
 /***************************************************************
  *  Copyright notice
  *
  *  (c) 2011 Christian Kuhn <lolli@schwarzbu.ch>
  *      2013 Axel Wüstemann <awu@qbus.de>, Qbus Werbeagentur GmbH
+ *      2015 Benjamin Franzke <bfr@qbus.de>, Qbus Werbeagentur GmbH
  *
  *  All rights reserved
  *
@@ -30,7 +35,7 @@ namespace Qbus\Qbtools\ViewHelpers;
  * Renders a partial from another extension in own namespace.
  * based on http://pastebin.com/5NEAmqQs (c) Christian Kuhn <lolli@schwarzbu.ch> 2011
  *
- * <fx:renderExternal
+ * <q:renderExternal
  *         partial="Device/ProductImage"
  *         extensionName="EnetOtherExtension"
  *         arguments="{
@@ -63,59 +68,17 @@ class RenderExternalViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\RenderViewHe
     public function render($extensionName, $partial = null, array $arguments = array())
     {
         // Overload arguments with own extension local settings (to pass own settings to external partial)
-        $arguments = $this->legacyloadSettingsIntoArguments($arguments);
+        $arguments = $this->loadSettingsIntoArgumentsNonStatic($arguments);
 
-        /** @var $request \TYPO3\CMS\Extbase\Mvc\Request */
-        $request = clone $this->controllerContext->getRequest();
-        $request->setControllerExtensionName($extensionName);
-        $controllerContext = clone $this->controllerContext;
-        $controllerContext->setRequest($request);
-
-        $this->setPartialRootPath($controllerContext);
+        $oldPartialRootPaths = ObjectAccess::getProperty($this->viewHelperVariableContainer->getView(), 'partialRootPaths', true);
+        $newPartialRootPaths = array(
+            ExtensionManagementUtility::extPath($extensionName) . 'Resources/Private/Partials'
+        );
+        $this->viewHelperVariableContainer->getView()->setPartialRootPaths($newPartialRootPaths);
         $content = $this->viewHelperVariableContainer->getView()->renderPartial($partial, null, $arguments);
-        $this->resetPartialRootPath();
+        $this->viewHelperVariableContainer->getView()->setPartialRootPaths($oldPartialRootPaths);
 
         return $content;
-    }
-
-    /**
-     * Set partial root path by controller context
-     *
-     * @param  \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
-     * @return void
-     */
-    protected function setPartialRootPath(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext)
-    {
-        $this->viewHelperVariableContainer->getView()->setPartialRootPath(
-                $this->getPartialRootPath($controllerContext)
-        );
-    }
-
-    /**
-     * Resets the partial root path to original controller context
-     *
-     * @return void
-     */
-    protected function resetPartialRootPath()
-    {
-        $this->setPartialRootPath($this->controllerContext);
-    }
-
-    /**
-     * @param  \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
-     * @return mixed
-     */
-    protected function getPartialRootPath(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext)
-    {
-        //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($controllerContext);
-        //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump(debug_backtrace());
-        //$ext = $controllerContext->getRequest()->getControllerExtensionKey();
-        $ext = 'qbtools';
-        $partialRootPath = str_replace(
-                '@packageResourcesPath', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($ext) . 'Resources/', '@packageResourcesPath/Private/Partials'
-        );
-
-        return $partialRootPath;
     }
 
     /**
@@ -124,7 +87,7 @@ class RenderExternalViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\RenderViewHe
      * @param array $arguments
      * @return array
      */
-    protected function legacyloadSettingsIntoArguments($arguments) {
+    protected function loadSettingsIntoArgumentsNonStatic($arguments) {
         if (!isset($arguments['settings']) && $this->templateVariableContainer->exists('settings')) {
             $arguments['settings'] = $this->templateVariableContainer->get('settings');
         }
