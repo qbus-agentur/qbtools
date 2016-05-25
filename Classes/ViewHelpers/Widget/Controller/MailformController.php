@@ -2,6 +2,7 @@
 namespace  Qbus\Qbtools\ViewHelpers\Widget\Controller;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MailUtility;
 
 /*                                                                        *
  * This script is backported from the TYPO3 Flow package "TYPO3.Fluid".   *
@@ -43,7 +44,7 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
         $this->view->assign('qbmailformid', $id);
 
         $this->view->assign('qbmailformConfig', $this->hashService->appendHmac(base64_encode(serialize($this->widgetConfiguration))));
-        $this->view->setTemplateRootPath(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('EXT:qbtools/Resources/Private/Templates/'));
+        $this->view->setTemplateRootPath(GeneralUtility::getFileAbsFileName('EXT:qbtools/Resources/Private/Templates/'));
     }
 
     /**
@@ -83,7 +84,7 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
             $recipient = GeneralUtility::trimExplode(',', $recipient['email']);
         }
 
-        $sender = ($sender !== null) ? array($sender['email'] => $sender['name']) : \TYPO3\CMS\Core\Utility\MailUtility::getSystemFrom();
+        $sender = ($sender !== null) ? array($sender['email'] => $sender['name']) : MailUtility::getSystemFrom();
 
         /* Temporary overwrite */
         $recipientSave = $recipient;
