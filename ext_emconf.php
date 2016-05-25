@@ -1,7 +1,7 @@
 <?php
 
 $EM_CONF[$_EXTKEY] = array(
-    'title' => 'qbtools: viewhelpers and utilites'
+    'title' => 'qbtools: viewhelpers and utilites',
     'description' => 'Basic tools for other extensions and fluid templates, mainly ViewHelpers and Utilities',
     'category' => 'misc',
     'author' => 'Axel Wüstemann',
