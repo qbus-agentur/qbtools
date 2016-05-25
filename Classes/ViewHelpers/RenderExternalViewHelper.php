@@ -63,7 +63,7 @@ class RenderExternalViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\RenderViewHe
     public function render($extensionName, $partial = null, array $arguments = array())
     {
         // Overload arguments with own extension local settings (to pass own settings to external partial)
-        $arguments = $this->loadSettingsIntoArguments($arguments);
+        $arguments = $this->legacyloadSettingsIntoArguments($arguments);
 
         /** @var $request \TYPO3\CMS\Extbase\Mvc\Request */
         $request = clone $this->controllerContext->getRequest();
@@ -107,10 +107,28 @@ class RenderExternalViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\RenderViewHe
      */
     protected function getPartialRootPath(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext)
     {
+        //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($controllerContext);
+        //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump(debug_backtrace());
+        //$ext = $controllerContext->getRequest()->getControllerExtensionKey();
+        $ext = 'qbtools';
         $partialRootPath = str_replace(
-                '@packageResourcesPath', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($controllerContext->getRequest()->getControllerExtensionKey()) . 'Resources/', '@packageResourcesPath/Private/Partials'
+                '@packageResourcesPath', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($ext) . 'Resources/', '@packageResourcesPath/Private/Partials'
         );
 
         return $partialRootPath;
     }
+
+    /**
+     * If $arguments['settings'] is not set, it is loaded from the TemplateVariableContainer (if it is available there).
+     *
+     * @param array $arguments
+     * @return array
+     */
+    protected function legacyloadSettingsIntoArguments($arguments) {
+        if (!isset($arguments['settings']) && $this->templateVariableContainer->exists('settings')) {
+            $arguments['settings'] = $this->templateVariableContainer->get('settings');
+        }
+        return $arguments;
+    }
+
 }
