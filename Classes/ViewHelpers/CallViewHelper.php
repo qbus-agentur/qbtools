@@ -35,10 +35,20 @@ class CallViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
      *
      * @param  \callable $func
      * @param  \array    $params
+     * @param  \string   $as
      * @return mixed
      */
-    public function render($func, $params = array())
+    public function render($func, $params = array(), $as = null)
     {
-        return call_user_func_array($func, $params);
+        $result = call_user_func_array($func, $params);
+        if ($as === null) {
+            return $result;
+        }
+
+        $this->templateVariableContainer->add($as, $result);
+        $content = $this->renderChildren();
+        $this->templateVariableContainer->remove($as);
+
+        return $content;
     }
 }
