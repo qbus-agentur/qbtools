@@ -82,7 +82,7 @@ class FetchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
      * @param string $sortby
      * @param string $sortdirection
      */
-    protected function fetchModels($model, $match, $sortby, $sortdirection)
+    protected function fetchModels($model, $match, $limit, $sortby, $sortdirection)
     {
         $query = $this->createQuery($model);
         if (count($match) > 0) {
@@ -96,6 +96,10 @@ class FetchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
 
         $query->setOrderings(array($sortby =>
             ($sortdirection == 'DESC' ? QueryInterface::ORDER_DESCENDING : QueryInterface::ORDER_ASCENDING)));
+
+        if (intval($limit) > 0) {
+            $query->setLimit(intval($limit));
+        }
 
         return $query->execute();
     }
@@ -166,7 +170,7 @@ class FetchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
         $entities = null;
 
         if (strlen($model) > 0) {
-            $entities = $this->fetchModels($model, $match, $sortby, $sortdirection);
+            $entities = $this->fetchModels($model, $match, $limit, $sortby, $sortdirection);
         } else {
             $entities = $this->fetchRows($table, $match, $limit, $sortby, $sortdirection);
         }
