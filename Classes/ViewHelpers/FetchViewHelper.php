@@ -58,12 +58,15 @@ class FetchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
      * @param string $className
      * @return TYPO3\CMS\Extbase\Persistence\QueryInterface
      */
-    protected function createQuery($className)
+    protected function createQuery($className, $ignoreEnableFields)
     {
         $query = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\QueryInterface', $className);
         $querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QuerySettingsInterface');
 
         $querySettings->setRespectStoragePage(false);
+        if ($ignoreEnableFields === true) {
+            $querySettings->setIgnoreEnableFields(true);
+        }
         /* FIXME: Add storagePid parameter? */
         /*
         $querySettings->setStoragePageIds(\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $storagePid));
@@ -82,9 +85,9 @@ class FetchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
      * @param string $sortby
      * @param string $sortdirection
      */
-    protected function fetchModels($model, $match, $limit, $sortby, $sortdirection)
+    protected function fetchModels($model, $match, $limit, $sortby, $sortdirection, $ignoreEnableFields)
     {
-        $query = $this->createQuery($model);
+        $query = $this->createQuery($model, $ignoreEnableFields);
         if (count($match) > 0) {
             $constraints = array();
             foreach ($match as $property => $value) {
@@ -126,7 +129,7 @@ class FetchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
      * @param string $sortby
      * @param string $sortdirection
      */
-    protected function fetchRows($table, $match, $limit, $sortby, $sortdirection)
+    protected function fetchRows($table, $match, $limit, $sortby, $sortdirection, $ignoreEnableFields)
     {
         $cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 
@@ -139,7 +142,9 @@ class FetchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
 
             $where .= sprintf('AND `%s`.`%s` = %s ', $table, /*$this->propertyToColumn($key)*/$key, $value);
         }
-        $where .= $cObj->enableFields($table);
+        if ($ignoreEnableFields === false) {
+            $where .= $cObj->enableFields($table);
+        }
 
         $GLOBALS['TYPO3_DB']->store_lastBuiltQuery = 1;
         $data = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', $table, $where, $groupBy, $orderBy, $limit);
@@ -159,20 +164,21 @@ class FetchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
      * @param string $sortby        = "sorting"
      * @param string $sortdirection = "ASC"
      * @param string $limit         = ''
+     * @param bool   $hidden        = false
      * @param string $as            = "entities"
      *
      * @return string
      */
     public function render($table = 'tt_content', $model = null, $match = array(),
                    $sortby = 'sorting', $sortdirection = 'ASC', $limit = '',
-                   $as = 'entities')
+                   $hidden = false, $as = 'entities')
     {
         $entities = null;
 
         if (strlen($model) > 0) {
-            $entities = $this->fetchModels($model, $match, $limit, $sortby, $sortdirection);
+            $entities = $this->fetchModels($model, $match, $limit, $sortby, $sortdirection, $hidden);
         } else {
-            $entities = $this->fetchRows($table, $match, $limit, $sortby, $sortdirection);
+            $entities = $this->fetchRows($table, $match, $limit, $sortby, $sortdirection, $hidden);
         }
 
         $this->templateVariableContainer->add($as, $entities);
