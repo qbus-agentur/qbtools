@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function() {
 				$notify.children().hide();
 				$notify.siblings().fadeOut("slow");
 				$notify.children("*[data-status='success']").fadeIn("slow");
-
+				$form.trigger('qbtools.mailform.sent');
 			} else if (data.status == "fields-missing") {
 				$.each(data.missing, function(index, field) {
 					$form.find("*[name='msg[" + field + "]']").parents(".form-group").addClass("has-error");
@@ -23,6 +23,7 @@ document.addEventListener("DOMContentLoaded", function() {
 				$notify.children().hide();
 				var $missing = $notify.children("*[data-status='fields-missing']");
 				$missing.fadeIn("slow");
+				$form.trigger('qbtools.mailform.error', data);
 			}
 		}, "json");
 	});
