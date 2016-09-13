@@ -61,20 +61,37 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
         $required = $this->widgetConfiguration['required'];
 
         $missing = array();
-        foreach ($required as $r) {
-            if (!array_key_exists($r, $msg) || strlen($msg[$r]) == 0) {
-                $missing[] = $r;
+        /* example: $required = [ 'name', 'email,phone' ] => name and (phone or email) are required.*/
+        foreach ($required as $orFieldList) {
+            $orFields = explode(',', $orFieldList);
+            $found = false;
+            foreach ($orFields as $field) {
+                if (array_key_exists($field, $msg) && strlen($msg[$field]) != 0) {
+                    $found = true;
+                    break;
+                }
+            }
+
+            if (!$found) {
+                foreach ($orFields as $field) {
+                    $missing[] = $field;
+                }
             }
         }
+
         if (count($missing)) {
-            return json_encode(array('status' => 'fields-missing',
-                         'missing' => $missing));
+            return json_encode(array(
+                'status' => 'fields-missing',
+                'missing' => $missing
+            ));
         }
 
         if (!is_array($recipient) || !array_key_exists('email', $recipient)) {
             /* TODO: Throw exception instead. */
-            return json_encode(array('status' => 'internal-error',
-                         'error' => '$recipient is not valid'));
+            return json_encode(array(
+                'status' => 'internal-error',
+                'error' => '$recipient is not valid'
+            ));
         }
 
         if (isset($recipient['name']) && strlen($recipient['name']) > 0) {
