@@ -2,6 +2,7 @@
 namespace Qbus\Qbtools\ViewHelpers;
 
 use TYPO3\CMS\Core\Resource\FileInterface;
+use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 
 class CalculateBoundsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
@@ -62,12 +63,15 @@ class CalculateBoundsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstrac
      * When retrieving the height or width for a media file
      * a possible cropping needs to be taken into account.
      *
-     * @param  FileInterface $fileObject
-     * @param  string        $dimensionalProperty 'width' or 'height'
+     * @param  FileInterface|FileReference $fileObject
+     * @param  string                      $dimensionalProperty 'width' or 'height'
      * @return int
      */
-    protected function getCroppedProperty(FileInterface $fileObject, $dimensionalProperty)
+    protected function getCroppedProperty($fileObject, $dimensionalProperty)
     {
+        if ($fileObject instanceof FileReference) {
+            $fileObject = $fileObject->getOriginalResource();
+        }
         if (!$fileObject->hasProperty('crop') || empty($fileObject->getProperty('crop'))) {
             return $fileObject->getProperty($dimensionalProperty);
         }
