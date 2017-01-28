@@ -40,7 +40,7 @@ class RenderContentViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractV
                     'select.' => array(
                         'orderBy' => 'sorting',
                         'pidInList' => (string) $pid,
-                        'where' => 'colPos=' . $colpos,
+                        'where' => 'colPos=' . intval($colpos),
                         'languageField' => 'sys_language_uid',
                     ),
                 );
