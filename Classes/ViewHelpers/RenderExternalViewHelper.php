@@ -48,7 +48,7 @@ use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @TODO: Implement sections
  */
-class RenderExternalViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\RenderViewHelper
+class RenderExternalViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
@@ -67,7 +67,7 @@ class RenderExternalViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\RenderViewHe
     public function render($extensionName, $partial = null, array $arguments = array())
     {
         // Overload arguments with own extension local settings (to pass own settings to external partial)
-        $arguments = $this->loadSettingsIntoArgumentsNonStatic($arguments);
+        $arguments = $this->loadSettingsIntoArguments($arguments);
 
         $oldPartialRootPaths = ObjectAccess::getProperty($this->viewHelperVariableContainer->getView(), 'partialRootPaths', true);
         $newPartialRootPaths = array(
@@ -86,7 +86,7 @@ class RenderExternalViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\RenderViewHe
      * @param  array $arguments
      * @return array
      */
-    protected function loadSettingsIntoArgumentsNonStatic($arguments)
+    protected function loadSettingsIntoArguments($arguments)
     {
         if (!isset($arguments['settings']) && $this->templateVariableContainer->exists('settings')) {
             $arguments['settings'] = $this->templateVariableContainer->get('settings');
