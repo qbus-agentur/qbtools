@@ -75,7 +75,7 @@ class RenderExternalViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
         );
         $this->viewHelperVariableContainer->getView()->setPartialRootPaths($newPartialRootPaths);
         $content = $this->viewHelperVariableContainer->getView()->renderPartial($partial, null, $arguments);
-        $this->viewHelperVariableContainer->getView()->setPartialRootPaths($oldPartialRootPaths);
+        ObjectAccess::setProperty($this->viewHelperVariableContainer->getView(), 'partialRootPaths', $oldPartialRootPaths, true);
 
         return $content;
     }
