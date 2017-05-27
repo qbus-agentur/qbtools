@@ -2,6 +2,7 @@
 namespace Qbus\Qbtools\ViewHelpers;
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 
 /***************************************************************
@@ -62,12 +63,38 @@ class RenderExternalViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
      * @param  string $extensionName Render partial of this extension
      * @param  string $partial       The partial to render
      * @param  array  $arguments     Arguments to pass to the partial
+     * @param  string $pluginName    The pluginName of the plugin context to emulate
      * @return string
      */
-    public function render($extensionName, $partial = null, array $arguments = array())
+    public function render($extensionName, $partial = null, array $arguments = array(), $pluginName = '')
     {
         // Overload arguments with own extension local settings (to pass own settings to external partial)
         $arguments = $this->loadSettingsIntoArguments($arguments);
+
+        $ctxModified = false;
+        $backupExtensionName = '';
+        $backupPluginName = '';
+
+        if ($pluginName) {
+            /* @var $configurationManager ConfigurationManagerInterface */
+            $configurationManager = $this->objectManager->get(ConfigurationManagerInterface::class);
+            $settings = $configurationManager->getConfiguration(
+                ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS,
+                str_replace('_', '', $extensionName),
+                $pluginName
+            );
+            $arguments['settings'] = $settings;
+
+            $req = $this->controllerContext->getRequest();
+
+            $backupPluginName = $req->getPluginName();
+            $backupExtensionName = $req->getControllerExtensionName();
+
+            $req->setPluginName($pluginName);
+            $req->setControllerExtensionName(str_replace('_', '', $extensionName));
+
+            $ctxModified = true;
+        }
 
         $oldPartialRootPaths = ObjectAccess::getProperty($this->viewHelperVariableContainer->getView(), 'partialRootPaths', true);
         $newPartialRootPaths = array(
@@ -76,6 +103,12 @@ class RenderExternalViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
         $this->viewHelperVariableContainer->getView()->setPartialRootPaths($newPartialRootPaths);
         $content = $this->viewHelperVariableContainer->getView()->renderPartial($partial, null, $arguments);
         ObjectAccess::setProperty($this->viewHelperVariableContainer->getView(), 'partialRootPaths', $oldPartialRootPaths, true);
+
+        if ($ctxModified) {
+            $req = $this->controllerContext->getRequest();
+            $req->setPluginName($backupPluginName);
+            $req->setControllerExtensionName($backupExtensionName);
+        }
 
         return $content;
     }
