@@ -49,6 +49,7 @@ class RenderContentViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractV
                 $tags = array();
                 foreach (explode(',', $pid) as $p) {
                     $tags[] = 'tt_content_pid_' . $p;
+                    $tags[] = 'pages_' . $p;
                 }
                 $GLOBALS['TSFE']->addCacheTags($tags);
                 $content = $this->cObj->CONTENT($conf);
