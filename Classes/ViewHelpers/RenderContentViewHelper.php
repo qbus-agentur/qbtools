@@ -3,6 +3,11 @@ namespace Qbus\Qbtools\ViewHelpers;
 
 class RenderContentViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
+    /**
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
     /*
      * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
      */

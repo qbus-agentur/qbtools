@@ -9,6 +9,10 @@ namespace Qbus\Qbtools\ViewHelpers;
  */
 class WrapViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
+    /**
+     * @var bool
+     */
+    protected $escapeOutput = false;
 
     /**
      * @param string $class

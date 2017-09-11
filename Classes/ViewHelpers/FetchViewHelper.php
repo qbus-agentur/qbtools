@@ -52,6 +52,11 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
  */
 class FetchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
+    /**
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
     /*
      * Create a QueryInterface for a given $className
      *
