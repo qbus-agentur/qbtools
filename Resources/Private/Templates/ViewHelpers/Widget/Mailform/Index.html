@@ -4,9 +4,6 @@ document.addEventListener("DOMContentLoaded", function() {
 	$("#{qbmailformid}").submit(function(event) {
 		event.preventDefault();
 		$form = $(this);
-		$('html, body').animate({
-			scrollTop: $form.offset().top
-		}, 1000);
 		$form.find(".form-group").removeClass("has-error");
 		$.post($form.attr("action"), $form.serialize(), function(data) {
 			var $notify = $(".qbtools-mailform-notification", $form);
