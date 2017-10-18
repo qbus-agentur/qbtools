@@ -13,7 +13,7 @@ if (!defined('TYPO3_MODE')) {
 $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['tx_qbtools_mailform'] = 'EXT:qbtools/tx_qbtools_mailform_eid.php';
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getData']['qbtools'] =
-    'EXT:qbtools/Classes/Hooks/ContentObjectGetDataHook.php:Qbus\\Qbtools\\Hooks\\ContentObjectGetDataHook';
+    'Qbus\\Qbtools\\Hooks\\ContentObjectGetDataHook';
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['includeStaticTypoScriptSources']['qbtools'] =
-    'EXT:qbtools/Classes/Utility/TypoScriptManagementUtility.php:Qbus\\Qbtools\\Utility\\TypoScriptManagementUtility->preprocessIncludeStaticTypoScriptSources';
+    'Qbus\\Qbtools\\Utility\\TypoScriptManagementUtility->preprocessIncludeStaticTypoScriptSources';
