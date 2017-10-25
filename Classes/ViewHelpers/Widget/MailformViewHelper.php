@@ -58,11 +58,18 @@ class MailformViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetView
      * @param  array  $sender       = array('email': "mail@address", 'name' => "Full Name");
      * @param  array  $required     = array("firstname", "lastname", "email");
      * @param  string $mailTemplate
+     * @param  array  $cc           = array('email': "mail@address", 'name' => "Full Name");
+     * @param  array  $bcc          = array('email': "mail@address", 'name' => "Full Name");
      * @return string
      */
-    public function render($recipient, $sender = null, $required = array('firstname', 'lastname', 'email', 'message'),
-            $mailTemplate = 'EXT:qbtools/Resources/Private/Templates/Mailform/Mail.txt')
-    {
+    public function render(
+        $recipient,
+        $sender = null,
+        $required = array('firstname', 'lastname', 'email', 'message'),
+        $mailTemplate = 'EXT:qbtools/Resources/Private/Templates/Mailform/Mail.txt',
+        $cc = null,
+        $bcc = null
+    ) {
 
         /* <f:renderChildren> does not include the variable context from the  subrequest-controller,
          * therefore we set the desired variables here. */

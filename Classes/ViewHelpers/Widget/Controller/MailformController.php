@@ -59,6 +59,8 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
         $recipient = $this->widgetConfiguration['recipient'];
         $sender = $this->widgetConfiguration['sender'];
         $required = $this->widgetConfiguration['required'];
+        $cc = $this->widgetConfiguration['cc'];
+        $bcc = $this->widgetConfiguration['bcc'];
 
         $missing = array();
         /* example: $required = [ 'name', 'email,phone' ] => name and (phone or email) are required.*/
@@ -110,6 +112,8 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
         $recipientOverwrite = $this->widgetConfiguration['receiver_overwrite_email'];
         if ($recipientOverwrite !== null) {
             $recipient = $recipientOverwrite;
+            $cc = null;
+            $bcc = null;
         }
 
         $params = array(
@@ -132,6 +136,12 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
         $mail = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
         $mail->setFrom($sender);
         $mail->setTo($recipient);
+        if ($cc) {
+            $mail->setCc(array($cc['email'] => $cc['name']));
+        }
+        if ($bcc) {
+            $mail->setBcc(array($bcc['email'] => $bcc['name']));
+        }
         $mail->setSubject($subject);
         $mail->setBody(trim($body));
         if (isset($msg['email']) && strlen($msg['email']) > 0) {
