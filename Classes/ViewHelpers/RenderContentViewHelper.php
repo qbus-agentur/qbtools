@@ -38,7 +38,7 @@ class RenderContentViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractV
                 );
 
                 $GLOBALS['TSFE']->addCacheTags(['tt_content_' . $uid]);
-                $content = $this->cObj->RECORDS($conf);
+                $content = $this->cObj->cObjGetSingle('RECORDS', $conf);
             } elseif ($pid > 0) {
                 $conf = array(
                     'table' => 'tt_content',
@@ -57,7 +57,7 @@ class RenderContentViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractV
                     $tags[] = 'pages_' . $p;
                 }
                 $GLOBALS['TSFE']->addCacheTags($tags);
-                $content = $this->cObj->CONTENT($conf);
+                $content = $this->cObj->cObjGetSingle('CONTENT', $conf);
             }
 
             return $content;
