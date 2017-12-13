@@ -5,7 +5,7 @@ namespace Qbus\Qbtools\Utility;
  *  Copyright notice
  *
  *  (c) 2013 Axel Wüstemann <awu@qbus.de>, Qbus Werbeagentur GmbH
- *  
+ *
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -55,8 +55,8 @@ class StandaloneTemplateRenderer
         /** @var \TYPO3\CMS\Fluid\View\StandaloneView $view */
         $view = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
 
-        $view->setLayoutRootPath($rootPath  . '/Layouts');
-        $view->setPartialRootPath($rootPath . '/Partials');
+        $view->setLayoutRootPaths([$rootPath  . '/Layouts']);
+        $view->setPartialRootPaths([$rootPath . '/Partials']);
         $view->setTemplatePathAndFilename($rootPath . '/Templates/' . $template);
         $view->assignMultiple($variables);
 
