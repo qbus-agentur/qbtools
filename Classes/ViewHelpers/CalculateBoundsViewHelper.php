@@ -75,8 +75,16 @@ class CalculateBoundsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstrac
         if (!$fileObject->hasProperty('crop') || empty($fileObject->getProperty('crop'))) {
             return $fileObject->getProperty($dimensionalProperty);
         }
-        $croppingConfiguration = json_decode($fileObject->getProperty('crop'), true);
 
-        return (int)$croppingConfiguration[$dimensionalProperty];
+        if (version_compare(TYPO3_branch, '8', '>=')) {
+            $croppingConfiguration = $fileObject->getProperty('crop');
+            $cropVariantCollection = \TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection::create((string)$croppingConfiguration);
+
+            return (int) $cropVariantCollection->getCropArea('default')->makeAbsoluteBasedOnFile($fileObject)->asArray()[$dimensionalProperty];
+        } else {
+            $croppingConfiguration = json_decode($fileObject->getProperty('crop'), true);
+
+            return (int)$croppingConfiguration[$dimensionalProperty];
+        }
     }
 }
