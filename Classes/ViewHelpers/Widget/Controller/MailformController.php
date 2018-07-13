@@ -47,7 +47,7 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
 
         $this->view->assign('absRefPrefix', $GLOBALS['TSFE']->absRefPrefix);
         $this->view->assign('qbmailformConfig', $this->hashService->appendHmac(base64_encode(serialize($this->widgetConfiguration))));
-        $this->view->setTemplateRootPath(GeneralUtility::getFileAbsFileName('EXT:qbtools/Resources/Private/Templates/'));
+        $this->view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:qbtools/Resources/Private/Templates/')]);
     }
 
     /**
