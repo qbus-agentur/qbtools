@@ -145,7 +145,11 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
         $mail->setSubject($subject);
         $mail->setBody(trim($body));
         if (isset($msg['email']) && strlen($msg['email']) > 0) {
-            $mail->setReplyTo($msg['email']);
+            try {
+                $mail->setReplyTo($msg['email']);
+            } catch (\Swift_RfcComplianceException $e) {
+                // ignore for now
+            }
         }
         $mail->send();
 
