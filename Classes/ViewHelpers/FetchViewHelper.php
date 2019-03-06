@@ -1,7 +1,12 @@
 <?php
 namespace Qbus\Qbtools\ViewHelpers;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
+
 
 /* **************************************************************
  *  Copyright notice
@@ -50,7 +55,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
  * 	</f:for>
  * </qbtools>
  */
-class FetchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+class FetchViewHelper extends AbstractViewHelper
 {
     /**
      * @var bool
@@ -61,12 +66,12 @@ class FetchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
      * Create a QueryInterface for a given $className
      *
      * @param string $className
-     * @return TYPO3\CMS\Extbase\Persistence\QueryInterface
+     * @return QueryInterface
      */
     protected function createQuery($className, $ignoreEnableFields)
     {
-        $query = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\QueryInterface', $className);
-        $querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QuerySettingsInterface');
+        $query = $this->objectManager->get(QueryInterface::class, $className);
+        $querySettings = $this->objectManager->get(QuerySettingsInterface::class);
 
         $querySettings->setRespectStoragePage(false);
         if ($ignoreEnableFields === true) {
@@ -136,7 +141,7 @@ class FetchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
      */
     protected function fetchRows($table, $match, $limit, $sortby, $sortdirection, $ignoreEnableFields)
     {
-        $cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+        $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
 
         $groupBy = '';
         $orderBy = sprintf('`%s`.`%s` %s', $table, $this->propertyToColumn($sortby), ($sortdirection == 'DESC' ? 'DESC' : 'ASC'));
