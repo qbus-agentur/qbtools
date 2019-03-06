@@ -1,6 +1,10 @@
 <?php
 namespace Qbus\Qbtools\ViewHelpers;
 
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
+
 /* * *************************************************************
  *  Copyright notice
  *
@@ -30,24 +34,38 @@ namespace Qbus\Qbtools\ViewHelpers;
  */
 class CallViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     /**
-     * Calls the function $func with parameters in $params
-     *
-     * @param  \callable $func
-     * @param  \array    $params
-     * @param  \string   $as
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('func', 'callable', '', true);
+        $this->registerArgument('params', 'array', '', false, []);
+        $this->registerArgument('as', 'string', '', false, null);
+    }
+
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
-    public function render($func, $params = array(), $as = null)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
+        $func = $arguments['func'];
+        $params = $arguments['params'];
+        $as = $arguments['as'];
+
         $result = call_user_func_array($func, $params);
         if ($as === null) {
             return $result;
         }
 
-        $this->templateVariableContainer->add($as, $result);
-        $content = $this->renderChildren();
-        $this->templateVariableContainer->remove($as);
+        $renderingContext->getVariableProvider()->add($as, $result);
+        $content = $renderChildrenClosure();
+        $renderingContext->getVariableProvider()->remove($as);
 
         return $content;
     }
