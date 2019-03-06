@@ -1,9 +1,13 @@
 <?php
 namespace Qbus\Qbtools\ViewHelpers;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /***************************************************************
  *  Copyright notice
@@ -51,46 +55,55 @@ use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
  */
 class RenderExternalViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     /**
      * @var bool
      */
     protected $escapeOutput = false;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-     * @inject
+     * Initialize arguments
      */
-    protected $objectManager;
+    public function initializeArguments()
+    {
+        $this->registerArgument('extensionName', 'string', 'Render partial of this extension', true);
+        $this->registerArgument('partial', 'string', 'The partial to render', false, null);
+        $this->registerArgument('arguments', 'array', 'Arguments to pass to the partial', false, []);
+        $this->registerArgument('pluginName', 'string', 'The pluginName of the plugin context to emulate', false, '');
+    }
 
     /**
-     * Renders the content.
-     *
-     * @param  string $extensionName Render partial of this extension
-     * @param  string $partial       The partial to render
-     * @param  array  $arguments     Arguments to pass to the partial
-     * @param  string $pluginName    The pluginName of the plugin context to emulate
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return string
      */
-    public function render($extensionName, $partial = null, array $arguments = array(), $pluginName = '')
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
+        $extensionName = $arguments['extensionName'];
+        $partial = $arguments['partial'];
+        $args = $arguments['arguments'];
+        $pluginName = $arguments['pluginName'];
+
         // Overload arguments with own extension local settings (to pass own settings to external partial)
-        $arguments = $this->loadSettingsIntoArguments($arguments);
+        $args = self::loadSettingsIntoArguments($args, $renderingContext);
 
         $ctxModified = false;
         $backupExtensionName = '';
         $backupPluginName = '';
 
         if ($pluginName) {
-            /* @var $configurationManager ConfigurationManagerInterface */
-            $configurationManager = $this->objectManager->get(ConfigurationManagerInterface::class);
+            $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+            $configurationManager = $objectManager->get(ConfigurationManagerInterface::class);
             $settings = $configurationManager->getConfiguration(
                 ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS,
                 str_replace('_', '', $extensionName),
                 $pluginName
             );
-            $arguments['settings'] = $settings;
+            $args['settings'] = $settings;
 
-            $req = $this->controllerContext->getRequest();
+            $req = $renderingContext->getControllerContext()->getRequest();
 
             $backupPluginName = $req->getPluginName();
             $backupExtensionName = $req->getControllerExtensionName();
@@ -101,16 +114,18 @@ class RenderExternalViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
             $ctxModified = true;
         }
 
-        $oldPartialRootPaths = ObjectAccess::getProperty($this->viewHelperVariableContainer->getView(), 'partialRootPaths', true);
+        $view = $renderingContext->getViewHelperVariableContainer()->getView();
+
+        $oldPartialRootPaths = $view->getPartialRootPaths();
         $newPartialRootPaths = array(
             ExtensionManagementUtility::extPath($extensionName) . 'Resources/Private/Partials'
         );
-        $this->viewHelperVariableContainer->getView()->setPartialRootPaths($newPartialRootPaths);
-        $content = $this->viewHelperVariableContainer->getView()->renderPartial($partial, null, $arguments);
-        ObjectAccess::setProperty($this->viewHelperVariableContainer->getView(), 'partialRootPaths', $oldPartialRootPaths, true);
+        $view->setPartialRootPaths($newPartialRootPaths);
+        $content = $view->renderPartial($partial, null, $args);
+        $view->setPartialRootPaths($oldPartialRootPaths);
 
         if ($ctxModified) {
-            $req = $this->controllerContext->getRequest();
+            $req = $renderingContext->getControllerContext()->getRequest();
             $req->setPluginName($backupPluginName);
             $req->setControllerExtensionName($backupExtensionName);
         }
@@ -122,12 +137,13 @@ class RenderExternalViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
      * If $arguments['settings'] is not set, it is loaded from the TemplateVariableContainer (if it is available there).
      *
      * @param  array $arguments
+     * @param  RenderingContextInterface $renderingContext
      * @return array
      */
-    protected function loadSettingsIntoArguments($arguments)
+    protected static function loadSettingsIntoArguments($arguments, RenderingContextInterface $renderingContext)
     {
-        if (!isset($arguments['settings']) && $this->templateVariableContainer->exists('settings')) {
-            $arguments['settings'] = $this->templateVariableContainer->get('settings');
+        if (!isset($arguments['settings']) && $renderingContext->getVariableProvider()->exists('settings')) {
+            $arguments['settings'] = $renderingContext->getVariableProvider()->get('settings');
         }
 
         return $arguments;
