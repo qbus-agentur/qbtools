@@ -3,16 +3,59 @@ namespace Qbus\Qbtools\ViewHelpers;
 
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
-class CalculateBoundsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+/* **************************************************************
+ *  Copyright notice
+ *
+ *  (c) 2014 Benjamin Franzke <bfr@qbus.de>, Qbus Internetagentur GmbH
+ *
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ * ************************************************************* */
+
+/**
+ * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
+ */
+class CalculateBoundsViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     /**
-     * @param array $images
-     *
-     * @return array
+     * Initialize arguments
      */
-    public function render($images)
+    public function initializeArguments()
     {
+        $this->registerArgument('images', 'array', '', true);
+    }
+
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return string
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $images = $arguments['images'];
+
         $result = array('minWidth' => 0, 'minHeight' => 0,
                 'maxWidth' => 0, 'maxHeight' => 0,
                 'minRatio' => 0, 'maxRatio'  => 0,
@@ -21,7 +64,7 @@ class CalculateBoundsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstrac
 
         foreach ($images as $image) {
             foreach (array('height', 'width') as $type) {
-                $val = $this->getCroppedProperty($image, $type);
+                $val = self::getCroppedProperty($image, $type);
                 if ($val === null) {
                     continue;
                 }
@@ -37,8 +80,8 @@ class CalculateBoundsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstrac
                     $result[$max] = $val;
                 }
             }
-            $width = $this->getCroppedProperty($image, 'width');
-            $height = $this->getCroppedProperty($image, 'height');
+            $width = self::getCroppedProperty($image, 'width');
+            $height = self::getCroppedProperty($image, 'height');
             if ($width === null || $height === null || $width == 0) {
                 continue;
             }
@@ -67,7 +110,7 @@ class CalculateBoundsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstrac
      * @param  string                      $dimensionalProperty 'width' or 'height'
      * @return int
      */
-    protected function getCroppedProperty($fileObject, $dimensionalProperty)
+    protected static function getCroppedProperty($fileObject, $dimensionalProperty)
     {
         if ($fileObject instanceof FileReference) {
             $fileObject = $fileObject->getOriginalResource();
