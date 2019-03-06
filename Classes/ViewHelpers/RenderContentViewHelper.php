@@ -43,39 +43,39 @@ class RenderContentViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractV
         $configurationManager = $objectManager->get(ConfigurationManagerInterface::class);
         $cObj = $configurationManager->getContentObject();
 
-            $content = '';
+        $content = '';
 
 
-            if ($uid > 0) {
-                $conf = array(
-                    'tables' => 'tt_content',
-                    'source' => $uid,
-                    'dontCheckPid' => 1
-                );
+        if ($uid > 0) {
+            $conf = array(
+                'tables' => 'tt_content',
+                'source' => $uid,
+                'dontCheckPid' => 1
+            );
 
-                $GLOBALS['TSFE']->addCacheTags(['tt_content_' . $uid]);
-                $content = $cObj->cObjGetSingle('RECORDS', $conf);
-            } elseif ($pid > 0) {
-                $conf = array(
-                    'table' => 'tt_content',
-                    'select.' => array(
-                        'orderBy' => 'sorting',
-                        'pidInList' => (string) $pid,
-                        'where' => 'colPos=' . intval($colpos),
-                        'languageField' => 'sys_language_uid',
-                    ),
-                );
+            $GLOBALS['TSFE']->addCacheTags(['tt_content_' . $uid]);
+            $content = $cObj->cObjGetSingle('RECORDS', $conf);
+        } elseif ($pid > 0) {
+            $conf = array(
+                'table' => 'tt_content',
+                'select.' => array(
+                    'orderBy' => 'sorting',
+                    'pidInList' => (string) $pid,
+                    'where' => 'colPos=' . intval($colpos),
+                    'languageField' => 'sys_language_uid',
+                ),
+            );
 
-                // This requires EXT:autoflush to work
-                $tags = array();
-                foreach (explode(',', $pid) as $p) {
-                    $tags[] = 'tt_content_pid_' . $p;
-                    $tags[] = 'pages_' . $p;
-                }
-                $GLOBALS['TSFE']->addCacheTags($tags);
-                $content = $cObj->cObjGetSingle('CONTENT', $conf);
+            // This requires EXT:autoflush to work
+            $tags = array();
+            foreach (explode(',', $pid) as $p) {
+                $tags[] = 'tt_content_pid_' . $p;
+                $tags[] = 'pages_' . $p;
             }
-
-            return $content;
+            $GLOBALS['TSFE']->addCacheTags($tags);
+            $content = $cObj->cObjGetSingle('CONTENT', $conf);
         }
+
+        return $content;
+    }
 }
