@@ -1,6 +1,11 @@
 <?php
 namespace Qbus\Qbtools\Utility;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Fluid\View\StandaloneView;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,16 +36,32 @@ namespace Qbus\Qbtools\Utility;
 class StandaloneTemplateRenderer
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-     * @inject
+     * @var ConfigurationManagerInterface
      */
     protected $configurationManager;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-     * @inject
+     * @var ObjectManagerInterface
      */
     protected $objectManager;
+
+    /**
+     * @param  ConfigurationManagerInterface $configurationManager
+     * @return void
+     */
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
+    {
+        $this->configurationManager = $configurationManager;
+    }
+
+    /**
+     * @param  ObjectManagerInterface $objectManager
+     * @return void
+     */
+    public function injectObjectManager(ObjectManagerInterface $objectManager)
+    {
+        $this->objectManager = $objectManager;
+    }
 
     /**
      * returns a rendered standalone template
@@ -53,7 +74,7 @@ class StandaloneTemplateRenderer
     public function renderTemplate($template, $variables, $rootPath)
     {
         /** @var \TYPO3\CMS\Fluid\View\StandaloneView $view */
-        $view = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
+        $view = $this->objectManager->get(StandaloneView::class);
 
         $view->setLayoutRootPaths([$rootPath  . '/Layouts']);
         $view->setPartialRootPaths([$rootPath . '/Partials']);
@@ -72,10 +93,10 @@ class StandaloneTemplateRenderer
     public function buildTemplate($templatePath)
     {
         /** @var \TYPO3\CMS\Fluid\View\StandaloneView $view */
-        $view = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
+        $view = $this->objectManager->get(StandaloneView::clas);
 
-        $extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        $templateRootPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['view']['templateRootPath']);
+        $extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+        $templateRootPath = GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['view']['templateRootPath']);
         $templatePathAndFilename = $templateRootPath . $templatePath;
         $view->setTemplatePathAndFilename($templatePathAndFilename);
 
