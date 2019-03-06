@@ -1,11 +1,15 @@
 <?php
 namespace Qbus\Qbtools\ViewHelpers;
 
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
+
 /* * *************************************************************
  *  Copyright notice
  *
  *  (c) 2013 Axel Wüstemann <awu@qbus.de>, Qbus Werbeagentur GmbH
- *  
+ *
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -28,16 +32,28 @@ namespace Qbus\Qbtools\ViewHelpers;
 /**
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-class FormatBytesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+class FormatBytesViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     /**
-     * Returns formatted bytes
-     *
-     * @param  \integer $size
-     * @return \string
+     * Initialize arguments
      */
-    public function render($size)
+    public function initializeArguments()
     {
+        $this->registerArgument('size', 'int', '', true);
+    }
+
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return string
+     * @throws Exception
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    {
+        $size = $arguments['size'];
         # http://stackoverflow.com/a/2510540
         $base = log($size) / log(1024);
         $suffixes = array('', 'k', 'M', 'G', 'T');
