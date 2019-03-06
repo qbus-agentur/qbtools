@@ -1,27 +1,45 @@
 <?php
 namespace Qbus\Qbtools\ViewHelpers;
 
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
+
 /**
  * WrapViewHelper
  *
  * @author Benjamin Franzke <bfr@qbus.de>
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-class WrapViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+class WrapViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     /**
      * @var bool
      */
     protected $escapeOutput = false;
 
     /**
-     * @param string $class
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('class', 'string', '', true);
+    }
+
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
      * @return string
      */
-    public function render($class)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $content = $this->renderChildren();
-        if (ctype_space($content) || $content === '') {
+        $class = $argumments['class'];
+
+        $content = $renderChildrenClosure();
+        if (ctype_space($content) || $content === '' || $content === null) {
             return '';
         }
 
