@@ -1,34 +1,50 @@
 <?php
 namespace Qbus\Qbtools\ViewHelpers;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
+
 class RenderContentViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     /**
      * @var bool
      */
     protected $escapeOutput = false;
 
-    /*
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+    /**
+     * Initialize arguments
      */
-    protected $configurationManager;
+    public function initializeArguments()
+    {
+        $this->registerArgument('uid', 'int', '', false, 0);
+        $this->registerArgument('pid', 'int', '', false, 0);
+        $this->registerArgument('colpos', 'int', '', false, 0);
+    }
 
     /**
-     * @var Content Object
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return string
      */
-    protected $cObj;
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    {
+        $uid = $arguments['uid'];
+        $pid = $arguments['pid'];
+        $colpos = $arguments['colpos'];
 
-        /**
-         * Parse a content element
-         *
-         * @param       int             UID of any content element
-         * @param       int|string      PID of content elements to be rendered
-         * @param       int             colpos of content elements
-         * @return string Parsed Content Element
-         */
-        public function render($uid = 0, $pid = 0, $colpos = 0)
-        {
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $configurationManager = $objectManager->get(ConfigurationManagerInterface::class);
+        $cObj = $configurationManager->getContentObject();
+
             $content = '';
+
 
             if ($uid > 0) {
                 $conf = array(
@@ -38,7 +54,7 @@ class RenderContentViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractV
                 );
 
                 $GLOBALS['TSFE']->addCacheTags(['tt_content_' . $uid]);
-                $content = $this->cObj->cObjGetSingle('RECORDS', $conf);
+                $content = $cObj->cObjGetSingle('RECORDS', $conf);
             } elseif ($pid > 0) {
                 $conf = array(
                     'table' => 'tt_content',
@@ -57,20 +73,9 @@ class RenderContentViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractV
                     $tags[] = 'pages_' . $p;
                 }
                 $GLOBALS['TSFE']->addCacheTags($tags);
-                $content = $this->cObj->cObjGetSingle('CONTENT', $conf);
+                $content = $cObj->cObjGetSingle('CONTENT', $conf);
             }
 
             return $content;
         }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
-     *
-     * @return void
-     */
-    public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager)
-    {
-        $this->configurationManager = $configurationManager;
-        $this->cObj = $this->configurationManager->getContentObject();
-    }
 }
