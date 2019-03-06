@@ -1,17 +1,24 @@
 <?php
 namespace Qbus\Qbtools\ViewHelpers;
 
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
+use TYPO3\CMS\Frontend\Page\PageRepository;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 
 /* **************************************************************
  *  Copyright notice
  *
- *  (c) 2014 Benjamin Franzke <bfr@qbus.de>, Qbus Werbeagentur GmbH
+ *  (c) 2014 Benjamin Franzke <bfr@qbus.de>, Qbus Internetagentur GmbH
  *
  *  All rights reserved
  *
@@ -57,6 +64,8 @@ use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
  */
 class FetchViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     /**
      * @var bool
      */
@@ -66,21 +75,19 @@ class FetchViewHelper extends AbstractViewHelper
      * Create a QueryInterface for a given $className
      *
      * @param string $className
+     * @param bool $ignoreEnableFields
      * @return QueryInterface
      */
-    protected function createQuery($className, $ignoreEnableFields)
+    protected static function createQuery(string $className, bool $ignoreEnableFields): QueryInterface
     {
-        $query = $this->objectManager->get(QueryInterface::class, $className);
-        $querySettings = $this->objectManager->get(QuerySettingsInterface::class);
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $query = $objectManager->get(QueryInterface::class, $className);
+        $querySettings = $objectManager->get(QuerySettingsInterface::class);
 
         $querySettings->setRespectStoragePage(false);
         if ($ignoreEnableFields === true) {
             $querySettings->setIgnoreEnableFields(true);
         }
-        /* FIXME: Add storagePid parameter? */
-        /*
-        $querySettings->setStoragePageIds(\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $storagePid));
-         */
         $query->setQuerySettings($querySettings);
 
         return $query;
@@ -92,12 +99,14 @@ class FetchViewHelper extends AbstractViewHelper
      *
      * @param string $model
      * @param array $match
+     * @param string $limit
      * @param string $sortby
      * @param string $sortdirection
+     * @param bool $ignoreEnableFields
      */
-    protected function fetchModels($model, $match, $limit, $sortby, $sortdirection, $ignoreEnableFields)
+    protected static function fetchModels(string $model, array $match, string $limit, string $sortby, string $sortdirection, bool $ignoreEnableFields)
     {
-        $query = $this->createQuery($model, $ignoreEnableFields);
+        $query = self::createQuery($model, $ignoreEnableFields);
         if (count($match) > 0) {
             $constraints = array();
             foreach ($match as $property => $value) {
@@ -107,8 +116,9 @@ class FetchViewHelper extends AbstractViewHelper
             $query->matching($query->logicalAnd($constraints));
         }
 
-        $query->setOrderings(array($sortby =>
-            ($sortdirection == 'DESC' ? QueryInterface::ORDER_DESCENDING : QueryInterface::ORDER_ASCENDING)));
+        $query->setOrderings([
+            $sortby => ($sortdirection === 'DESC' ? QueryInterface::ORDER_DESCENDING : QueryInterface::ORDER_ASCENDING)
+        ]);
 
         if (intval($limit) > 0) {
             $query->setLimit(intval($limit));
@@ -123,7 +133,7 @@ class FetchViewHelper extends AbstractViewHelper
      * @param string $property
      * @return string
      */
-    protected function propertyToColumn($property)
+    protected static function propertyToColumn($property)
     {
         return preg_replace_callback('/[A-Z]/', function ($matches) {
             return '_' . lcfirst($matches[0]);
@@ -139,61 +149,99 @@ class FetchViewHelper extends AbstractViewHelper
      * @param string $sortby
      * @param string $sortdirection
      */
-    protected function fetchRows($table, $match, $limit, $sortby, $sortdirection, $ignoreEnableFields)
+    protected static function fetchRows($table, $match, $limit, $sortby, $sortdirection, $ignoreEnableFields)
     {
-        $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
 
-        $groupBy = '';
-        $orderBy = sprintf('`%s`.`%s` %s', $table, $this->propertyToColumn($sortby), ($sortdirection == 'DESC' ? 'DESC' : 'ASC'));
-        $limit   = '';
-        $where   = '1 ';
-        foreach ($match as $key => $value) {
-            $value = $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $table);
-
-            $where .= sprintf('AND `%s`.`%s` = %s ', $table, /*$this->propertyToColumn($key)*/$key, $value);
-        }
         if ($ignoreEnableFields === false) {
-            $where .= $cObj->enableFields($table);
+            $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
         }
 
-        $GLOBALS['TYPO3_DB']->store_lastBuiltQuery = 1;
-        $data = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', $table, $where, $groupBy, $orderBy, $limit);
+        $whereConditions = [];
 
-        $entities = array();
-        foreach ($data as $record) {
-            $entities[] = $GLOBALS['TSFE']->sys_page->getRecordOverlay($table, $record, $GLOBALS['TSFE']->sys_language_uid);
+        $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? null;
+        if ($languageField !== null) {
+            $whereConditions[] = $queryBuilder->expr()->in('sys_language_uid', $queryBuilder->createNamedParameter([0, -1], Connection::PARAM_INT_ARRAY));
+        }
+
+        foreach ($match as $key => $value) {
+            $whereConditions[] = $queryBuilder->expr()->eq($key, $queryBuilder->createdNamedParameter($value, \PDO::PARAM_STR));
+        }
+
+        $queryBuilder
+            ->select('*')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->andX(...$whereConditions)
+            );
+
+        if (intval($limit) > 0) {
+            $queryBuilder->setMaxresults(intval($limit));
+        }
+
+        $queryBuilder->addOrderBy($sortby, $sortdirection === 'DESC' ? 'DESC' : 'ASC');
+
+        $result = $queryBuilder->execute();
+
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+        $entities = [];
+        while ($row = $result->fetch()) {
+            if ($table === 'pages') {
+                $row = $pageRepository->getPageOverlay($row);
+            } else {
+                $row = $pageRepository->getRecordOverlay($table, $row, $GLOBALS['TSFE']->sys_language_content, $GLOBALS['TSFE']->sys_language_contentOL);
+            }
+
+            $entities[] = $row;
         }
 
         return $entities;
     }
 
     /**
-     * @param string $table         = "tt_content"
-     * @param string $model
-     * @param array  $match         = array()
-     * @param string $sortby        = "sorting"
-     * @param string $sortdirection = "ASC"
-     * @param string $limit         = ''
-     * @param bool   $hidden        = false
-     * @param string $as            = "entities"
-     *
-     * @return string
+     * Initialize arguments
      */
-    public function render($table = 'tt_content', $model = null, $match = array(),
-                   $sortby = 'sorting', $sortdirection = 'ASC', $limit = '',
-                   $hidden = false, $as = 'entities')
+    public function initializeArguments()
+    {
+        $this->registerArgument('table', 'string', 'e.g. "tt_content"', false, 'tt_content');
+        $this->registerArgument('model', 'string', 'Vendor\Ext\Domain\Model\Foo', false, null);
+        $this->registerArgument('match', 'array', '', false, []);
+        $this->registerArgument('sortby', 'string', 'column/property to sort by', false, 'sorting');
+        $this->registerArgument('sortdirection', 'string', 'ASC or DESC', false, 'ASC');
+        $this->registerArgument('limit', 'string', '', false, '');
+        $this->registerArgument('hidden', 'bool', '', false, false);
+        $this->registerArgument('as', 'string', 'variable to render the result into', false, 'entities');
+    }
+
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return string
+     * @throws Exception
+     */
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $entities = null;
 
+        $table = (string)$arguments['table'];
+        $model = $arguments['model'] ?? '';
+        $match = $arguments['match'];
+        $sortby = $arguments['sortby'];
+        $sortdirection = $arguments['sortdirection'];
+        $limit = $arguments['limit'];
+        $hidden = $arguments['hidden'];
+        $as = $arguments['as'];
+
         if (strlen($model) > 0) {
-            $entities = $this->fetchModels($model, $match, $limit, $sortby, $sortdirection, $hidden);
+            $entities = self::fetchModels($model, $match, $limit, $sortby, $sortdirection, $hidden);
         } else {
-            $entities = $this->fetchRows($table, $match, $limit, $sortby, $sortdirection, $hidden);
+            $entities = self::fetchRows($table, $match, $limit, $sortby, $sortdirection, $hidden);
         }
 
-        $this->templateVariableContainer->add($as, $entities);
-        $content = $this->renderChildren();
-        $this->templateVariableContainer->remove($as);
+        $renderingContext->getVariableProvider()->add($as, $entities);
+        $content = $renderChildrenClosure();
+        $renderingContext->getVariableProvider()->remove($as);
 
         return $content;
     }
