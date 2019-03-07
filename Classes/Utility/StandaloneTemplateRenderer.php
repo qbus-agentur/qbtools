@@ -93,7 +93,7 @@ class StandaloneTemplateRenderer
     public function buildTemplate($templatePath)
     {
         /** @var \TYPO3\CMS\Fluid\View\StandaloneView $view */
-        $view = $this->objectManager->get(StandaloneView::clas);
+        $view = $this->objectManager->get(StandaloneView::class);
 
         $extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
         $templateRootPath = GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['view']['templateRootPath']);
