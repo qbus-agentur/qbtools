@@ -128,19 +128,6 @@ class FetchViewHelper extends AbstractViewHelper
     }
 
     /*
-     * Maps a lowerCamelCase $property to a column name
-     *
-     * @param string $property
-     * @return string
-     */
-    protected static function propertyToColumn($property)
-    {
-        return preg_replace_callback('/[A-Z]/', function ($matches) {
-            return '_' . lcfirst($matches[0]);
-        }, lcfirst($property));
-    }
-
-    /*
      * Retrieve an extbase domain model in a Repository alike fashion.
      * Can be filtered by key-value pairs from $match.
      *
