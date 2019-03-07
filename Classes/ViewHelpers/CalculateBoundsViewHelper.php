@@ -50,9 +50,9 @@ class CalculateBoundsViewHelper extends AbstractViewHelper
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
-     * @return string
+     * @return array<string,int>
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): array
     {
         $images = $arguments['images'];
 
@@ -110,13 +110,13 @@ class CalculateBoundsViewHelper extends AbstractViewHelper
      * @param  string                      $dimensionalProperty 'width' or 'height'
      * @return int
      */
-    protected static function getCroppedProperty($fileObject, $dimensionalProperty)
+    protected static function getCroppedProperty($fileObject, $dimensionalProperty): int
     {
         if ($fileObject instanceof FileReference) {
             $fileObject = $fileObject->getOriginalResource();
         }
         if (!$fileObject->hasProperty('crop') || empty($fileObject->getProperty('crop'))) {
-            return $fileObject->getProperty($dimensionalProperty);
+            return (int) $fileObject->getProperty($dimensionalProperty);
         }
 
         if (version_compare(TYPO3_branch, '8', '>=')) {
