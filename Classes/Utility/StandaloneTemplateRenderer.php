@@ -66,14 +66,14 @@ class StandaloneTemplateRenderer
     /**
      * returns a rendered standalone template
      *
-     * @param  \string $templatePath the template path relative to templateRootPath (UpperCamelCase)
-     * @param  \array  $variables    variables to be passed to the Fluid view
-     * @param  \string $rootPath     the template path relative to templateRootPath (UpperCamelCase)
-     * @return \string
+     * @param  string $templatePath the template path relative to templateRootPath (UpperCamelCase)
+     * @param  array  $variables    variables to be passed to the Fluid view
+     * @param  string $rootPath     the template path relative to templateRootPath (UpperCamelCase)
+     * @return string
      */
     public function renderTemplate($template, $variables, $rootPath)
     {
-        /** @var \TYPO3\CMS\Fluid\View\StandaloneView $view */
+        /** @var StandaloneView $view */
         $view = $this->objectManager->get(StandaloneView::class);
 
         $view->setLayoutRootPaths([$rootPath  . '/Layouts']);
@@ -87,12 +87,12 @@ class StandaloneTemplateRenderer
     /**
      * returns a standalone template
      *
-     * @param  \string                              $templatePath the template path relative to templateRootPath (UpperCamelCase)
-     * @return \TYPO3\CMS\Fluid\View\StandaloneView
+     * @param  string                              $templatePath the template path relative to templateRootPath (UpperCamelCase)
+     * @return StandaloneView
      */
     public function buildTemplate($templatePath)
     {
-        /** @var \TYPO3\CMS\Fluid\View\StandaloneView $view */
+        /** @var StandaloneView $view */
         $view = $this->objectManager->get(StandaloneView::class);
 
         $extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
