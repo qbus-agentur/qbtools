@@ -53,24 +53,25 @@ class MailformViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetView
         $this->controller = $controller;
     }
 
+
     /**
-     * @param  array  $recipient    = array('email': "mail@address", 'name' => "Full Name");
-     * @param  array  $sender       = array('email': "mail@address", 'name' => "Full Name");
-     * @param  array  $required     = array("firstname", "lastname", "email");
-     * @param  string $mailTemplate
-     * @param  array  $cc           = array('email': "mail@address", 'name' => "Full Name");
-     * @param  array  $bcc          = array('email': "mail@address", 'name' => "Full Name");
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('recipient', 'array', "['email' => 'mail@address', 'name' => 'Full Name']", true);
+        $this->registerArgument('sender', 'array', "['email' => 'mail@address', 'name' => 'Full Name']", false, null);
+        $this->registerArgument('required', 'array', "['firstname', 'lastname', 'email']", false, ['firstname', 'lastname', 'email', 'message']);
+        $this->registerArgument('mailTemplate', 'string', '', false, 'EXT:qbtools/Resources/Private/Templates/Mailform/Mail.txt');
+        $this->registerArgument('cc', 'array', "['email' => 'mail@address', 'name' => 'Full Name']", false, null);
+        $this->registerArgument('bcc', 'array', "['email' => 'mail@address', 'name' => 'Full Name']", false, null);
+    }
+
+    /**
      * @return string
      */
-    public function render(
-        $recipient,
-        $sender = null,
-        $required = array('firstname', 'lastname', 'email', 'message'),
-        $mailTemplate = 'EXT:qbtools/Resources/Private/Templates/Mailform/Mail.txt',
-        $cc = null,
-        $bcc = null
-    ) {
-
+    public function render()
+    {
         /* <f:renderChildren> does not include the variable context from the  subrequest-controller,
          * therefore we set the desired variables here. */
         $this->viewHelperVariableContainer->add('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'fieldNamePrefix', 'msg');
