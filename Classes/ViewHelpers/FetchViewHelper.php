@@ -165,7 +165,7 @@ class FetchViewHelper extends AbstractViewHelper
         }
 
         foreach ($match as $key => $value) {
-            $whereConditions[] = $queryBuilder->expr()->eq($key, $queryBuilder->createdNamedParameter($value, \PDO::PARAM_STR));
+            $whereConditions[] = $queryBuilder->expr()->eq($key, $queryBuilder->createNamedParameter($value, \PDO::PARAM_STR));
         }
 
         $queryBuilder

@@ -12,4 +12,11 @@
 		<pid>2</pid>
 		<usergroup>1</usergroup>
 	</fe_users>
+	<fe_users>
+		<uid>3</uid>
+		<username>testuser3</username>
+		<pid>2</pid>
+		<usergroup>1</usergroup>
+		<disable>1</disable>
+	</fe_users>
 </dataset>

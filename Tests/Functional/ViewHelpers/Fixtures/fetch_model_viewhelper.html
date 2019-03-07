@@ -1,5 +1,5 @@
 <html xmlns:qbtools="http://typo3.org/ns/Qbus/Qbtools/ViewHelpers" data-namespace-typo3-fluid="true">
-<qbtools:fetch model="{from}" sortby="{sortby}">
+<qbtools:fetch model="{from}" sortby="{sortby}" match="{match}" hidden="{ignoreEnableFields}">
 <f:for each="{entities}" as="record">
 {record.{field}},
 </f:for>

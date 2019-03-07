@@ -46,6 +46,8 @@ class FetchViewHelperTest extends FunctionalTestCase
         string $from,
         string $field,
         string $sortby,
+        array $match,
+        bool $ignoreEnableFields,
         string $expected,
         string $template
     ) {
@@ -55,6 +57,8 @@ class FetchViewHelperTest extends FunctionalTestCase
             'from' => $from,
             'field' => $field,
             'sortby' => $sortby,
+            'match' => $match,
+            'ignoreEnableFields' => $ignoreEnableFields,
         ]);
 
         if (version_compare(TYPO3_branch, '9', '<')) {
@@ -76,6 +80,8 @@ class FetchViewHelperTest extends FunctionalTestCase
                 'from' => 'pages',
                 'field' => 'title',
                 'sortby' => 'sorting',
+                'match' => [],
+                'ignoreEnableFields' => false,
                 'expected' => 'Main page, Sub page,',
                 'template' => 'fetch_table_viewhelper',
             ],
@@ -83,7 +89,45 @@ class FetchViewHelperTest extends FunctionalTestCase
                 'from' => \TYPO3\CMS\Extbase\Domain\Model\FrontendUser::class,
                 'field' => 'username',
                 'sortby' => 'uid',
+                'match' => [],
+                'ignoreEnableFields' => false,
                 'expected' => 'testuser, testuser2,',
+                'template' => 'fetch_model_viewhelper',
+            ],
+            'fetch: table pages in pid 1' => [
+                'from' => 'pages',
+                'field' => 'title',
+                'sortby' => 'sorting',
+                'match' => ['pid' => '1'],
+                'ignoreEnableFields' => false,
+                'expected' => 'Sub page,',
+                'template' => 'fetch_table_viewhelper',
+            ],
+            'fetch: model FrontendUser with uid 2' => [
+                'from' => \TYPO3\CMS\Extbase\Domain\Model\FrontendUser::class,
+                'field' => 'username',
+                'sortby' => 'uid',
+                'match' => ['uid' => 2],
+                'ignoreEnableFields' => false,
+                'expected' => 'testuser2,',
+                'template' => 'fetch_model_viewhelper',
+            ],
+            'fetch: table pages including hidden ones' => [
+                'from' => 'pages',
+                'field' => 'title',
+                'sortby' => 'sorting',
+                'match' => [],
+                'ignoreEnableFields' => true,
+                'expected' => 'Main page, Sub page,',
+                'template' => 'fetch_table_viewhelper',
+            ],
+            'fetch: model FrontendUser including hidden ones' => [
+                'from' => \TYPO3\CMS\Extbase\Domain\Model\FrontendUser::class,
+                'field' => 'username',
+                'sortby' => 'uid',
+                'match' => [],
+                'ignoreEnableFields' => true,
+                'expected' => 'testuser, testuser2, testuser3,',
                 'template' => 'fetch_model_viewhelper',
             ],
         ];
