@@ -1,0 +1,6 @@
+plugin.tx_testextension_pi1 {
+	settings {
+		foo = foo
+	}
+}
+module.tx_testextension_pi1 < plugin.tx_testextension_pi1
