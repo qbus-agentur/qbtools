@@ -1,6 +1,7 @@
 <?php
 namespace Qbus\Qbtools\ViewHelpers\Widget;
 
+use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
 use TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper;
 use TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper;
 use Qbus\Qbtools\ViewHelpers\Widget\Controller\MailformController;
@@ -71,9 +72,9 @@ class MailformViewHelper extends AbstractWidgetViewHelper
     }
 
     /**
-     * @return string
+     * @return ResponseInterface
      */
-    public function render()
+    public function render(): ResponseInterface
     {
         /* <f:renderChildren> does not include the variable context from the  subrequest-controller,
          * therefore we set the desired variables here. */
