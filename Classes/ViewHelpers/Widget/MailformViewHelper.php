@@ -1,6 +1,10 @@
 <?php
 namespace Qbus\Qbtools\ViewHelpers\Widget;
 
+use TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper;
+use TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper;
+use Qbus\Qbtools\ViewHelpers\Widget\Controller\MailformController;
+
 /**
  * Mailform widget with configurable form fields
  *
@@ -27,7 +31,7 @@ namespace Qbus\Qbtools\ViewHelpers\Widget;
  * TODO: accept required list with conditions?
  * TODO: accept recipient as simple string containing only the mail address
  */
-class MailformViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper
+class MailformViewHelper extends AbstractWidgetViewHelper
 {
     /**
      * @var bool
@@ -40,19 +44,18 @@ class MailformViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetView
     protected $storeConfigurationInSession = false;
 
     /**
-     * @var \Qbus\Qbtools\ViewHelpers\Widget\Controller\MailformController
+     * @var MailformController
      */
     protected $controller;
 
     /**
-     * @param  \Qbus\Qbtools\ViewHelpers\Widget\Controller\MailformController $controller
+     * @param  MailformController $controller
      * @return void
      */
-    public function injectController(\Qbus\Qbtools\ViewHelpers\Widget\Controller\MailformController $controller)
+    public function injectController(MailformController $controller)
     {
         $this->controller = $controller;
     }
-
 
     /**
      * Initialize arguments
@@ -74,9 +77,9 @@ class MailformViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetView
     {
         /* <f:renderChildren> does not include the variable context from the  subrequest-controller,
          * therefore we set the desired variables here. */
-        $this->viewHelperVariableContainer->add('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'fieldNamePrefix', 'msg');
+        $this->viewHelperVariableContainer->add(FormViewHelper::class, 'fieldNamePrefix', 'msg');
         $result = $this->initiateSubRequest();
-        $this->viewHelperVariableContainer->remove('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'fieldNamePrefix');
+        $this->viewHelperVariableContainer->remove(FormViewHelper::class, 'fieldNamePrefix');
 
         return $result;
     }
