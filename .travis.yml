@@ -46,4 +46,4 @@ script:
   - if [[ "$ANALYSIS" == 'true' ]]; then .build/vendor/bin/phpunit $PHP_UNIT_OPTIONS -c FunctionalTests.xml --coverage-text --coverage-clover clover.xml ; fi
 
 after_success:
-  - if [[ "$ANALYSIS" == 'true' ]]; then travis_retry .build/vendor/bin/coveralls -v ; fi
+  - if [[ "$ANALYSIS" == 'true' ]]; then travis_retry .build/vendor/bin/php-coveralls -v ; fi
