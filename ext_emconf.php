@@ -6,7 +6,7 @@ $EM_CONF[$_EXTKEY] = array(
     'category' => 'misc',
     'author' => 'Axel Wüstemann',
     'author_email' => 'awu@qbus.de',
-    'author_company' => 'Qbus Werbeagentur GmbH',
+    'author_company' => 'Qbus Internetagentur GmbH',
     'shy' => '',
     'priority' => '',
     'module' => '',
@@ -17,12 +17,12 @@ $EM_CONF[$_EXTKEY] = array(
     'modify_tables' => '',
     'clearCacheOnLoad' => 0,
     'lockType' => '',
-    'version' => '2.2.5',
+    'version' => '3.0.0',
     'constraints' => array(
         'depends' => array(
-            'extbase' => '8.7',
-            'fluid' => '8.7',
-            'typo3' => '8.7',
+            'extbase' => '8.7.0-9.5.99',
+            'fluid' => '8.7.0-9.5.99',
+            'typo3' => '8.7.0-9.5.99',
         ),
         'conflicts' => array(
         ),
