@@ -85,6 +85,15 @@ class FetchViewHelperTest extends FunctionalTestCase
                 'expected' => 'Main page, Sub page,',
                 'template' => 'fetch_table_viewhelper',
             ],
+            'fetch: table fe_users' => [
+                'from' => 'fe_users',
+                'field' => 'username',
+                'sortby' => 'uid',
+                'match' => [],
+                'ignoreEnableFields' => false,
+                'expected' => 'testuser, testuser2,',
+                'template' => 'fetch_table_viewhelper',
+            ],
             'fetch: model FrontendUser' => [
                 'from' => \TYPO3\CMS\Extbase\Domain\Model\FrontendUser::class,
                 'field' => 'username',
