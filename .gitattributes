@@ -6,4 +6,5 @@
 /.php_cs export-ignore
 /.editorconfig export-ignore
 /phpunit.xml.dist export-ignore
-/FunctionalTests export-ignore
+/FunctionalTests.xml export-ignore
+/.mailmap export-ignore
