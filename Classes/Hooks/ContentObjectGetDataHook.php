@@ -32,7 +32,9 @@ class ContentObjectGetDataHook implements ContentObjectGetDataHookInterface
 
         switch ($type) {
             case 'qbtools_flexform_field':
-                $flexform_service = GeneralUtility::makeInstance(FlexFormService::class);
+                // Fallback to Extbase FlexFormService for TYPo3 v8
+                $flexFormServiceClassName = class_exists(FlexFormService::class) ? FlexFormService::class : 'TYPO3\\CMS\\Extbase\\Service\\FlexFormService';
+                $flexform_service = GeneralUtility::makeInstance($flexFormServiceClassName);
                 $flexform_fields = $flexform_service->convertFlexFormContentToArray($fields['pi_flexform']);
                 $returnValue = ArrayUtility::getValueByPath($flexform_fields, $key, '.');
                 break;
