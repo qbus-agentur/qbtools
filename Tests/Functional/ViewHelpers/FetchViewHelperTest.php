@@ -64,6 +64,7 @@ class FetchViewHelperTest extends FunctionalTestCase
         ]);
 
         if (version_compare(TYPO3_branch, '9', '<')) {
+            $uid = 1;
             $typoScriptFrontendController = new \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController(null, $uid, 0);
             $typoScriptFrontendController->gr_list = '';
             $GLOBALS['TSFE'] = $typoScriptFrontendController;
