@@ -80,9 +80,16 @@ class RenderContentViewHelperTest extends FunctionalTestCase
     {
         $typoScriptFrontendController = GeneralUtility::makeInstance(TypoScriptFrontendController::class, null, $uid, 0);
         $typoScriptFrontendController->cObj = new ContentObjectRenderer();
-        $typoScriptFrontendController->cObj->setLogger(new NullLogger());
+        // Remove condition once we drop support for TYPO3 v8, and always inject the logger
+        if (method_exists($typoScriptFrontendController->cObj, 'setLogger')) {
+            $typoScriptFrontendController->cObj->setLogger(new NullLogger());
+        }
         $typoScriptFrontendController->sys_page = GeneralUtility::makeInstance(PageRepository::class);
         $typoScriptFrontendController->tmpl = GeneralUtility::makeInstance(TemplateService::class);
+        // Remove guarded method call to init, once we drop support for TYPO3 v8
+        if (method_exists($typoScriptFrontendController->tmpl, 'init')) {
+            $typoScriptFrontendController->tmpl->init();
+        }
         $typoScriptFrontendController->getPageAndRootlineWithDomain(1);
         $typoScriptFrontendController->getConfigArray();
         $GLOBALS['TSFE'] = $typoScriptFrontendController;

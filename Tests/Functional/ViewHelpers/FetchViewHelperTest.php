@@ -56,6 +56,13 @@ class FetchViewHelperTest extends FunctionalTestCase
             'field' => $field,
             'sortby' => $sortby,
         ]);
+
+        if (version_compare(TYPO3_branch, '9', '<')) {
+            $typoScriptFrontendController = new \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController(null, $uid, 0);
+            $typoScriptFrontendController->gr_list = '';
+            $GLOBALS['TSFE'] = $typoScriptFrontendController;
+        }
+
         $this->assertEquals($expected, trim(preg_replace('/\s+/', ' ', $view->render())));
     }
 

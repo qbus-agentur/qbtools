@@ -12,6 +12,7 @@
 	verbose="false"
 	beStrictAboutTestsThatDoNotTestAnything="false"
 >
+	<!--processIsolation="true" needed for TYPO3 v8 – we specify on commandline-->
 	<testsuites>
 		<testsuite name="Functional tests">
 			<directory>Tests/Functional/</directory>
