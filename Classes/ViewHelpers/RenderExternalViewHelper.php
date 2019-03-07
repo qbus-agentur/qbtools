@@ -53,7 +53,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @TODO: Implement sections
  */
-class RenderExternalViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+class RenderExternalViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
