@@ -26,7 +26,10 @@
     ],
     "license": "GPL-2.0+",
     "require": {
-        "typo3/cms-core": "^8.7.0|^9.5.0"
+        "typo3/cms-core": "^8.7.0|^9.5.0",
+        "typo3/cms-extbase": "^8.7.0|^9.5.0",
+        "typo3/cms-fluid": "^8.7.0|^9.5.0",
+        "typo3/cms-frontend": "^8.7.0|^9.5.0"
     },
     "autoload": {
         "psr-4": {
