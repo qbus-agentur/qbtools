@@ -35,7 +35,7 @@ class WrapViewHelperTest extends FunctionalTestCase
         $view = new StandaloneView();
         $view->setTemplatePathAndFilename('typo3conf/ext/qbtools/Tests/Functional/ViewHelpers/Fixtures/wrap_viewhelper.html');
 
-        $expected = '<empty></empty> <div class=""> Hallo </div>';
+        $expected = '<empty></empty> <div class="foo"> Hallo </div>';
         $this->assertEquals($expected, trim(preg_replace('/\s+/', ' ', $view->render())));
     }
 }

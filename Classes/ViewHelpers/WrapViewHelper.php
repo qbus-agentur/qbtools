@@ -36,7 +36,7 @@ class WrapViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $class = $argumments['class'];
+        $class = $arguments['class'];
 
         $content = $renderChildrenClosure();
         if (ctype_space($content) || $content === '' || $content === null) {
