@@ -58,6 +58,6 @@ class FormatBytesViewHelper extends AbstractViewHelper
         $base = log($size) / log(1024);
         $suffixes = array('', 'k', 'M', 'G', 'T');
 
-        return round(pow(1024, $base - floor($base)), $precision) . ' ' . $suffixes[floor($base)];
+        return trim(round(pow(1024, $base - floor($base)), $precision) . ' ' . $suffixes[floor($base)]);
     }
 }
