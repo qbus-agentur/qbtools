@@ -35,7 +35,7 @@ class MailformViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetView
     protected $ajaxWidget = true;
 
     /**
-     * @bar bool
+     * @var bool
      */
     protected $storeConfigurationInSession = false;
 
