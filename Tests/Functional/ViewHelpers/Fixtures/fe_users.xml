@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+	<fe_users>
+		<uid>1</uid>
+		<username>testuser</username>
+		<pid>2</pid>
+		<usergroup>1</usergroup>
+	</fe_users>
+	<fe_users>
+		<uid>2</uid>
+		<username>testuser2</username>
+		<pid>2</pid>
+		<usergroup>1</usergroup>
+	</fe_users>
+</dataset>

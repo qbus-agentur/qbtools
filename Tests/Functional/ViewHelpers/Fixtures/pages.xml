@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+	<pages>
+		<uid>1</uid>
+		<title>Main page</title>
+	</pages>
+	<pages>
+		<uid>2</uid>
+		<title>Sub page</title>
+		<pid>1</pid>
+	</pages>
+</dataset>

@@ -46,6 +46,9 @@
         "phpspec/prophecy": "^1.7",
         "php-coveralls/php-coveralls": "^2.0"
     },
+    "config": {
+        "vendor-dir": ".build/vendor"
+    },
     "extra": {
         "typo3/cms": {
             "cms-package-dir": "{$vendor-dir}/typo3/cms",

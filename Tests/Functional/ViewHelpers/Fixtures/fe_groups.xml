@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+	<fe_groups>
+		<uid>1</uid>
+		<title>Testgroup</title>
+		<pid>2</pid>
+	</fe_groups>
+</dataset>
