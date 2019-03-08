@@ -10,6 +10,12 @@ Introduction
 This extension provides a set of `ViewHelpers` and `Hooks` that are used
 to implement TYPO3 based websites by [Qbus](https://www.qbus.de/).
 
+Some ViewHelpers (like `qbtools:fetch` or `qbtools:fal`) are not meant
+to be used as preferred solution, but are rather available when a proper
+implementation (using repository classes) is not possible – e.g. when
+data needs to be retrieved from the database in a template of a generic
+community extension.
+
 Usage
 -----
 
@@ -22,9 +28,9 @@ $ composer require qbus/qbtools:^3.0
 ```html
 {namespace qbtools=Qbus\Qbtools\ViewHelpers}
 
-<!-- Fetch blog posts of some Extbase model and display using
-     a partial of some (external) extension -->
-<qbtools:fetch model="\Vendor\MyBlog\Domain\Model\Post" match="{uid: 3}" as="posts">
+<!-- Fetch (top) blog posts of some Extbase model and display using
+     a partial of some (external) extension. -->
+<qbtools:fetch model="Vendor\\MyBlog\\Domain\\Model\\Post" match="{top: 1}" as="posts">
     <f:for each="{posts}" as="post">
         <qbtools:renderExternal partial="Blog/Teaser" extensionName="MyBlog" arguments="{post: post}"/>
     </f:for>
