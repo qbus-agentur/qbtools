@@ -3,6 +3,7 @@ Generic Tools for TYPO3 Sites
 
 [![Build Status](https://api.travis-ci.org/qbus-agentur/qbtools.png)](https://travis-ci.org/qbus-agentur/qbtools)
 [![Coverage Status](https://coveralls.io/repos/github/qbus-agentur/qbtools/badge.svg)](https://coveralls.io/github/qbus-agentur/qbtools)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/qbus-agentur/qbtools/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/qbus-agentur/qbtools/?branch=master)
 
 Introduction
 ------------
