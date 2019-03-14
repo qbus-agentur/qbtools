@@ -3,6 +3,7 @@ namespace  Qbus\Qbtools\ViewHelpers\Widget\Controller;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MailUtility;
+use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
 
 /*                                                                        *
  * This script is backported from the TYPO3 Flow package "TYPO3.Fluid".   *
@@ -26,10 +27,18 @@ use TYPO3\CMS\Core\Utility\MailUtility;
 class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Security\Cryptography\HashService
-     * @inject
+     * @var HashService
      */
     protected $hashService;
+
+    /**
+     * @param  HashService $hashService
+     * @return void
+     */
+    public function injectHashService(HashService $hashService)
+    {
+        $this->hashService = $hashService;
+    }
 
     /**
      * @return void
