@@ -18,6 +18,8 @@ namespace Qbus\Qbtools\ViewHelpers\Link;
  */
 class TypolinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
+    protected $escapeOutput = false;
+
     public function initializeArguments()
     {
         $this->registerArgument('configuration', 'array', 'The typoLink configuration', true);
