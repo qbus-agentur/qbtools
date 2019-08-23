@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		event.preventDefault();
 		$form = $(this);
 		$form.find(".form-group").removeClass("has-error");
-		$.post($form.attr("action"), $form.serialize(), function(data) {
+		$.post($form.attr("action"), $form.serialize() + '&msg%5Bnobot%5D=1', function(data) {
 			var $notify = $(".qbtools-mailform-notification", $form);
 			if (data.status == "ok") {
 				$notify.children().hide();
