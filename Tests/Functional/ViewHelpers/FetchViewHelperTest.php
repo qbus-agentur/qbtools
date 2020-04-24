@@ -30,15 +30,6 @@ class FetchViewHelperTest extends FunctionalTestCase
      */
     protected $coreExtensionsToLoad = ['fluid'];
 
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3conf/ext/qbtools/Tests/Functional/ViewHelpers/Fixtures/pages.xml');
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3conf/ext/qbtools/Tests/Functional/ViewHelpers/Fixtures/fe_groups.xml');
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3conf/ext/qbtools/Tests/Functional/ViewHelpers/Fixtures/fe_users.xml');
-    }
-
     /**
      * @dataProvider renderFetchesDataProvider
      */
@@ -52,6 +43,10 @@ class FetchViewHelperTest extends FunctionalTestCase
         string $expected,
         string $template
     ) {
+        $this->importDataSet(ORIGINAL_ROOT . 'typo3conf/ext/qbtools/Tests/Functional/ViewHelpers/Fixtures/pages.xml');
+        $this->importDataSet(ORIGINAL_ROOT . 'typo3conf/ext/qbtools/Tests/Functional/ViewHelpers/Fixtures/fe_groups.xml');
+        $this->importDataSet(ORIGINAL_ROOT . 'typo3conf/ext/qbtools/Tests/Functional/ViewHelpers/Fixtures/fe_users.xml');
+
         $view = new StandaloneView();
         $view->setTemplatePathAndFilename('typo3conf/ext/qbtools/Tests/Functional/ViewHelpers/Fixtures/' . $template . '.html');
         $view->assignMultiple([
