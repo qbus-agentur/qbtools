@@ -5,7 +5,7 @@ if (!defined('TYPO3_MODE')) {
 }
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'Qbus.' . $_EXTKEY,
+    'Qbus.Qbtools',
     'mailformwrapper',
     array('Mailform' => 'show')
 );

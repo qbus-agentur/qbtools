@@ -37,10 +37,11 @@ class RenderContentViewHelperTest extends FunctionalTestCase
      */
     protected $coreExtensionsToLoad = ['fluid', 'fluid_styled_content'];
 
-    protected function setUp()
+    /**
+     * Note: we're not extending setUp because of the PHP 7.0 incompatible return type declaration
+     */
+    protected function setupTestEnvironment()
     {
-        parent::setUp();
-
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/tt_content.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3conf/ext/qbtools/Tests/Functional/ViewHelpers/Fixtures/sys_template.xml');
@@ -50,6 +51,8 @@ class RenderContentViewHelperTest extends FunctionalTestCase
 
     public function testRenderContentByUid()
     {
+        $this->setupTestEnvironment();
+
         $view = new StandaloneView();
         $view->setTemplatePathAndFilename('typo3conf/ext/qbtools/Tests/Functional/ViewHelpers/Fixtures/rendercontent_uid_viewhelper.html');
         $view->assign('id', 1);
@@ -63,6 +66,8 @@ class RenderContentViewHelperTest extends FunctionalTestCase
 
     public function testRenderContentByPid()
     {
+        $this->setupTestEnvironment();
+
         $view = new StandaloneView();
         $view->setTemplatePathAndFilename('typo3conf/ext/qbtools/Tests/Functional/ViewHelpers/Fixtures/rendercontent_pid_viewhelper.html');
         $view->assign('id', 1);
