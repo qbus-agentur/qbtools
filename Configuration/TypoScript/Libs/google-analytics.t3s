@@ -39,3 +39,35 @@ ga('send', 'pageview');
 }
 
 
+lib.qbtools.google_analytics_noscript = TEXT
+lib.qbtools.google_analytics_noscript {
+    value =
+
+    stdWrap {
+        # Only render the script when a value is set
+        required = 1
+
+	# The tracking id is stored into window.gatid to be used
+	# by generic google analytics optout buttons/scripts
+        wrap = var gatid='|';
+
+        prepend = TEXT
+        prepend.value (
+
+<script>
+
+)
+        append = TEXT
+        append.value (
+
+if(document.cookie.indexOf('ga-disable-'+gatid+'=true')>-1)window['ga-disable-'+gatid]=true;
+(function(i,r){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();
+})(window,'ga');
+ga('create', gatid, 'auto');
+ga('set', 'anonymizeIp', true);
+ga('send', 'pageview');
+</script>
+)
+    }
+}
