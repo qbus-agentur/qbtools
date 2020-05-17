@@ -106,15 +106,44 @@ class RenderExternalViewHelperTest extends FunctionalTestCase
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3conf/ext/qbtools/Tests/Functional/ViewHelpers/Fixtures/sys_template.xml');
 
-        // Ensure that the Extbase UriBuilder generated links in frontend mode
+        // Ensure that the Extbase UriBuilder generates links in frontend mode
         $environmentServiceProphecy = $this->prophesize(EnvironmentService::class);
         $environmentServiceProphecy->isEnvironmentInFrontendMode()->willReturn(true);
         $environmentServiceProphecy->isEnvironmentInBackendMode()->willReturn(false);
-        $environmentServiceProphecy->isEnvironmentInCliMode()->willReturn(false);
-        $environmentServiceProphecy->getServerRequestMethod()->willReturn('GET');
+        //$environmentServiceProphecy->isEnvironmentInCliMode()->willReturn(false);
+        //$environmentServiceProphecy->getServerRequestMethod()->willReturn('GET');
         GeneralUtility::setSingletonInstance(EnvironmentService::class, $environmentServiceProphecy->reveal());
 
-        $typoScriptFrontendController = GeneralUtility::makeInstance(TypoScriptFrontendController::class, null, $uid, 0);
+        if (class_exists(\TYPO3\CMS\Core\Configuration\SiteConfiguration::class)) {
+            $this->writeSiteConfiguration(
+                'test',
+                $this->buildSiteConfiguration(1, '/'),
+                [
+                    $this->buildDefaultLanguageConfiguration('EN', '/en/'),
+                ],
+                [
+                    $this->buildErrorHandlingConfiguration('Fluid', [404])
+                ]
+            );
+            $_SERVER['HTTP_HOST'] = 'example.com';
+            $_SERVER['REQUEST_URI'] = '/en/';
+            $_GET['id'] = $uid;
+            GeneralUtility::flushInternalRuntimeCaches();
+
+            $site = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Site\SiteFinder::class)->getSiteByIdentifier('test');
+
+            $this->typoScriptFrontendController = GeneralUtility::makeInstance(
+                TypoScriptFrontendController::class,
+                GeneralUtility::makeInstance(\TYPO3\CMS\Core\Context\Context::class),
+                $site,
+                $site->getDefaultLanguage(),
+                new \TYPO3\CMS\Core\Routing\PageArguments($uid, '0', [])
+            );
+        } else {
+            // For TYPO3 <= v8
+            $typoScriptFrontendController = GeneralUtility::makeInstance(TypoScriptFrontendController::class, null, $uid, 0);
+        }
+
         $typoScriptFrontendController->cObj = new ContentObjectRenderer();
         // Remove condition once we drop support for TYPO3 v8, and always inject the logger
         if (method_exists($typoScriptFrontendController->cObj, 'setLogger')) {
@@ -132,4 +161,39 @@ class RenderExternalViewHelperTest extends FunctionalTestCase
         $GLOBALS['TSFE'] = $typoScriptFrontendController;
         return $typoScriptFrontendController;
     }
+
+  /**
+   * @param string $identifier
+   * @param array $site
+   * @param array $languages
+   * @param array $errorHandling
+   */
+  protected function writeSiteConfiguration(
+      string $identifier,
+      array $site = [],
+      array $languages = [],
+      array $errorHandling = []
+  ) {
+      $configuration = $site;
+      if (!empty($languages)) {
+          $configuration['languages'] = $languages;
+      }
+      if (!empty($errorHandling)) {
+          $configuration['errorHandling'] = $errorHandling;
+      }
+      ;
+
+      $siteConfiguration = new \TYPO3\CMS\Core\Configuration\SiteConfiguration(
+          $this->instancePath . '/typo3conf/sites/'
+      );
+
+      try {
+          // ensure no previous site configuration influences the test
+          GeneralUtility::rmdir($this->instancePath . '/typo3conf/sites/' . $identifier, true);
+          $siteConfiguration->write($identifier, $configuration);
+      } catch (\Exception $exception) {
+          $this->markTestSkipped($exception->getMessage());
+      }
+  }
+
 }
