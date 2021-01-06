@@ -173,10 +173,15 @@ class FetchViewHelper extends AbstractViewHelper
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
         $entities = [];
         while ($row = $result->fetch()) {
-            if ($table === 'pages') {
-                $row = $pageRepository->getPageOverlay($row);
+            if (method_exists($pageRepository, 'getLanguageOverlay')) {
+                // For TYPO3 >= v9
+                $row = $pageRepository->getLanguageOverlay($table, $row);
             } else {
-                $row = $pageRepository->getRecordOverlay($table, $row, $GLOBALS['TSFE']->sys_language_content, $GLOBALS['TSFE']->sys_language_contentOL);
+                if ($table === 'pages') {
+                    $row = $pageRepository->getPageOverlay($row);
+                } else {
+                    $row = $pageRepository->getRecordOverlay($table, $row, $GLOBALS['TSFE']->sys_language_content, $GLOBALS['TSFE']->sys_language_contentOL);
+                }
             }
 
             $entities[] = $row;
