@@ -37,6 +37,11 @@ class CallViewHelper extends AbstractViewHelper
     use CompileWithRenderStatic;
 
     /**
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Initialize arguments
      */
     public function initializeArguments()
