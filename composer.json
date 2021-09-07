@@ -54,6 +54,7 @@
     },
     "extra": {
         "typo3/cms": {
+            "extension-key": "qbtools",
             "web-dir": ".build/web"
         },
         "branch-alias": {
