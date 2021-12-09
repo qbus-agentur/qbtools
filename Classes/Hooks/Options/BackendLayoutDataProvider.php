@@ -1,6 +1,9 @@
 <?php
 namespace Qbus\Qbtools\Hooks\Options;
 
+use TYPO3\CMS\Backend\View\BackendLayout\DataProviderInterface;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
 use TYPO3\CMS\Backend\View\BackendLayout\BackendLayoutCollection;
 use TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext;
@@ -8,7 +11,7 @@ use TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext;
 /**
  * @todo deprecate
  */
-class BackendLayoutDataProvider implements \TYPO3\CMS\Backend\View\BackendLayout\DataProviderInterface
+class BackendLayoutDataProvider implements DataProviderInterface
 {
     /**
      * @param  DataProviderContext     $dataProviderContext
@@ -17,7 +20,7 @@ class BackendLayoutDataProvider implements \TYPO3\CMS\Backend\View\BackendLayout
      */
     public function addBackendLayouts(DataProviderContext $dataProviderContext, BackendLayoutCollection $backendLayoutCollection)
     {
-        $BEfunc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Backend\Utility\BackendUtility');
+        $BEfunc = GeneralUtility::makeInstance(BackendUtility::class);
         $pageTSconfig = $BEfunc->getPagesTSconfig(1);
 
         if (isset($pageTSconfig['tx_qbtools.']['backend_layout.'])) {
@@ -43,7 +46,7 @@ class BackendLayoutDataProvider implements \TYPO3\CMS\Backend\View\BackendLayout
      */
     public function getBackendLayout($identifier, $pageId)
     {
-        $BEfunc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Backend\Utility\BackendUtility');
+        $BEfunc = GeneralUtility::makeInstance(BackendUtility::class);
         $pageTSconfig = $BEfunc->getPagesTSconfig(1);
 
         if (isset($pageTSconfig['tx_qbtools.']['backend_layout.'][$identifier . '.'])) {
