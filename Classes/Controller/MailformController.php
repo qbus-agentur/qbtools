@@ -1,6 +1,7 @@
 <?php
 namespace Qbus\Qbtools\Controller;
 
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 /* * *************************************************************
  *  Copyright notice
  *
@@ -43,7 +44,7 @@ namespace Qbus\Qbtools\Controller;
  * @deprecated <qbtools:widget.mailform> can be used in a static fluid template nowadays, so this mailform is not useful
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-class MailformController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class MailformController extends ActionController
 {
     /* Initialize arguments from typoscript cObject context data.
      * That is the data that is passes by the fluid f:cObject view helper. */
@@ -86,6 +87,9 @@ class MailformController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
             $this->view->assign('sender', array('email' => $senderEmail, 'name' => $senderName));
         } else {
             $this->view->assign('sender', null);
+        }
+        if (is_callable([$this, 'htmlResponse'])) {
+            return $this->htmlResponse();
         }
     }
 }
