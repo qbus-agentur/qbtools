@@ -3,7 +3,6 @@ namespace Qbus\Qbtools\Utility;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /***************************************************************
@@ -41,26 +40,12 @@ class StandaloneTemplateRenderer
     protected $configurationManager;
 
     /**
-     * @var ObjectManagerInterface
-     */
-    protected $objectManager;
-
-    /**
      * @param  ConfigurationManagerInterface $configurationManager
      * @return void
      */
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
     {
         $this->configurationManager = $configurationManager;
-    }
-
-    /**
-     * @param  ObjectManagerInterface $objectManager
-     * @return void
-     */
-    public function injectObjectManager(ObjectManagerInterface $objectManager)
-    {
-        $this->objectManager = $objectManager;
     }
 
     /**
@@ -74,7 +59,7 @@ class StandaloneTemplateRenderer
     public function renderTemplate($template, $variables, $rootPath)
     {
         /** @var StandaloneView $view */
-        $view = $this->objectManager->get(StandaloneView::class);
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
 
         $view->setLayoutRootPaths([$rootPath  . '/Layouts']);
         $view->setPartialRootPaths([$rootPath . '/Partials']);

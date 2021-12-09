@@ -1,11 +1,13 @@
 <?php
 namespace Qbus\Qbtools\ViewHelpers;
 
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
+
 
 /* **************************************************************
  *  Copyright notice
@@ -119,7 +121,7 @@ class CalculateBoundsViewHelper extends AbstractViewHelper
             return (int) $fileObject->getProperty($dimensionalProperty);
         }
 
-        if (version_compare(TYPO3_branch, '8', '>=')) {
+        if (class_exists(Typo3Version:class) || version_compare(TYPO3_branch, '8', '>=')) {
             $croppingConfiguration = $fileObject->getProperty('crop');
             $cropVariantCollection = \TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection::create((string)$croppingConfiguration);
 
