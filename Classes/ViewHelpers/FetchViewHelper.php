@@ -1,6 +1,7 @@
 <?php
 namespace Qbus\Qbtools\ViewHelpers;
 
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
@@ -8,7 +9,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
-use TYPO3\CMS\Frontend\Page\PageRepository;
+use TYPO3\CMS\Frontend\Page\PageRepository as V9PageRepository;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
@@ -170,7 +171,7 @@ class FetchViewHelper extends AbstractViewHelper
 
         $result = $queryBuilder->execute();
 
-        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+        $pageRepository = GeneralUtility::makeInstance(class_exists(PageRepository::class) ? PageRepository::class : V9PageRepository::class);
         $entities = [];
         while ($row = $result->fetch()) {
             if (method_exists($pageRepository, 'getLanguageOverlay')) {
