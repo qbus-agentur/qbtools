@@ -1,6 +1,7 @@
 <?php
 namespace Qbus\Qbtools\ViewHelpers;
 
+use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
@@ -121,15 +122,9 @@ class CalculateBoundsViewHelper extends AbstractViewHelper
             return (int) $fileObject->getProperty($dimensionalProperty);
         }
 
-        if (class_exists(Typo3Version:class) || version_compare(TYPO3_branch, '8', '>=')) {
-            $croppingConfiguration = $fileObject->getProperty('crop');
-            $cropVariantCollection = \TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection::create((string)$croppingConfiguration);
+        $croppingConfiguration = $fileObject->getProperty('crop');
+        $cropVariantCollection = CropVariantCollection::create((string)$croppingConfiguration);
 
-            return (int) $cropVariantCollection->getCropArea('default')->makeAbsoluteBasedOnFile($fileObject)->asArray()[$dimensionalProperty];
-        } else {
-            $croppingConfiguration = json_decode($fileObject->getProperty('crop'), true);
-
-            return (int)$croppingConfiguration[$dimensionalProperty];
-        }
+        return (int) $cropVariantCollection->getCropArea('default')->makeAbsoluteBasedOnFile($fileObject)->asArray()[$dimensionalProperty];
     }
 }
