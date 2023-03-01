@@ -28,7 +28,7 @@ class ContentObjectGetDataHook implements ContentObjectGetDataHookInterface
     ) {
         $parts = explode(':', $sectionValue, 2);
         $type = strtolower(trim($parts[0]));
-        $key = trim($parts[1]);
+        $key = trim($parts[1] ?? '');
 
         switch ($type) {
             case 'qbtools_flexform_field':
