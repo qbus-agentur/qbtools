@@ -93,7 +93,7 @@ class BackendLayoutDataProvider implements DataProviderInterface
             $layout['title'] = 'Untitled';
         }
 
-        $layout['icon'] = $this->getIconPath($layout['icon']);
+        $layout['icon'] = $this->getIconPath($layout['icon'] ?? '');
 
         $backendLayout = BackendLayout::create($layout['uid'], $layout['title'], $layout['config']);
         $backendLayout->setIconPath($this->getIconPath($layout['icon']));
