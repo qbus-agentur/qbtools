@@ -82,7 +82,12 @@ class FetchViewHelper extends AbstractViewHelper
     protected static function createQuery(string $className, bool $ignoreEnableFields): QueryInterface
     {
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $query = $objectManager->get(QueryInterface::class, $className);
+        if (class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class) && version_compare(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Information\Typo3Version::class)->getBranch(), '11.5', '>=')) {
+            $query = $objectManager->get(QueryInterface::class);
+            $query->setType($className);
+        } else {
+            $query = $objectManager->get(QueryInterface::class, $className);
+        }
         $querySettings = $objectManager->get(QuerySettingsInterface::class);
 
         $querySettings->setRespectStoragePage(false);
