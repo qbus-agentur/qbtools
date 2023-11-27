@@ -26,10 +26,10 @@
     ],
     "license": "GPL-2.0+",
     "require": {
-        "typo3/cms-core": "^8.7.0|^9.5.0|^10.4.0|^11.4.0|^11.5.0",
-        "typo3/cms-extbase": "^8.7.0|^9.5.0|^10.4.0|^11.4.0|^11.5.0",
-        "typo3/cms-fluid": "^8.7.0|^9.5.0|^10.4.0|^11.4.0|^11.5.0",
-        "typo3/cms-frontend": "^8.7.0|^9.5.0|^10.4.0|^11.4.0|^11.5.0"
+        "typo3/cms-core": "^12.4",
+        "typo3/cms-extbase": "^12.4",
+        "typo3/cms-fluid": "^12.4",
+        "typo3/cms-frontend": "^12.4"
     },
     "autoload": {
         "psr-4": {
@@ -38,11 +38,6 @@
     },
     "replace": {
         "typo3-ter/qbtools": "self.version"
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Qbus\\Qbtools\\Tests\\": "Tests"
-        }
     },
     "require-dev": {
         "typo3/testing-framework": "^2.0 || ^4.9 || ^6.2",
