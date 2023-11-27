@@ -4,7 +4,6 @@ namespace Qbus\Qbtools\ViewHelpers;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -40,8 +39,7 @@ class RenderContentViewHelper extends AbstractViewHelper
         $pid = $arguments['pid'];
         $colpos = $arguments['colpos'];
 
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $configurationManager = $objectManager->get(ConfigurationManagerInterface::class);
+        $configurationManager = GeneralUtility::getContainer()->get(ConfigurationManagerInterface::class);
         $cObj = $configurationManager->getContentObject();
 
         $content = '';
