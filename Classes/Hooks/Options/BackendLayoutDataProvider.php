@@ -1,12 +1,13 @@
 <?php
+
 namespace Qbus\Qbtools\Hooks\Options;
 
-use TYPO3\CMS\Backend\View\BackendLayout\DataProviderInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
 use TYPO3\CMS\Backend\View\BackendLayout\BackendLayoutCollection;
 use TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext;
+use TYPO3\CMS\Backend\View\BackendLayout\DataProviderInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * @todo deprecate
@@ -16,7 +17,6 @@ class BackendLayoutDataProvider implements DataProviderInterface
     /**
      * @param  DataProviderContext     $dataProviderContext
      * @param  BackendLayoutCollection $backendLayoutCollection
-     * @return void
      */
     public function addBackendLayouts(DataProviderContext $dataProviderContext, BackendLayoutCollection $backendLayoutCollection)
     {
@@ -42,7 +42,7 @@ class BackendLayoutDataProvider implements DataProviderInterface
      *
      * @param  string             $identifier
      * @param  int                $pageId
-     * @return NULL|BackendLayout
+     * @return BackendLayout|null
      */
     public function getBackendLayout($identifier, $pageId)
     {
@@ -83,7 +83,7 @@ class BackendLayoutDataProvider implements DataProviderInterface
         $layout['uid'] = $id;
 
         if (isset($layout['config.'])) {
-            $layout['config'] = array('backend_layout.' => $layout['config.']);
+            $layout['config'] = ['backend_layout.' => $layout['config.']];
             unset($layout['config.']);
 
             $layout['config'] = $this->typoscriptToString($layout['config']);

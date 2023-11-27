@@ -10,7 +10,7 @@ $hashService = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Security\Cryptogr
 if (isset($_POST['msg']['__tx_qbtools_mailform_data'])) {
     $config = unserialize(base64_decode($hashService->validateAndStripHmac($_POST['msg']['__tx_qbtools_mailform_data'])));
     if (!is_array($config)) {
-        print json_encode(array('status' => 'error'));
+        print json_encode(['status' => 'error']);
         exit;
     }
 
@@ -20,5 +20,5 @@ if (isset($_POST['msg']['__tx_qbtools_mailform_data'])) {
     unset($_POST['msg']['__tx_qbtools_mailform_data']);
     print $mailformController->mailAction($_POST['msg']);
 } else {
-    print json_encode(array('status' => 'error'));
+    print json_encode(['status' => 'error']);
 }

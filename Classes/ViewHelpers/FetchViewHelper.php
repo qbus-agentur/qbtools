@@ -1,20 +1,21 @@
 <?php
+
 namespace Qbus\Qbtools\ViewHelpers;
 
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
-use TYPO3\CMS\Frontend\Page\PageRepository as V9PageRepository;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
-
 
 /* **************************************************************
  *  Copyright notice
@@ -82,7 +83,7 @@ class FetchViewHelper extends AbstractViewHelper
     protected static function createQuery(string $className, bool $ignoreEnableFields): QueryInterface
     {
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        if (class_exists(\TYPO3\CMS\Core\Information\Typo3Version::class) && version_compare(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Information\Typo3Version::class)->getBranch(), '11.5', '>=')) {
+        if (class_exists(Typo3Version::class) && version_compare(GeneralUtility::makeInstance(Typo3Version::class)->getBranch(), '11.5', '>=')) {
             $query = $objectManager->get(QueryInterface::class);
             $query->setType($className);
         } else {
@@ -114,7 +115,7 @@ class FetchViewHelper extends AbstractViewHelper
     {
         $query = self::createQuery($model, $ignoreEnableFields);
         if (count($match) > 0) {
-            $constraints = array();
+            $constraints = [];
             foreach ($match as $property => $value) {
                 $constraints[] = $query->equals($property, $value);
             }
@@ -123,11 +124,11 @@ class FetchViewHelper extends AbstractViewHelper
         }
 
         $query->setOrderings([
-            $sortby => ($sortdirection === 'DESC' ? QueryInterface::ORDER_DESCENDING : QueryInterface::ORDER_ASCENDING)
+            $sortby => ($sortdirection === 'DESC' ? QueryInterface::ORDER_DESCENDING : QueryInterface::ORDER_ASCENDING),
         ]);
 
-        if (intval($limit) > 0) {
-            $query->setLimit(intval($limit));
+        if ((int)$limit > 0) {
+            $query->setLimit((int)$limit);
         }
 
         return $query->execute();
@@ -168,15 +169,15 @@ class FetchViewHelper extends AbstractViewHelper
                 $queryBuilder->expr()->andX(...$whereConditions)
             );
 
-        if (intval($limit) > 0) {
-            $queryBuilder->setMaxresults(intval($limit));
+        if ((int)$limit > 0) {
+            $queryBuilder->setMaxresults((int)$limit);
         }
 
         $queryBuilder->addOrderBy($sortby, $sortdirection === 'DESC' ? 'DESC' : 'ASC');
 
         $result = $queryBuilder->execute();
 
-        $pageRepository = GeneralUtility::makeInstance(class_exists(PageRepository::class) ? PageRepository::class : V9PageRepository::class);
+        $pageRepository = GeneralUtility::makeInstance(class_exists(PageRepository::class) ? PageRepository::class : PageRepository::class);
         $entities = [];
         while ($row = $result->fetch()) {
             if (method_exists($pageRepository, 'getLanguageOverlay')) {
@@ -186,7 +187,7 @@ class FetchViewHelper extends AbstractViewHelper
                 if ($table === 'pages') {
                     $row = $pageRepository->getPageOverlay($row);
                 } else {
-                    $row = $pageRepository->getRecordOverlay($table, $row, $GLOBALS['TSFE']->sys_language_content, $GLOBALS['TSFE']->sys_language_contentOL);
+                    $row = $pageRepository->getRecordOverlay($table, $row, GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('language', 'contentId'), GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('language', 'legacyOverlayType'));
                 }
             }
 

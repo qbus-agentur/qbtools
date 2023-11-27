@@ -1,4 +1,5 @@
 <?php
+
 namespace Qbus\Qbtools\Utility;
 
 use TYPO3\CMS\Core\TypoScript\TemplateService;
@@ -15,17 +16,15 @@ class TypoScriptManagementUtility
     /**
      * @var array
      */
-    private static $staticTypoScript = array();
+    private static $staticTypoScript = [];
 
     /*
      * @var bool
      */
     private static $includeStaticTemplateFilesBeforeAllStaticTemplates = false;
 
-
     /**
      * @param  string $path
-     * @return void
      */
     public static function addStaticTypoScript($path)
     {
@@ -36,7 +35,6 @@ class TypoScriptManagementUtility
 
     /**
      * @param  array $paths
-     * @return void
      */
     public static function addStaticTypoScripts($paths)
     {
@@ -58,7 +56,6 @@ class TypoScriptManagementUtility
      *
      * @param array           $params
      * @param TemplateService $pObj
-     * @return void
      */
     public function preprocessIncludeStaticTypoScriptSources(array &$params, TemplateService $pObj)
     {

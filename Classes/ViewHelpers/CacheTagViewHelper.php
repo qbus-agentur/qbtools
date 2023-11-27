@@ -1,4 +1,5 @@
 <?php
+
 namespace Qbus\Qbtools\ViewHelpers;
 
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;

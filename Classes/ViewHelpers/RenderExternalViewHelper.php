@@ -1,8 +1,9 @@
 <?php
+
 namespace Qbus\Qbtools\ViewHelpers;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -117,9 +118,9 @@ class RenderExternalViewHelper extends AbstractViewHelper
         $view = $renderingContext->getViewHelperVariableContainer()->getView();
 
         $oldPartialRootPaths = $view->getPartialRootPaths();
-        $newPartialRootPaths = array(
-            ExtensionManagementUtility::extPath($extensionName) . 'Resources/Private/Partials'
-        );
+        $newPartialRootPaths = [
+            ExtensionManagementUtility::extPath($extensionName) . 'Resources/Private/Partials',
+        ];
         $view->setPartialRootPaths($newPartialRootPaths);
         $content = $view->renderPartial($partial, null, $args);
         $view->setPartialRootPaths($oldPartialRootPaths);

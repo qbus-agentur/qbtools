@@ -1,9 +1,11 @@
 <?php
+
 namespace  Qbus\Qbtools\ViewHelpers\Widget\Controller;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MailUtility;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
+use TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController;
 
 /*                                                                        *
  * This script is backported from the TYPO3 Flow package "TYPO3.Fluid".   *
@@ -24,7 +26,7 @@ use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController
+class MailformController extends AbstractWidgetController
 {
     /**
      * @var HashService
@@ -33,16 +35,12 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
 
     /**
      * @param  HashService $hashService
-     * @return void
      */
     public function injectHashService(HashService $hashService)
     {
         $this->hashService = $hashService;
     }
 
-    /**
-     * @return void
-     */
     public function indexAction()
     {
         //$GLOBALS['TSFE']->additionalHeaderData[md5('qbtools_jquery')]  = '<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>';
@@ -63,7 +61,7 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
      * @param  array  $msg
      * @return string
      */
-    public function mailAction(array $msg = array())
+    public function mailAction(array $msg = [])
     {
         $recipient = $this->widgetConfiguration['recipient'];
         $sender = $this->widgetConfiguration['sender'];
@@ -71,7 +69,7 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
         $cc = $this->widgetConfiguration['cc'];
         $bcc = $this->widgetConfiguration['bcc'];
 
-        $missing = array();
+        $missing = [];
         /* example: $required = [ 'name', 'email,phone' ] => name and (phone or email) are required.*/
         foreach ($required as $orFieldList) {
             $orFields = explode(',', $orFieldList);
@@ -91,23 +89,23 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
         }
 
         if (count($missing)) {
-            return json_encode(array(
+            return json_encode([
                 'status' => 'fields-missing',
-                'missing' => $missing
-            ));
+                'missing' => $missing,
+            ]);
         }
 
         if (!is_array($recipient) || !array_key_exists('email', $recipient)) {
             /* TODO: Throw exception instead. */
-            return json_encode(array(
+            return json_encode([
                 'status' => 'internal-error',
-                'error' => '$recipient is not valid'
-            ));
+                'error' => '$recipient is not valid',
+            ]);
         }
 
         if (isset($recipient['name']) && strlen($recipient['name']) > 0) {
             $tmp = $recipient;
-            $recipient = array();
+            $recipient = [];
             foreach (GeneralUtility::trimExplode(',', $tmp['email']) as $email) {
                 $recipient[$email] = $tmp['name'];
             }
@@ -115,7 +113,7 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
             $recipient = GeneralUtility::trimExplode(',', $recipient['email']);
         }
 
-        $sender = ($sender !== null) ? array($sender['email'] => $sender['name']) : MailUtility::getSystemFrom();
+        $sender = ($sender !== null) ? [$sender['email'] => $sender['name']] : MailUtility::getSystemFrom();
 
         $recipientSave = $recipient;
         $recipientOverwrite = $this->widgetConfiguration['receiver_overwrite_email'];
@@ -125,11 +123,11 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
             $bcc = null;
         }
 
-        $params = array(
+        $params = [
             'to' => $recipient,
             'from' => $sender,
-            'msg' => $msg
-        );
+            'msg' => $msg,
+        ];
 
         $view = GeneralUtility::makeInstance('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($this->widgetConfiguration['mailTemplate']));
@@ -146,10 +144,10 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
         $mail->setFrom($sender);
         $mail->setTo($recipient);
         if ($cc) {
-            $mail->setCc(array($cc['email'] => $cc['name']));
+            $mail->setCc([$cc['email'] => $cc['name']]);
         }
         if ($bcc) {
-            $mail->setBcc(array($bcc['email'] => $bcc['name']));
+            $mail->setBcc([$bcc['email'] => $bcc['name']]);
         }
         $mail->setSubject($subject);
         $mail->setBody(trim($body));
@@ -162,7 +160,7 @@ class MailformController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
         }
         $mail->send();
 
-        return json_encode(array('status' => 'ok'));
+        return json_encode(['status' => 'ok']);
     }
 
     /**

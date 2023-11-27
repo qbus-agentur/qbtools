@@ -1,8 +1,9 @@
 <?php
+
 namespace Qbus\Qbtools\ViewHelpers;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Resource\FileRepository;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -34,7 +35,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 /**
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-
 class FalViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
@@ -69,15 +69,15 @@ class FalViewHelper extends AbstractViewHelper
         $as = $arguments['as'];
 
         $uid = -1;
-        $files = array();
+        $files = [];
 
         if (is_array($object)) {
-            $uid = (int) $object['uid'];
+            $uid = (int)$object['uid'];
             if ($object[$property] < 1) {
                 $uid = -1;
             }
         } elseif (is_numeric($object)) {
-            $uid = (int) $object;
+            $uid = (int)$object;
         }
 
         if ($uid >= 0) {

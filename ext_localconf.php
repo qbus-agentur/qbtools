@@ -1,13 +1,13 @@
 <?php
 
-if (!defined('TYPO3_MODE')) {
+if (!defined('TYPO3')) {
     die('Access denied.');
 }
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'Qbus.Qbtools',
+    'Qbtools',
     'mailformwrapper',
-    array('Mailform' => 'show')
+    [\Qbus\Qbtools\Controller\MailformController::class => 'show']
 );
 
 $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['tx_qbtools_mailform'] = 'EXT:qbtools/tx_qbtools_mailform_eid.php';

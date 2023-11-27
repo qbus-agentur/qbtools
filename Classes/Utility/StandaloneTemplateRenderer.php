@@ -1,4 +1,5 @@
 <?php
+
 namespace Qbus\Qbtools\Utility;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -41,7 +42,6 @@ class StandaloneTemplateRenderer
 
     /**
      * @param  ConfigurationManagerInterface $configurationManager
-     * @return void
      */
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
     {
@@ -61,7 +61,7 @@ class StandaloneTemplateRenderer
         /** @var StandaloneView $view */
         $view = GeneralUtility::makeInstance(StandaloneView::class);
 
-        $view->setLayoutRootPaths([$rootPath  . '/Layouts']);
+        $view->setLayoutRootPaths([$rootPath . '/Layouts']);
         $view->setPartialRootPaths([$rootPath . '/Partials']);
         $view->setTemplatePathAndFilename($rootPath . '/Templates/' . $template);
         $view->assignMultiple($variables);

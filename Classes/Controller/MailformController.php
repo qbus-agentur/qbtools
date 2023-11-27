@@ -1,7 +1,9 @@
 <?php
+
 namespace Qbus\Qbtools\Controller;
 
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+
 /* * *************************************************************
  *  Copyright notice
  *
@@ -69,22 +71,26 @@ class MailformController extends ActionController
      * @param \string $mailTemplate
      * @param \string $property
      */
-    public function showAction($recipientName, $recipientEmail, $senderName = null, $senderEmail = null,
-            $required = 'firstname,lastname,email,message',
-            $formPartial = 'Mailform',
-            $mailTemplate = 'EXT:qbtools/Resources/Private/Templates/Mailform/Mail.txt',
-            $property = null)
-    {
-        $this->view->assign('recipient', array('email' => $recipientEmail, 'name' => $recipientName));
+    public function showAction(
+        $recipientName,
+        $recipientEmail,
+        $senderName = null,
+        $senderEmail = null,
+        $required = 'firstname,lastname,email,message',
+        $formPartial = 'Mailform',
+        $mailTemplate = 'EXT:qbtools/Resources/Private/Templates/Mailform/Mail.txt',
+        $property = null
+    ) {
+        $this->view->assign('recipient', ['email' => $recipientEmail, 'name' => $recipientName]);
         $this->view->assign('required', explode(',', $required));
         $this->view->assign('formPartial', $formPartial);
         $this->view->assign('mailTemplate', $mailTemplate);
         $this->view->assign('property', $property);
 
-        $this->view->setPartialRootPaths(array('fileadmin/Resources/Private/Partials'));
+        $this->view->setPartialRootPaths(['fileadmin/Resources/Private/Partials']);
 
         if (strlen($senderName) > 0 && strlen($senderEmail) > 0) {
-            $this->view->assign('sender', array('email' => $senderEmail, 'name' => $senderName));
+            $this->view->assign('sender', ['email' => $senderEmail, 'name' => $senderName]);
         } else {
             $this->view->assign('sender', null);
         }

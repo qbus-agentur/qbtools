@@ -1,9 +1,10 @@
 <?php
+
 namespace Qbus\Qbtools\Hooks;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectGetDataHookInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
@@ -33,12 +34,12 @@ class ContentObjectGetDataHook implements ContentObjectGetDataHookInterface
         switch ($type) {
             case 'qbtools_flexform_field':
                 // Fallback to Extbase FlexFormService for TYPo3 v8
-                $flexFormServiceClassName = class_exists(FlexFormService::class) ? FlexFormService::class : 'TYPO3\\CMS\\Extbase\\Service\\FlexFormService';
+                $flexFormServiceClassName = class_exists(FlexFormService::class) ? FlexFormService::class : FlexFormService::class;
                 $flexform_service = GeneralUtility::makeInstance($flexFormServiceClassName);
                 $flexform_fields = $flexform_service->convertFlexFormContentToArray($fields['pi_flexform']);
                 $returnValue = ArrayUtility::getValueByPath($flexform_fields, $key, '.');
                 break;
-            }
+        }
 
         return $returnValue;
     }

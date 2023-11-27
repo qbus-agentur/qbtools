@@ -1,4 +1,5 @@
 <?php
+
 namespace Qbus\Qbtools\ViewHelpers;
 
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -54,9 +55,9 @@ class FormatBytesViewHelper extends AbstractViewHelper
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $size = $arguments['size'];
-        # http://stackoverflow.com/a/2510540
+        // http://stackoverflow.com/a/2510540
         $base = log($size) / log(1024);
-        $suffixes = array('', 'k', 'M', 'G', 'T');
+        $suffixes = ['', 'k', 'M', 'G', 'T'];
 
         return trim(round(pow(1024, $base - floor($base))) . ' ' . $suffixes[floor($base)]);
     }

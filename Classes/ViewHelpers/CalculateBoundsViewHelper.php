@@ -1,14 +1,13 @@
 <?php
+
 namespace Qbus\Qbtools\ViewHelpers;
 
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
-use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
-
 
 /* **************************************************************
  *  Copyright notice
@@ -59,14 +58,14 @@ class CalculateBoundsViewHelper extends AbstractViewHelper
     {
         $images = $arguments['images'];
 
-        $result = array('minWidth' => 0, 'minHeight' => 0,
+        $result = ['minWidth' => 0, 'minHeight' => 0,
                 'maxWidth' => 0, 'maxHeight' => 0,
                 'minRatio' => 0, 'maxRatio'  => 0,
                 'minRatioWidth' => 0, 'minRatioHeight'  => 0,
-                'maxRatioWidth' => 0, 'maxRatioHeight'  => 0);
+                'maxRatioWidth' => 0, 'maxRatioHeight'  => 0];
 
         foreach ($images as $image) {
-            foreach (array('height', 'width') as $type) {
+            foreach (['height', 'width'] as $type) {
                 $val = self::getCroppedProperty($image, $type);
                 if ($val === null) {
                     continue;
@@ -119,12 +118,12 @@ class CalculateBoundsViewHelper extends AbstractViewHelper
             $fileObject = $fileObject->getOriginalResource();
         }
         if (!$fileObject->hasProperty('crop') || empty($fileObject->getProperty('crop'))) {
-            return (int) $fileObject->getProperty($dimensionalProperty);
+            return (int)$fileObject->getProperty($dimensionalProperty);
         }
 
         $croppingConfiguration = $fileObject->getProperty('crop');
         $cropVariantCollection = CropVariantCollection::create((string)$croppingConfiguration);
 
-        return (int) $cropVariantCollection->getCropArea('default')->makeAbsoluteBasedOnFile($fileObject)->asArray()[$dimensionalProperty];
+        return (int)$cropVariantCollection->getCropArea('default')->makeAbsoluteBasedOnFile($fileObject)->asArray()[$dimensionalProperty];
     }
 }

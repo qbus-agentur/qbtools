@@ -1,4 +1,5 @@
 <?php
+
 namespace Qbus\Qbtools\ViewHelpers;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -45,29 +46,28 @@ class RenderContentViewHelper extends AbstractViewHelper
 
         $content = '';
 
-
         if ($uid > 0) {
-            $conf = array(
+            $conf = [
                 'tables' => 'tt_content',
                 'source' => $uid,
-                'dontCheckPid' => 1
-            );
+                'dontCheckPid' => 1,
+            ];
 
             $GLOBALS['TSFE']->addCacheTags(['tt_content_' . $uid]);
             $content = $cObj->cObjGetSingle('RECORDS', $conf);
         } elseif ($pid > 0) {
-            $conf = array(
+            $conf = [
                 'table' => 'tt_content',
-                'select.' => array(
+                'select.' => [
                     'orderBy' => 'sorting',
-                    'pidInList' => (string) $pid,
-                    'where' => 'colPos=' . intval($colpos),
+                    'pidInList' => (string)$pid,
+                    'where' => 'colPos=' . (int)$colpos,
                     'languageField' => 'sys_language_uid',
-                ),
-            );
+                ],
+            ];
 
             // This requires EXT:autoflush to work
-            $tags = array();
+            $tags = [];
             foreach (explode(',', $pid) as $p) {
                 $tags[] = 'tt_content_pid_' . $p;
                 $tags[] = 'pages_' . $p;

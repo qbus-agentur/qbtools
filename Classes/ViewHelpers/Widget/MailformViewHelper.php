@@ -1,10 +1,11 @@
 <?php
+
 namespace Qbus\Qbtools\ViewHelpers\Widget;
 
+use Qbus\Qbtools\ViewHelpers\Widget\Controller\MailformController;
 use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
 use TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper;
 use TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper;
-use Qbus\Qbtools\ViewHelpers\Widget\Controller\MailformController;
 
 /**
  * Mailform widget with configurable form fields
@@ -51,7 +52,6 @@ class MailformViewHelper extends AbstractWidgetViewHelper
 
     /**
      * @param  MailformController $controller
-     * @return void
      */
     public function injectController(MailformController $controller)
     {
