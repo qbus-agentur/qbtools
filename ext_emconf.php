@@ -8,12 +8,12 @@ $EM_CONF[$_EXTKEY] = [
     'author_email' => 'awu@qbus.de',
     'author_company' => 'Qbus Internetagentur GmbH',
     'state' => 'stable',
-    'version' => '4.0.0',
+    'version' => '3.0.10',
     'constraints' => [
         'depends' => [
-            'extbase' => '12.4.0-12.4.99',
-            'fluid' => '12.4.0-12.4.99',
-            'typo3' => '12.4.0-12.4.99',
+            'extbase' => '8.7.0-11.5.99',
+            'fluid' => '8.7.0-11.5.99',
+            'typo3' => '8.7.0-11.5.99',
         ],
         'conflicts' => [
         ],
