@@ -12,4 +12,4 @@ config.tx_qbtools {
     }
 }
 
-<INCLUDE_TYPOSCRIPT: source="DIR:./Libs/" extensions="t3s"/>
+<INCLUDE_TYPOSCRIPT: source="DIR:EXT:qbtools/Configuration/TypoScript/Libs/" extensions="t3s"/>
